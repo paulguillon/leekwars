@@ -1,4 +1,6 @@
 import {LS} from "../../globaux/ls";
+import { Chip } from "./chip";
+import { Weapon } from "./weapon";
 
 export class Leek {
     id: number;

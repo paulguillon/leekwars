@@ -1,4 +1,6 @@
+import { Leek } from "./leek";
+
 export class State {
-	Leek me;
-	Leek enemy;
+	me: Leek;
+	enemy: Leek;
 }

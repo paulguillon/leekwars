@@ -1,3 +1,5 @@
+import { Chip } from "./chip";
+
 export class Effect {
 	type: number;
 	value: number;

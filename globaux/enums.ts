@@ -9,7 +9,7 @@ export enum AoeType {
     SQUARE
 }
 
-export enum chipType {
+export enum ChipType {
     DAMAGE,
     NOVA,
     HEAL,
@@ -23,7 +23,7 @@ export enum chipType {
     MOVEMENT
 }
 
-export enum weaponType {
+export enum WeaponType {
     DAMAGE,
     NOVA,
     HEAL,
@@ -33,4 +33,16 @@ export enum weaponType {
     RELATIVE,
     POISON,
     PASSIVE
+}
+
+export enum Stat {
+    HP,
+    STRENGTH,
+    WISDOM,
+    AGILITY,
+    RESISTANCE,
+    SCIENCE,
+    MAGIC,
+    MP,
+    TP
 }

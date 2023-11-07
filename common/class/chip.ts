@@ -1,4 +1,7 @@
-import {ChipType} from "../../globaux/types";
+import { AoeType, ChipType, Stat } from "../../globaux/enums";
+import { LS } from "../../globaux/ls";
+import { enemy, myLeek } from "../vars";
+import { Cell } from "./cell";
 
 export class Chip {
     id: number;
@@ -149,7 +152,7 @@ export class Chip {
         return dmg;
     }
 
-    static Array<Chip> getChipsOf(number entity = enemy.id) {
+    static getChipsOf(entity: number = enemy.id): Chip[] {
         return LS.arrayFilter(LS.arrayMap(LS.getChips(entity), chipId => chips[chipId] ? chips[chipId] : null), chip => chip);
     }
 

@@ -1,19 +1,21 @@
+import { Stat, WeaponType } from "../../globaux/enums";
+
 export class Weapon {
-	id: number ;
-	name: string ;
-	types: Array<WeaponType> ;
-	cost: number ;
-	minValues: Array<number> ;
-	maxValues: Array<number> ;
-	sourceStat: Array<Stat> ;
-	targetStat: Array<Stat> ;
-	duration: number ;
-	stackable: boolean ;
-	minRange: number ;
-	maxRange: number ;
-	launchType: string ;
-	aoeType: string ;
-	aoeSize: number ;
+	id: number;
+	name: string;
+	types: Array<WeaponType>;
+	cost: number;
+	minValues: Array<number>;
+	maxValues: Array<number>;
+	sourceStat: Array<Stat>;
+	targetStat: Array<Stat>;
+	duration: number;
+	stackable: boolean;
+	minRange: number;
+	maxRange: number;
+	launchType: string;
+	aoeType: string;
+	aoeSize: number;
 	
 	constructor(obj) {
 		this.id = obj.id;
