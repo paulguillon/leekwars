@@ -1,4 +1,7 @@
+import { LS } from "../../globaux/ls";
+import { findFirst } from "../utils";
 import { Chip } from "./chip";
+import { Weapon } from "./weapon";
 
 export class Effect {
 	type: number;
@@ -21,40 +24,37 @@ export class Effect {
 		this.modifiers = effect[7];
 	}
 
-	static getAllEffects(number entity) {
+	static getAllEffects(entity: number) {
 		return LS.arrayMap(LS.getEffects(entity), effect => new Effect(effect))
 	}
 
-	static getEffectOfType(number target, number searchedEffect) {
+	static getEffectOfType(target: number, searchedEffect: number) {
 		return findFirst(Effect.getAllEffects(target), effect => effect.type == searchedEffect);
 	}
 
-	static getEffectsOfType(number target, number searchedEffect, number minTurnValue = 1) {
+	static getEffectsOfType(target: number, searchedEffect: number, minTurnValue: number = 1) {
 		return LS.arrayFilter(Effect.getAllEffects(target), effect => effect.type == searchedEffect && effect.turns >= minTurnValue);
 	}
 
-	static getEffectsOfTypeAmount(number target, number searchedEffect, number minTurnValue = 1) {
+	static getEffectsOfTypeAmount(target: number, searchedEffect: number, minTurnValue: number = 1) {
 		return LS.sum(LS.arrayMap(Effect.getEffectsOfType(target, searchedEffect, minTurnValue), effect => effect.value));
 	}
 
-	static hasEffect(number entity, number searchedEffect) {
+	static hasEffect(entity: number, searchedEffect: number) {
 		return LS.arraySome(Effect.getAllEffects(entity), effect => effect.type == searchedEffect);
 	}
 
-	static hasEffects(number entity, Array<number> effects) {
-		var entityEffects = Effect.getAllEffects(entity);
-		for (var effect in effects) {
-			if(!LS.search(entityEffects, (e) => e.type = effect)) return false;
-		}
-		return true;
+	static hasEffects(entity: number, searchedEffects: number[]) {
+		const entityEffects: Effect[] = Effect.getAllEffects(entity);
+		return searchedEffects.every((searchedEffect: number) => findFirst(entityEffects, (effect: Effect) => effect.type === searchedEffect));
 	}
 	
-	static isDeadByPoison(number target) {
-		var targetLife = LS.getLife();
-		for (var effect in Effect.getAllEffects(target)) {
-			if (effect.type == EFFECT_POISON) {
+	static isDeadByPoison(target: number) {
+		let targetLife: number = LS.getLife();
+		for (const effect of Effect.getAllEffects(target)) {
+			if (effect.type == LS.EFFECT_POISON) {
 				targetLife -= effect.value;
-			} else if (effect.type == EFFECT_HEAL) {
+			} else if (effect.type == LS.EFFECT_HEAL) {
 				targetLife += effect.value;
 			}
 			if (targetLife <= 0) return true;

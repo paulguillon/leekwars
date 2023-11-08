@@ -1,5 +1,6 @@
 import {LS} from "../globaux/ls";
 import {Cell} from "./class/cell";
+import {Effect} from "./class/effect";
 import {Leek} from "./class/leek";
 
 export const mode: number = LS.getFightType();
@@ -8,9 +9,9 @@ export let turn: number = 0;
 turn++;
 
 export const myLeek: Leek = new Leek(LS.getEntity());
-export let enemy: Leek;
+export let enemy: Leek = new Leek(LS.getNearestEnemy());
 
-if (!enemy || LS.isDead(enemy.id) || Effect.isDeadByPoison(enemy.id)) {
+if (LS.getType(enemy.id) !== LS.ENTITY_LEEK || LS.isDead(enemy.id) || Effect.isDeadByPoison(enemy.id)) {
     searchEnemy();
 }
 

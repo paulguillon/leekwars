@@ -1,6 +1,8 @@
 import { AoeType, ChipType, Stat } from "../../globaux/enums";
 import { LS } from "../../globaux/ls";
-import { enemy, myLeek } from "../vars";
+import { chips } from "../data/chips";
+import { findFirst } from "../utils";
+import { enemy, field, myLeek } from "../vars";
 import { Cell } from "./cell";
 
 export class Chip {
@@ -15,8 +17,8 @@ export class Chip {
     duration: number;
     minRange: number;
     maxRange: number;
-    launchType: string;
-    aoeType: string;
+    launchType: AoeType;
+    aoeType: AoeType;
     aoeSize: number;
     los: boolean;
 
@@ -52,54 +54,54 @@ export class Chip {
         return Cell.getClosestCellPathTo(cellsInRange, myLeek.id);
     }
 
-    static bestCellToUseChipOn(chipId: number, number caster, number target) {
-        var chip = chips[chipId];
+    static bestCellToUseChipOn(chipId: number, caster:number, target: number) {
+        const chip: Chip = chips[chipId];
 
-        if (!chip) return;
+        if (!chip) return null;
 
-        if (LS.getTP() < chip.cost) return;
-        if (LS.getCooldown(chipId)) return;
+        if (LS.getTP() < chip.cost) return null;
+        if (LS.getCooldown(chipId)) return null;
 
-        var launchCells = Cell.getCellsByArea(field[LS.getCell(caster)], chip.launchType, chip.minRange, chip.maxRange);
-        if (!LS.count(launchCells)) return;
+        const launchCells: Cell[] = Cell.getCellsByArea(field[LS.getCell(caster)], chip.launchType, chip.minRange, chip.maxRange);
+        if (!LS.count(launchCells)) return null;
 
-        var launchCellsWithLos = Cell.visibleCells(launchCells);
-        if (!LS.count(launchCellsWithLos)) return;
+        const launchCellsWithLos: Cell[] = Cell.visibleCells(launchCells);
+        if (!LS.count(launchCellsWithLos)) return null;
 
         // If target is in launch range
-        var response = findFirst(launchCellsWithLos, cell => cell.number == LS.getCell(target));
+        const response = findFirst(launchCellsWithLos, cell => cell.number == LS.getCell(target));
         if (response) return response;
 
-        var cellsToHitTarget = launchCellsWithLos.filter((cell: Cell) => {
+        const cellsToHitTarget: Cell[] = launchCellsWithLos.filter((cell: Cell) => {
             var aoeCells = Cell.getCellsByArea(cell, chip.aoeType, 0, chip.aoeSize);
             return aoeCells.includes(field[LS.getCell(target)]);
         });
-        if (!LS.count(cellsToHitTarget)) return;
+        if (!LS.count(cellsToHitTarget)) return null;
 
         return Cell.getClosestCellDistanceTo(cellsToHitTarget, target);
     }
 
-    static use(number chipId, number caster = myLeek.id, number target = enemy.id, Cell cellToUseChipOn = null) {
+    static use(chipId: number, caster: number = myLeek.id, target: number = enemy.id, cellToUseChipOn: Cell | null = null): number {
         cellToUseChipOn = cellToUseChipOn ? cellToUseChipOn : Chip.bestCellToUseChipOn(chipId, caster, target);
-        if (!cellToUseChipOn) return;
+        if (!cellToUseChipOn) return LS.USE_INVALID_TARGET;
 
         return LS.useChipOnCell(chipId, cellToUseChipOn.number);
     }
 
-    moveAndUse(number caster = myLeek.id, number target = enemy.id) {
+    moveAndUse(caster: number = myLeek.id, target: number = enemy.id) {
         if(LS.canUseChip(this.id, target)) {
             LS.useChip(this.id, target);
             return;
         }
 
-        Cell cell = canMoveToUse(caster, target);
+        const cell: Cell | null = this.canMoveToUse(caster, target);
 
         if(!cell) return;
 
         LS.moveTowardCell(cell.number);
 
         if(this.aoeType != AoeType.POINT) {
-            Cell bestCell = bestCellToUseChipOn(this.id, caster, target);
+            const bestCell: Cell | null = Chip.bestCellToUseChipOn(this.id, caster, target);
             if(bestCell) {
                 LS.useChipOnCell(this.id, bestCell.number);
             }
@@ -109,58 +111,58 @@ export class Chip {
         LS.useChip(this.id, target);
     }
 
-    boolean hasChipType(ChipType chipType) {
+    hasChipType(chipType: ChipType): boolean {
         return findFirst(this.types, type => type == chipType);
     }
 
-    Object getChipDamage(number source, number target) {
-        var dmg = {
-            damage: [0..0],
-            poison: [0..0],
-            nova: [0..0],
-            total: [0..0]
+    getChipDamage(source: number, target: number): Object {
+        let dmg = {
+            damage: [0,0],
+            poison: [0,0],
+            nova: [0,0],
+            total: [0,0]
         };
 
-        var damageMin = 0;
-        var damageMax = 0;
+        let damageMin = 0;
+        let damageMax = 0;
 
-        for (var i = 0; i < LS.count(this.types); i++) {
-            var type = this.types[i];
+        for (let i = 0; i < LS.count(this.types); i++) {
+            const type: ChipType = this.types[i];
 
             if (type == ChipType.DAMAGE) {
-                var formula = (LS.getStrength(source) / 100 + 1) * (LS.getPower(source) / 100 + 1) * (1 - LS.getRelativeShield(target) / 100) - LS.getAbsoluteShield(target);
+                const formula: number = (LS.getStrength(source) / 100 + 1) * (LS.getPower(source) / 100 + 1) * (1 - LS.getRelativeShield(target) / 100) - LS.getAbsoluteShield(target);
                 damageMin += this.minValues[i] * formula;
                 damageMax += this.maxValues[i] * formula;
             } else if (type == ChipType.POISON) {
-                var formula = (LS.getMagic(source) / 100 + 1) * (LS.getPower(source) / 100 + 1);
-                var minDmg = this.minValues[i] * formula;
-                var maxDmg = this.maxValues[i] * formula;
-                dmg.poison = [minDmg..maxDmg];
+                const formula: number = (LS.getMagic(source) / 100 + 1) * (LS.getPower(source) / 100 + 1);
+                const minDmg: number = this.minValues[i] * formula;
+                const maxDmg: number = this.maxValues[i] * formula;
+                dmg.poison = [minDmg, maxDmg];
             } else if (type == ChipType.NOVA) {
-                var formula = (value) => min(LS.getTotalLife(target) - LS.getLife(target), value * (LS.getScience(source) / 100 + 1) * (LS.getPower(source) / 100 + 1));
-                var minDmg = formula(this.minValues[i]);
-                var maxDmg = formula(this.maxValues[i]);
-                dmg.nova = [minDmg..maxDmg];
+                const formula: Function = (value): number => Math.min(LS.getTotalLife(target) - LS.getLife(target), value * (LS.getScience(source) / 100 + 1) * (LS.getPower(source) / 100 + 1));
+                const minDmg: number = formula(this.minValues[i]);
+                const maxDmg: number = formula(this.maxValues[i]);
+                dmg.nova = [minDmg, maxDmg];
             }
         }
-        dmg.damage = [damageMin..damageMax];
+        dmg.damage = [damageMin, damageMax];
 
-        var totalMin = LS.intervalMin(dmg.damage) + LS.intervalMin(dmg.poison);
-        var totalMax = LS.intervalMax(dmg.damage) + LS.intervalMax(dmg.poison);
-        dmg.total = [totalMin..totalMax];
+        const totalMin: number = LS.intervalMin(dmg.damage) + LS.intervalMin(dmg.poison);
+        const totalMax: number = LS.intervalMax(dmg.damage) + LS.intervalMax(dmg.poison);
+        dmg.total = [totalMin, totalMax];
 
         return dmg;
     }
 
     static getChipsOf(entity: number = enemy.id): Chip[] {
-        return LS.arrayFilter(LS.arrayMap(LS.getChips(entity), chipId => chips[chipId] ? chips[chipId] : null), chip => chip);
+        return LS.arrayMap(LS.getChips(entity), (chipId: number) => chips[chipId]);
     }
 
-    static Array<Chip> getChipsOfType(string chipType, number entity = enemy.id) {
-        return LS.arrayMap(LS.arrayFilter(LS.getChipsOf(entity), chip => LS.inArray(chip.types, chipType)), chip => LS.getChipName(chip.id));
+    static getChipsOfType(chipType: ChipType, entity: number = enemy.id): Chip[] {
+        return LS.arrayFilter(Chip.getChipsOf(entity), chip => LS.inArray(chip.types, chipType));
     }
 
-    static boolean haveChipEquipped(number chipId, number entity = enemy.id) {
+    static haveChipEquipped(chipId: number, entity: number = enemy.id): boolean {
         return findFirst(LS.getChips(entity), id => id == chipId);
     }
 }

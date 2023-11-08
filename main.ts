@@ -1,13 +1,23 @@
 import 'bulbs/puny';
 import {LS} from './globaux/ls';
 import {distanceTo, pathDistanceBetween} from "./common/utils";
-import {enemy, myLeek, searchEnemy} from "./common/vars";
+import {enemy, myLeek, searchEnemy, turn} from "./common/vars";
+import { Effect } from './common/class/effect';
+import { Move } from './common/class/move';
+import { chips } from './common/data/chips';
+import { weapons } from './common/data/weapons';
 
 /*
  * Stat : 200 agility, 300 strength, 5 MP, 15 TP, 100 resistance and 200 wisdom then full HP
- * Chips :  wall, shield, armor, motiv, warm up, solidification, steroid, protein, liberation/antidote, regen, stalactite, iceberg, rockfall, armoring, knowledge, helmet, vaccine
+ * Chips :  wall, shield, armor, motiv, warm up, solidification, steroid, protein, liberation/antidote/adrenaline, regen, stalactite, iceberg, rockfall, armoring, knowledge, helmet, vaccine
  * Weapons : unstable destroyer, axe, grenade launcher
  */
+
+if (turn == 1) {
+	LS.setWeapon(LS.WEAPON_AXE);
+}
+
+LS.useChip(LS.CHIP_ADRENALINE);
 
 if (LS.getTP() > 17) {
     if (distanceTo(enemy.id) <= LS.getMP() + 1) {

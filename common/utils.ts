@@ -27,7 +27,7 @@ export function getRandomColor() {
     return LS.getColor(LS.randInt(0, 255), LS.randInt(0, 255), LS.randInt(0, 255));
 }
 
-export function findFirst(array: Array<any>, callback: Function) {
+export function findFirst(array: Array<any>, callback: Function): any {
     for (let object in array) {
         if (callback(object)) {
             return object;
