@@ -1,9 +1,9 @@
-import { AoeType, ChipType, Stat } from "../../globaux/enums";
-import { LS } from "../../globaux/ls";
-import { chips } from "../data/chips";
-import { findFirst } from "../utils";
-import { enemy, field, myLeek } from "../vars";
-import { Cell } from "./cell";
+import {AoeType, ChipType, Stat} from '../../globaux/enums';
+import {LS} from '../../globaux/ls';
+import {findFirst} from '../utils';
+import {enemy, field, myLeek} from '../vars';
+import {Cell} from './cell';
+import {chips} from '../data/chips';
 
 export class Chip {
     id: number;
@@ -69,11 +69,11 @@ export class Chip {
         if (!LS.count(launchCellsWithLos)) return null;
 
         // If target is in launch range
-        const response = findFirst(launchCellsWithLos, cell => cell.number == LS.getCell(target));
+        const response = findFirst(launchCellsWithLos, (cell: Cell) => cell.number == LS.getCell(target));
         if (response) return response;
 
         const cellsToHitTarget: Cell[] = launchCellsWithLos.filter((cell: Cell) => {
-            var aoeCells = Cell.getCellsByArea(cell, chip.aoeType, 0, chip.aoeSize);
+            const aoeCells: Cell[] = Cell.getCellsByArea(cell, chip.aoeType, 0, chip.aoeSize);
             return aoeCells.includes(field[LS.getCell(target)]);
         });
         if (!LS.count(cellsToHitTarget)) return null;

@@ -1,9 +1,9 @@
 import 'bulbs/puny';
 import {LS} from './globaux/ls';
-import {distanceTo, pathDistanceBetween} from "./common/utils";
-import {enemy, myLeek, searchEnemy, turn} from "./common/vars";
 import { Effect } from './common/class/effect';
 import { Move } from './common/class/move';
+import {distanceTo, pathDistanceBetween} from "./common/utils";
+import {enemy, myLeek, searchEnemy, turn} from "./common/vars";
 import { chips } from './common/data/chips';
 import { weapons } from './common/data/weapons';
 

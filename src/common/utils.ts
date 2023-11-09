@@ -27,11 +27,11 @@ export function getRandomColor() {
     return LS.getColor(LS.randInt(0, 255), LS.randInt(0, 255), LS.randInt(0, 255));
 }
 
-export function findFirst(array: Array<any>, callback: Function): any {
-    for (let object in array) {
+export function findFirst<T>(array: Array<T>, callback: Function): T | undefined {
+    for (let object of array) {
         if (callback(object)) {
             return object;
         }
     }
-    return null;
+    return undefined;
 }

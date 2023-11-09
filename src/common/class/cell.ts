@@ -7,29 +7,29 @@ export class Cell {
     x: number;
     y: number;
     type: number;
-    left: Cell | null;
-    up: Cell | null;
-    right: Cell | null;
-    down: Cell | null;
+    left: Cell | undefined;
+    up: Cell | undefined;
+    right: Cell | undefined;
+    down: Cell | undefined;
 
     constructor(number: number, x: number, y: number, type: number) {
         this.number = number;
         this.x = x;
         this.y = y;
         this.type = type;
-        this.left = null;
-        this.up = null;
-        this.right = null;
-        this.down = null;
+        this.left = undefined;
+        this.up = undefined;
+        this.right = undefined;
+        this.down = undefined;
     }
 
     static init(cells: Array<Cell>) {
         for (const cellNumber of [...Array(612).keys()]) {
             let cell: Cell = cells[cellNumber];
-            cell.left = cellNumber - 18 < 0 || LS.getCellDistance(cellNumber, cellNumber - 18) > 1 ? null : cells[cellNumber - 18];
-            cell.up = cellNumber - 17 < 0 || LS.getCellDistance(cellNumber, cellNumber - 17) > 1 ? null : cells[cellNumber - 17];
-            cell.right = cellNumber + 18 > 612 || LS.getCellDistance(cellNumber, cellNumber + 18) > 1 ? null : cells[cellNumber + 18];
-            cell.down = cellNumber + 17 > 612 || LS.getCellDistance(cellNumber, cellNumber + 17) > 1 ? null : cells[cellNumber + 17];
+            cell.left = cellNumber - 18 < 0 || LS.getCellDistance(cellNumber, cellNumber - 18) > 1 ? undefined : cells[cellNumber - 18];
+            cell.up = cellNumber - 17 < 0 || LS.getCellDistance(cellNumber, cellNumber - 17) > 1 ? undefined : cells[cellNumber - 17];
+            cell.right = cellNumber + 18 > 612 || LS.getCellDistance(cellNumber, cellNumber + 18) > 1 ? undefined : cells[cellNumber + 18];
+            cell.down = cellNumber + 17 > 612 || LS.getCellDistance(cellNumber, cellNumber + 17) > 1 ? undefined : cells[cellNumber + 17];
         }
     }
 
@@ -55,9 +55,9 @@ export class Cell {
         return field[LS.getCell(entity)];
     }
 
-    static getCellFromCoordinates(x: number, y: number): Cell | null {
+    static getCellFromCoordinates(x: number, y: number): Cell | undefined {
         const cell: number = LS.getCellFromXY(x, y);
-        if(!cell) return null;
+        if(!cell) return undefined;
         return field[cell];
     }
 
@@ -68,18 +68,18 @@ export class Cell {
             for (let x = -max; x <= max; x++) {
                 for (let y = -max + LS.abs(x); y <= max - LS.abs(x); y++) {
                     if(LS.abs(x) + LS.abs(y) < min) continue;
-                    let cell: Cell | null = Cell.getCellFromCoordinates(center.x + x, center.y + y);
+                    let cell: Cell | undefined = Cell.getCellFromCoordinates(center.x + x, center.y + y);
                     if(!cell || cell.type == LS.CELL_OBSTACLE) continue;
                     LS.push(cells, cell);
                 }
             }
         } else if (aoeType == AoeType.PLUS) {
             for (let xy = -max; xy <= max; xy++) {
-                const cell1: Cell | null = Cell.getCellFromCoordinates(center.x + xy, center.y);
+                const cell1: Cell | undefined = Cell.getCellFromCoordinates(center.x + xy, center.y);
                 if(cell1 && LS.getCellDistance(center.number, cell1.number) >= min && cell1.type != LS.CELL_OBSTACLE){
                     LS.push(cells, cell1);
                 }
-                const cell2: Cell | null = Cell.getCellFromCoordinates(center.x, center.y + xy);
+                const cell2: Cell | undefined = Cell.getCellFromCoordinates(center.x, center.y + xy);
                 if(cell2 && LS.getCellDistance(center.number, cell2.number) >= min && cell2.type != LS.CELL_OBSTACLE){
                     LS.push(cells, cell2);
                 }
@@ -88,7 +88,7 @@ export class Cell {
         } else if (aoeType == AoeType.SQUARE) {
             for (let x = -max; x <= max; x++) {
                 for (let y = -max; y <= max; y++) {
-                    const cell: Cell | null = Cell.getCellFromCoordinates(center.x + x, center.y + y);
+                    const cell: Cell | undefined = Cell.getCellFromCoordinates(center.x + x, center.y + y);
                     if(!cell || LS.abs(x) < min && LS.abs(y) < min || cell.type == LS.CELL_OBSTACLE) continue;
                     LS.push(cells, cell);
                 }
@@ -106,8 +106,8 @@ export class Cell {
         return Cell.getCellsByArea(field[LS.getCell(entity)], AoeType.CIRCLE, min, mp, true);
     }
 
-    static getFurthestCellDistanceFrom(cells: Cell[], entity: number): Cell | null {
-        if(!LS.count(cells)) return null;
+    static getFurthestCellDistanceFrom(cells: Cell[], entity: number): Cell | undefined {
+        if(!LS.count(cells)) return undefined;
         const fromCell: number = LS.getCell(entity);
 
         let furthestCell: Cell = cells[0];
@@ -124,8 +124,8 @@ export class Cell {
         return furthestCell;
     }
 
-    static getClosestCellDistanceTo(cells: Cell[], target: number): Cell | null {
-        if(!LS.count(cells)) return null;
+    static getClosestCellDistanceTo(cells: Cell[], target: number): Cell | undefined {
+        if(!LS.count(cells)) return undefined;
         let bestCell: Cell = cells[0];
         let distance: number = LS.getCellDistance(LS.getCell(target), bestCell.number);
 
@@ -140,8 +140,8 @@ export class Cell {
         return bestCell;
     }
 
-    static getClosestCellPathTo(cells: Cell[], entity: number): Cell | null {
-        if (!LS.count(cells)) return null;
+    static getClosestCellPathTo(cells: Cell[], entity: number): Cell | undefined {
+        if (!LS.count(cells)) return undefined;
         const ofCell: number = LS.getCell(entity);
 
         let closestCell: Cell = cells[0];
@@ -149,8 +149,8 @@ export class Cell {
 
         for (const cell of cells) {
             const cellPathLength: number = LS.getPathLength(ofCell, cell.number);
-            if (cellPathLength == null) continue;
-            if (cellPathLength < closestCellPathLength || closestCellPathLength == null) {
+            if (cellPathLength == undefined) continue;
+            if (cellPathLength < closestCellPathLength || closestCellPathLength == undefined) {
                 closestCell = cell;
                 closestCellPathLength = cellPathLength;
             }

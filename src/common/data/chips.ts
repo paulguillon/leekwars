@@ -2,7 +2,7 @@ import { AoeType, ChipType, Stat } from "../../globaux/enums";
 import { LS } from "../../globaux/ls";
 import { Chip } from "../class/chip";
 
-export const chips = {
+export const chips: {[c: number]: Chip} = {
 	[LS.CHIP_SHOCK]: new Chip({
 		id: LS.CHIP_SHOCK,
 		types: [ChipType.DAMAGE],
