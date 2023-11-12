@@ -1,6 +1,6 @@
-import {LS} from "../../globaux/ls";
-import {AoeType} from "../../globaux/enums";
-import {enemy, field, myLeek} from "../vars";
+import { LS } from "../../globaux/ls";
+import { AoeType } from "../../globaux/enums";
+import { enemy, field, myLeek } from "../vars";
 
 export class Cell {
     number: number;
@@ -57,30 +57,30 @@ export class Cell {
 
     static getCellFromCoordinates(x: number, y: number): Cell | undefined {
         const cell: number = LS.getCellFromXY(x, y);
-        if(!cell) return undefined;
+        if (!cell) return undefined;
         return field[cell];
     }
 
     static getCellsByArea(center: Cell, aoeType: AoeType, min: number, max: number, path: boolean = false): Cell[] {
-        if(min > max) return [];
+        if (min > max) return [];
         let cells: Cell[] = [];
         if (aoeType == AoeType.CIRCLE) {
             for (let x = -max; x <= max; x++) {
                 for (let y = -max + LS.abs(x); y <= max - LS.abs(x); y++) {
-                    if(LS.abs(x) + LS.abs(y) < min) continue;
+                    if (LS.abs(x) + LS.abs(y) < min) continue;
                     let cell: Cell | undefined = Cell.getCellFromCoordinates(center.x + x, center.y + y);
-                    if(!cell || cell.type == LS.CELL_OBSTACLE) continue;
+                    if (!cell || cell.type == LS.CELL_OBSTACLE) continue;
                     LS.push(cells, cell);
                 }
             }
         } else if (aoeType == AoeType.PLUS) {
             for (let xy = -max; xy <= max; xy++) {
                 const cell1: Cell | undefined = Cell.getCellFromCoordinates(center.x + xy, center.y);
-                if(cell1 && LS.getCellDistance(center.number, cell1.number) >= min && cell1.type != LS.CELL_OBSTACLE){
+                if (cell1 && LS.getCellDistance(center.number, cell1.number) >= min && cell1.type != LS.CELL_OBSTACLE) {
                     LS.push(cells, cell1);
                 }
                 const cell2: Cell | undefined = Cell.getCellFromCoordinates(center.x, center.y + xy);
-                if(cell2 && LS.getCellDistance(center.number, cell2.number) >= min && cell2.type != LS.CELL_OBSTACLE){
+                if (cell2 && LS.getCellDistance(center.number, cell2.number) >= min && cell2.type != LS.CELL_OBSTACLE) {
                     LS.push(cells, cell2);
                 }
             }
@@ -89,7 +89,7 @@ export class Cell {
             for (let x = -max; x <= max; x++) {
                 for (let y = -max; y <= max; y++) {
                     const cell: Cell | undefined = Cell.getCellFromCoordinates(center.x + x, center.y + y);
-                    if(!cell || LS.abs(x) < min && LS.abs(y) < min || cell.type == LS.CELL_OBSTACLE) continue;
+                    if (!cell || LS.abs(x) < min && LS.abs(y) < min || cell.type == LS.CELL_OBSTACLE) continue;
                     LS.push(cells, cell);
                 }
             }
@@ -97,7 +97,7 @@ export class Cell {
             LS.push(cells, center);
         }
 
-        if(!path) return cells;
+        if (!path) return cells;
         const entity: number = LS.getEntityOnCell(center.number);
         return LS.arrayFilter(cells, (cell: Cell): boolean => LS.getPathLength(LS.getCell(entity), cell.number) <= LS.getMP(entity));
     }
@@ -107,7 +107,7 @@ export class Cell {
     }
 
     static getFurthestCellDistanceFrom(cells: Cell[], entity: number): Cell | undefined {
-        if(!LS.count(cells)) return undefined;
+        if (!LS.count(cells)) return undefined;
         const fromCell: number = LS.getCell(entity);
 
         let furthestCell: Cell = cells[0];
@@ -125,14 +125,14 @@ export class Cell {
     }
 
     static getClosestCellDistanceTo(cells: Cell[], target: number): Cell | undefined {
-        if(!LS.count(cells)) return undefined;
+        if (!LS.count(cells)) return undefined;
         let bestCell: Cell = cells[0];
         let distance: number = LS.getCellDistance(LS.getCell(target), bestCell.number);
 
-        for(const cell of cells) {
+        for (const cell of cells) {
             const cellDistance: number = LS.getCellDistance(cell.number, LS.getCell(target));
 
-            if(cellDistance < distance && cell.type == LS.CELL_EMPTY) {
+            if (cellDistance < distance && cell.type == LS.CELL_EMPTY) {
                 bestCell = cell;
                 distance = cellDistance;
             }

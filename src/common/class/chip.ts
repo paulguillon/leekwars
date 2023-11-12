@@ -1,9 +1,9 @@
-import {AoeType, ChipType, Stat} from '../../globaux/enums';
-import {LS} from '../../globaux/ls';
-import {findFirst} from '../utils';
-import {enemy, field, myLeek} from '../vars';
-import {Cell} from './cell';
-import {chips} from '../data/chips';
+import { AoeType, ChipType, Stat } from "../../globaux/enums";
+import { LS } from "../../globaux/ls";
+import { findFirst } from "../utils";
+import { enemy, field, myLeek } from "../vars";
+import { Cell } from "./cell";
+import { chips } from "../data/chips";
 
 export class Chip {
     id: number;
@@ -41,12 +41,12 @@ export class Chip {
     }
 
     canMoveToUse(caster: number = myLeek.id, target: number = enemy.id) {
-        if(LS.canUseChip(this.id, target)) return field[LS.getCell(caster)];
+        if (LS.canUseChip(this.id, target)) return field[LS.getCell(caster)];
 
         const cellsToGo: Cell[] = Cell.getCellsByArea(field[LS.getCell(caster)], AoeType.CIRCLE, 1, LS.getMP(caster), true);
 
         let cells: Cell[] = cellsToGo;
-        if(this.los) {
+        if (this.los) {
             cells = Cell.visibleCells(cellsToGo, LS.getCell(target));
         }
         const cellsInRange: Cell[] = Cell.getCellsInRange(cells, this.minRange, this.maxRange, target);
@@ -54,19 +54,19 @@ export class Chip {
         return Cell.getClosestCellPathTo(cellsInRange, myLeek.id);
     }
 
-    static bestCellToUseChipOn(chipId: number, caster:number, target: number) {
+    static bestCellToUseChipOn(chipId: number, caster: number, target: number) {
         const chip: Chip = chips[chipId];
 
-        if (!chip) return null;
+        if (!chip) return undefined;
 
-        if (LS.getTP() < chip.cost) return null;
-        if (LS.getCooldown(chipId)) return null;
+        if (LS.getTP() < chip.cost) return undefined;
+        if (LS.getCooldown(chipId)) return undefined;
 
         const launchCells: Cell[] = Cell.getCellsByArea(field[LS.getCell(caster)], chip.launchType, chip.minRange, chip.maxRange);
-        if (!LS.count(launchCells)) return null;
+        if (!LS.count(launchCells)) return undefined;
 
         const launchCellsWithLos: Cell[] = Cell.visibleCells(launchCells);
-        if (!LS.count(launchCellsWithLos)) return null;
+        if (!LS.count(launchCellsWithLos)) return undefined;
 
         // If target is in launch range
         const response = findFirst(launchCellsWithLos, (cell: Cell) => cell.number == LS.getCell(target));
@@ -76,12 +76,12 @@ export class Chip {
             const aoeCells: Cell[] = Cell.getCellsByArea(cell, chip.aoeType, 0, chip.aoeSize);
             return aoeCells.includes(field[LS.getCell(target)]);
         });
-        if (!LS.count(cellsToHitTarget)) return null;
+        if (!LS.count(cellsToHitTarget)) return undefined;
 
         return Cell.getClosestCellDistanceTo(cellsToHitTarget, target);
     }
 
-    static use(chipId: number, caster: number = myLeek.id, target: number = enemy.id, cellToUseChipOn: Cell | null = null): number {
+    static use(chipId: number, caster: number = myLeek.id, target: number = enemy.id, cellToUseChipOn: Cell | undefined = undefined): number {
         cellToUseChipOn = cellToUseChipOn ? cellToUseChipOn : Chip.bestCellToUseChipOn(chipId, caster, target);
         if (!cellToUseChipOn) return LS.USE_INVALID_TARGET;
 
@@ -89,20 +89,20 @@ export class Chip {
     }
 
     moveAndUse(caster: number = myLeek.id, target: number = enemy.id) {
-        if(LS.canUseChip(this.id, target)) {
+        if (LS.canUseChip(this.id, target)) {
             LS.useChip(this.id, target);
             return;
         }
 
-        const cell: Cell | null = this.canMoveToUse(caster, target);
+        const cell: Cell | undefined = this.canMoveToUse(caster, target);
 
-        if(!cell) return;
+        if (!cell) return;
 
         LS.moveTowardCell(cell.number);
 
-        if(this.aoeType != AoeType.POINT) {
-            const bestCell: Cell | null = Chip.bestCellToUseChipOn(this.id, caster, target);
-            if(bestCell) {
+        if (this.aoeType != AoeType.POINT) {
+            const bestCell: Cell | undefined = Chip.bestCellToUseChipOn(this.id, caster, target);
+            if (bestCell) {
                 LS.useChipOnCell(this.id, bestCell.number);
             }
             return;
@@ -112,15 +112,15 @@ export class Chip {
     }
 
     hasChipType(chipType: ChipType): boolean {
-        return findFirst(this.types, type => type == chipType);
+        return !!findFirst(this.types, type => type == chipType);
     }
 
     getChipDamage(source: number, target: number): Object {
         let dmg = {
-            damage: [0,0],
-            poison: [0,0],
-            nova: [0,0],
-            total: [0,0]
+            damage: [0, 0],
+            poison: [0, 0],
+            nova: [0, 0],
+            total: [0, 0]
         };
 
         let damageMin = 0;
@@ -163,6 +163,6 @@ export class Chip {
     }
 
     static haveChipEquipped(chipId: number, entity: number = enemy.id): boolean {
-        return findFirst(LS.getChips(entity), id => id == chipId);
+        return !!findFirst(LS.getChips(entity), id => id == chipId);
     }
 }

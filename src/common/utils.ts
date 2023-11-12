@@ -1,4 +1,4 @@
-import {LS} from "../globaux/ls";
+import { LS } from "../globaux/ls";
 
 export function distanceBetween(source: number, target: number) {
     return LS.getCellDistance(LS.getCell(source), LS.getCell(target));

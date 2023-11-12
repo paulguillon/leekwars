@@ -1,7 +1,7 @@
-import {LS} from "../globaux/ls";
-import {Cell} from "./class/cell";
-import {Effect} from "./class/effect";
-import {Leek} from "./class/leek";
+import { LS } from "../globaux/ls";
+import { Cell } from "./class/cell";
+import { Effect } from "./class/effect";
+import { Leek } from "./class/leek";
 
 export const mode: number = LS.getFightType();
 export const field: Array<Cell> = Cell.initField();

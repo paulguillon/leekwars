@@ -1,11 +1,10 @@
-import 'bulbs/puny';
-import {LS} from './globaux/ls';
-import { Effect } from './common/class/effect';
-import { Move } from './common/class/move';
-import {distanceTo, pathDistanceBetween} from "./common/utils";
-import {enemy, myLeek, searchEnemy, turn} from "./common/vars";
-import { chips } from './common/data/chips';
-import { weapons } from './common/data/weapons';
+import { LS } from "./globaux/ls";
+import { Effect } from "./common/class/effect";
+import { Move } from "./common/class/move";
+import { distanceTo, pathDistanceBetween } from "./common/utils";
+import { enemy, myLeek, searchEnemy, turn } from "./common/vars";
+import { chips } from "./common/data/chips";
+import { weapons } from "./common/data/weapons";
 
 /*
  * Stat : 200 agility, 300 strength, 5 MP, 15 TP, 100 resistance and 200 wisdom then full HP
@@ -14,7 +13,7 @@ import { weapons } from './common/data/weapons';
  */
 
 if (turn == 1) {
-	LS.setWeapon(LS.WEAPON_AXE);
+    LS.setWeapon(LS.WEAPON_AXE);
 }
 
 LS.useChip(LS.CHIP_ADRENALINE);

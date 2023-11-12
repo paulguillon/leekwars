@@ -12,8 +12,8 @@ export class Effect {
 	item: Chip | Weapon;
 	target: number;
 	modifiers: number;
-	
-	constructor (effect) {
+
+	constructor(effect) {
 		this.type = effect[0];
 		this.value = effect[1];
 		this.caster = effect[2];
@@ -48,7 +48,7 @@ export class Effect {
 		const entityEffects: Effect[] = Effect.getAllEffects(entity);
 		return searchedEffects.every((searchedEffect: number) => findFirst(entityEffects, (effect: Effect) => effect.type === searchedEffect));
 	}
-	
+
 	static isDeadByPoison(target: number) {
 		let targetLife: number = LS.getLife();
 		for (const effect of Effect.getAllEffects(target)) {

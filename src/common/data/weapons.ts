@@ -2,7 +2,7 @@ import { AoeType, Stat, WeaponType } from "../../globaux/enums";
 import { LS } from "../../globaux/ls";
 import { Weapon } from "../class/weapon";
 
-export const weapons: {[w: number]: Weapon} = {
+export const weapons: { [w: number]: Weapon } = {
 	[LS.WEAPON_DOUBLE_GUN]: new Weapon({
 		id: LS.WEAPON_DOUBLE_GUN,
 		name: "Double gun",

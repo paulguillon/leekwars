@@ -1,7 +1,7 @@
 // noinspection JSUnusedGlobalSymbols
 
 export class LS {
-    
+
     /* CONSTANTES */
 
     /**
@@ -2180,7 +2180,7 @@ export class LS {
      * <p><b>type:</b> 7</p>
      * <p><b>category:</b> 1</p>
      */
-// @ts-ignore
+    // @ts-ignore
     Infinity: number;
 
     /**
@@ -2470,7 +2470,7 @@ export class LS {
      * <p><b>type:</b> 7</p>
      * <p><b>category:</b> 1</p>
      */
-// @ts-ignore
+    // @ts-ignore
     NaN: number;
 
     /**
@@ -3074,12 +3074,12 @@ export class LS {
      */
     // @ts-ignore
     static WEAPON_UNSTABLE_DESTROYER: TYPE_WEAPON;
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
     /* FONCTIONS */
 
     /**
@@ -3088,7 +3088,7 @@ export class LS {
      * <p><b>description : </b>Renvoie la valeur absolue du nombre <i>number</i>.</p>
      * <p><b>operations : </b>2</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static abs = (_number: number): number => { };
 
     /**
@@ -3097,7 +3097,7 @@ export class LS {
      * <p><b>description : </b>Calcule l'arc cosinus d'<i>argument</i>, dans l'intervalle [0, PI].</p>
      * <p><b>operations : </b>12</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static acos = (_argument: number): number => { };
 
     /**
@@ -3108,7 +3108,7 @@ export class LS {
      * La dernière sous-liste peut contenir moins de <i>chunkSize</i> élements.</p>
      * <p><b>complexity : </b>O(n)</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static arrayChunk = <T>(_array: T[], _chunkSize?: number): T[][] => { };
 
     /**
@@ -3117,7 +3117,7 @@ export class LS {
      * <p><b>description : </b>Vide la liste <i>array</i> de tous ses éléments.</p>
      * <p><b>operations : </b>2</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static arrayClear = <T>(_array: T[]): void => { };
 
     /**
@@ -3128,7 +3128,7 @@ export class LS {
      * Cette fonction est équivalente à <i>liste1 + liste2</i>./p>
      * <p><b>complexity : </b>O(n)</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static arrayConcat = <T>(_array1: T[], _array2: T[]): T[] => { };
 
     /**
@@ -3137,7 +3137,7 @@ export class LS {
      * <p><b>description : </b>Renvoie <i>true</i> si le prédicat <i>callback</i> appliqué à chacun des éléments de la liste renvoie <i>true</i>.</p>
      * <p><b>complexity : </b>O(n)</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static arrayEvery = <T>(_array: T[], _callback: (arg: T) => boolean): boolean => { };
 
     /**
@@ -3146,7 +3146,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>complexity : </b>O(n)</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static arrayFilter = <T>(_array: T[], _callback: (arg: T) => boolean): T[] => { };
 
     /**
@@ -3155,7 +3155,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>complexity : </b>∞</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static arrayFlatten = <T>(_array: T[], _depth?: number): T[] => { };
 
     /**
@@ -3164,7 +3164,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>complexity : </b>O(n)</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static arrayFoldLeft = (_array: T[], _f: (arg1: T, arg2: T, arg3: number) => T, _v0: T): T => { };
 
     /**
@@ -3173,7 +3173,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>complexity : </b>O(n)</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static arrayFoldRight = <T>(_array: T[], _f: (arg1: T, arg2: T, arg3: number) => T, _v0: T): T => { };
 
     /**
@@ -3182,7 +3182,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>complexity : </b>O(n)</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static arrayFrequencies = <T>(_array: T[]): Map<T, _number> => { };
 
     /**
@@ -3191,7 +3191,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>1</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static arrayGet = <T>(_array: T[], _index: number, _defaultValue?: T): T => { };
 
     /**
@@ -3200,7 +3200,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>complexity : </b>O(n)</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static arrayIter = <T>(_array: T[], _callback: (arg: T) => void): void => { };
 
     /**
@@ -3209,7 +3209,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>complexity : </b>O(n)</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static arrayMap = <T, U>(_array: T[], _callback: (arg: T) => U): U[] => { };
 
     /**
@@ -3218,7 +3218,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>complexity : </b>O(n)</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static arrayMax = <T>(_array: T[]): T => { };
 
     /**
@@ -3227,7 +3227,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>complexity : </b>O(n)</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static arrayMin = <T>(_array: T[]): T => { };
 
     /**
@@ -3236,7 +3236,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>complexity : </b>O(n)</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static arrayPartition = <T>(_array: T[], _callback: (arg1: T, arg2: number, arg3: T[]) => boolean): T[][] => { };
 
     /**
@@ -3245,7 +3245,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>complexity : </b>O(n)</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static arrayRandom = <T>(_array: T[], _count: number): T[] => { };
 
     /**
@@ -3254,7 +3254,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>complexity : </b>O(n)</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static arrayRemoveAll = <T>(_array: T[], _element: T): void => { };
 
     /**
@@ -3263,7 +3263,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>complexity : </b>O(n)</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static arraySlice = <T>(_array: T[], _start: number, _end?: number, _stride?: number): T[] => { };
 
     /**
@@ -3272,7 +3272,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>complexity : </b>O(n)</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static arraySome = <T>(_array: T[], _callback: (arg: T) => boolean): boolean => { };
 
     /**
@@ -3281,7 +3281,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>complexity : </b>O(nlog(n))</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static arraySort = <T>(_array: T[], _callback?: (arg1: T, arg2: T) => number): T[] => { };
 
     /**
@@ -3290,7 +3290,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>complexity : </b>O(n²)</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static arrayUnique = <T>(_array: T[]): T[] => { };
 
     /**
@@ -3299,7 +3299,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>12</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static asin = (_argument: number): number => { };
 
     /**
@@ -3308,7 +3308,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>25</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static atan = (_argument: number): number => { };
 
     /**
@@ -3317,7 +3317,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>35</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static atan2 = (_y: number, _x: number): number => { };
 
     /**
@@ -3326,7 +3326,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>complexity : </b>O(n)</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static average = (_array: number[]): number => { };
 
     /**
@@ -3335,7 +3335,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>10</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static binString = (_x: number): string => { };
 
     /**
@@ -3344,7 +3344,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>1</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static bitCount = (_x: number): number => { };
 
     /**
@@ -3353,7 +3353,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>1</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static bitReverse = (_x: number): number => { };
 
     /**
@@ -3362,7 +3362,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>1</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static bitsToReal = (_x: number): number => { };
 
     /**
@@ -3371,7 +3371,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>1</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static byteReverse = (_x: number): number => { };
 
     /**
@@ -3380,7 +3380,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>45</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static canUseChip = (_chip: number, _entity: number): boolean => { };
 
     /**
@@ -3389,7 +3389,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>45</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static canUseChipOnCell = (_chip: number, _cell: number): boolean => { };
 
     /**
@@ -3398,7 +3398,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>45</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static canUseWeapon = (_weapon?: number, _entity: number): boolean => { };
 
     /**
@@ -3407,7 +3407,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>45</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static canUseWeaponOnCell = (_weapon?: number, _cell: number): boolean => { };
 
     /**
@@ -3416,7 +3416,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>62</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static cbrt = (_number: number): number => { };
 
     /**
@@ -3425,7 +3425,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>2</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static ceil = (_number: number): number => { };
 
     /**
@@ -3434,7 +3434,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>8</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static charAt = (_string: string, _position: number): string => { };
 
     /**
@@ -3443,7 +3443,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>10</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static chipNeedLos = (_chip: number): boolean => { };
 
     /**
@@ -3452,7 +3452,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>15</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static clearMarks = (): void => { };
 
     /**
@@ -3461,7 +3461,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>complexity : </b>∞</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static clone = <T>(_value: T, _level?: number): T => { };
 
     /**
@@ -3470,7 +3470,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>5</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static codePointAt = (_string: string, _index?: number): number => { };
 
     /**
@@ -3479,7 +3479,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>complexity : </b>O(n)</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static contains = (_string: string, _search: string): boolean => { };
 
     /**
@@ -3488,7 +3488,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>30</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static cos = (_angle: number): number => { };
 
     /**
@@ -3497,7 +3497,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>1</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static count = <T>(_array: T[]): number => { };
 
     /**
@@ -3506,7 +3506,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>100</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static debug = <T>(_object: T): void => { };
 
     /**
@@ -3515,7 +3515,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>100</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static debugC = <T>(_object: T, _color: number): void => { };
 
     /**
@@ -3524,7 +3524,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>100</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static debugE = <T>(_object: T): void => { };
 
     /**
@@ -3533,7 +3533,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>100</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static debugW = <T>(_object: T): void => { };
 
     /**
@@ -3542,7 +3542,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>16</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static deleteRegister = (_key: string): void => { };
 
     /**
@@ -3551,7 +3551,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>complexity : </b>O(n)</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static endsWith = (_string: string, _suffix: string): boolean => { };
 
     /**
@@ -3560,7 +3560,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>40</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static exp = (_number: number): number => { };
 
     /**
@@ -3569,7 +3569,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>complexity : </b>O(n)</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static fill = <T>(_array: T[], _value: T, _size?: number): void => { };
 
     /**
@@ -3578,7 +3578,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>2</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static floor = (_number: number): number => { };
 
     /**
@@ -3587,7 +3587,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>15</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getAbsoluteShield = (_entity?: number): number => { };
 
     /**
@@ -3596,7 +3596,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>15</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getAgility = (_entity?: number): number => { };
 
     /**
@@ -3605,7 +3605,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>15</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getAIID = (_entity?: number): number => { };
 
     /**
@@ -3614,7 +3614,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>15</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getAIName = (_entity?: number): string => { };
 
     /**
@@ -3623,7 +3623,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>100</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getAliveAllies = (): number[] => { };
 
     /**
@@ -3632,7 +3632,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>100</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getAliveEnemies = (): number[] => { };
 
     /**
@@ -3641,7 +3641,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>25</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getAliveEnemiesCount = (): number => { };
 
     /**
@@ -3650,7 +3650,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>200</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getAllChips = (): number[] => { };
 
     /**
@@ -3659,7 +3659,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>200</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getAllEffects = (): number[] => { };
 
     /**
@@ -3668,7 +3668,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>15</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getAlliedTurret = (): number => { };
 
     /**
@@ -3677,7 +3677,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>100</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getAllies = (): number[] => { };
 
     /**
@@ -3686,7 +3686,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>25</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getAlliesCount = (): number => { };
 
     /**
@@ -3695,7 +3695,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>50</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getAlliesLife = (): number => { };
 
     /**
@@ -3704,7 +3704,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>200</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getAllWeapons = (): number[] => { };
 
     /**
@@ -3713,7 +3713,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>15</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getBirthTurn = (_entity?: number): number => { };
 
     /**
@@ -3722,7 +3722,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>10</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getBlue = (_color: number): number => { };
 
     /**
@@ -3731,7 +3731,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>40</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getBulbChips = (_bulbChip: number): number[] => { };
 
     /**
@@ -3740,7 +3740,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>5</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getCell = (_entity?: number): number => { };
 
     /**
@@ -3749,7 +3749,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>6</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getCellContent = (_cell: number): number => { };
 
     /**
@@ -3758,7 +3758,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>15</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getCellDistance = (_cell1: number, _cell2: number): number => { };
 
     /**
@@ -3767,7 +3767,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>5</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getCellFromXY = (_x: number, _y: number): number => { };
 
     /**
@@ -3776,7 +3776,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>25834</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getCellsToUseChip = (_chip: number, _entity: number, _ignoredCells?: number[]): number[] => { };
 
     /**
@@ -3785,7 +3785,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>25834</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getCellsToUseChipOnCell = (_chip: number, _cell: number, _ignoredCells?: number[]): number[] => { };
 
     /**
@@ -3794,8 +3794,8 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>25834</p>
      */
-        // @ts-ignore
-    static getCellsToUseWeapon = (_weapon?: number, _entity: number, _ignoredCells?: number[]): number[] => {};
+    // @ts-ignore
+    static getCellsToUseWeapon = (_weapon?: number, _entity: number, _ignoredCells?: number[]): number[] => { };
 
     /**
      * <p><b>id : </b>267</p>
@@ -3803,7 +3803,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>25834</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getCellsToUseWeaponOnCell = (_weapon?: number, _cell: number, _ignoredCells?: number[]): number[] => { };
 
     /**
@@ -3812,7 +3812,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>38080</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getCellToUseChip = (_chip: number, _entity: number, _ignoredCells?: number[]): number => { };
 
     /**
@@ -3821,7 +3821,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>38080</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getCellToUseChipOnCell = (_chip: number, _cell: number, _ignoredCells?: number[]): number => { };
 
     /**
@@ -3830,7 +3830,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>38080</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getCellToUseWeapon = (_weapon?: number, _entity: number, _ignoredCells?: number[]): number => { };
 
     /**
@@ -3839,7 +3839,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>38080</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getCellToUseWeaponOnCell = (_weapon?: number, _cell: number, _ignoredCells?: number[]): number => { };
 
     /**
@@ -3848,7 +3848,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>5</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getCellX = (_cell: number): number => { };
 
     /**
@@ -3857,7 +3857,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>5</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getCellY = (_cell: number): number => { };
 
     /**
@@ -3866,7 +3866,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>15</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getChipArea = (_chip: number): number => { };
 
     /**
@@ -3875,7 +3875,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>15</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getChipCooldown = (_chip: number): number => { };
 
     /**
@@ -3884,7 +3884,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>15</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getChipCost = (_chip: number): number => { };
 
     /**
@@ -3893,7 +3893,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>78</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getChipEffectiveArea = (_chip: number, _cell: number, _from?: number): number[] => { };
 
     /**
@@ -3902,7 +3902,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>125</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getChipEffects = (_chip: number): any[][] => { };
 
     /**
@@ -3911,7 +3911,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>15</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getChipLaunchType = (_chip: number): number => { };
 
     /**
@@ -3920,7 +3920,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>15</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getChipMaxRange = (_chip: number): number => { };
 
     /**
@@ -3929,7 +3929,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>15</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getChipMinRange = (_chip: number): number => { };
 
     /**
@@ -3938,7 +3938,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>15</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getChipName = (_chip: number): string => { };
 
     /**
@@ -3947,7 +3947,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>40</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getChips = (_entity?: number): number[] => { };
 
     /**
@@ -3956,7 +3956,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>40</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getChipTargets = (_chip: number, _cell: number): number[] => { };
 
     /**
@@ -3965,7 +3965,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>15</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getColor = (_red: number, _green: number, _blue: number): number => { };
 
     /**
@@ -3974,7 +3974,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>30</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getCooldown = (_chip: number, _entity?: number): number => { };
 
     /**
@@ -3983,7 +3983,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>15</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getDamageReturn = (_entity?: number): number => { };
 
     /**
@@ -3992,7 +3992,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>50</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getDate = (): string => { };
 
     /**
@@ -4001,7 +4001,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>100</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getDeadAllies = (): number[] => { };
 
     /**
@@ -4010,7 +4010,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>100</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getDeadEnemies = (): number[] => { };
 
     /**
@@ -4019,7 +4019,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>25</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getDeadEnemiesCount = (): number => { };
 
     /**
@@ -4028,7 +4028,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>25</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getEffects = (_entity?: number): any[][] => { };
 
     /**
@@ -4037,7 +4037,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>100</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getEnemies = (): number[] => { };
 
     /**
@@ -4046,7 +4046,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>25</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getEnemiesCount = (): number => { };
 
     /**
@@ -4055,7 +4055,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>50</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getEnemiesLife = (): number => { };
 
     /**
@@ -4064,7 +4064,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>15</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getEnemyTurret = (): number => { };
 
     /**
@@ -4073,7 +4073,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>5</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getEntity = (): number => { };
 
     /**
@@ -4082,7 +4082,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>15</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getEntityOnCell = (_cell: number): number => { };
 
     /**
@@ -4091,7 +4091,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>30</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getEntityTurnOrder = (_entity?: number): number => { };
 
     /**
@@ -4100,7 +4100,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>15</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getFarmerCountry = (_entity?: number): string => { };
 
     /**
@@ -4109,7 +4109,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>15</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getFarmerID = (_entity?: number): number => { };
 
     /**
@@ -4118,7 +4118,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>15</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getFarmerName = (_entity?: number): string => { };
 
     /**
@@ -4127,7 +4127,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>31</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getFarthestAlly = (): number => { };
 
     /**
@@ -4136,7 +4136,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>31</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getFarthestEnemy = (): number => { };
 
     /**
@@ -4145,7 +4145,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>10</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getFightContext = (): number => { };
 
     /**
@@ -4154,7 +4154,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>5</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getFightID = (): number => { };
 
     /**
@@ -4163,7 +4163,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>10</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getFightType = (): number => { };
 
     /**
@@ -4172,7 +4172,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>15</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getFrequency = (_entity?: number): number => { };
 
     /**
@@ -4181,7 +4181,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>10</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getGreen = (_color: number): number => { };
 
     /**
@@ -4190,7 +4190,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>25</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getLaunchedEffects = (_entity?: number): any[][] => { };
 
     /**
@@ -4199,7 +4199,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>15</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getLeekID = (_entity?: number): number => { };
 
     /**
@@ -4208,7 +4208,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>15</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getLevel = (_entity?: number): number => { };
 
     /**
@@ -4217,7 +4217,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>15</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getLife = (_entity?: number): number => { };
 
     /**
@@ -4226,7 +4226,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>15</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getMagic = (_entity?: number): number => { };
 
     /**
@@ -4235,7 +4235,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>5</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getMapType = (): number => { };
 
     /**
@@ -4244,7 +4244,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>1</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getMaxRAM = (): number => { };
 
     /**
@@ -4253,7 +4253,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>5</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getMessageAuthor = (_message: any[]): number => { };
 
     /**
@@ -4262,7 +4262,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>5</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getMessageParams = (_message: any[]): any => { };
 
     /**
@@ -4271,7 +4271,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>complexity : </b>O(n)</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getMessages = (_entity?: number): any[][] => { };
 
     /**
@@ -4280,7 +4280,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>5</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getMessageType = (_message: any[]): number => { };
 
     /**
@@ -4289,7 +4289,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>15</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getMP = (_entity?: number): number => { };
 
     /**
@@ -4298,7 +4298,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>15</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getName = (_entity?: number): string => { };
 
     /**
@@ -4307,7 +4307,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>25</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getNearestAlly = (): number => { };
 
     /**
@@ -4316,7 +4316,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>35</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getNearestAllyTo = (_entity: number): number => { };
 
     /**
@@ -4325,7 +4325,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>35</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getNearestAllyToCell = (_cell: number): number => { };
 
     /**
@@ -4334,7 +4334,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>25</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getNearestEnemy = (): number => { };
 
     /**
@@ -4343,7 +4343,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>35</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getNearestEnemyTo = (_entity: number): number => { };
 
     /**
@@ -4352,7 +4352,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>35</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getNearestEnemyToCell = (_cell: number): number => { };
 
     /**
@@ -4361,7 +4361,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>20</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getNextPlayer = (): number => { };
 
     /**
@@ -4370,7 +4370,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>85</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getObstacles = (): number[] => { };
 
     /**
@@ -4379,7 +4379,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>1</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getOperations = (): number => { };
 
     /**
@@ -4388,7 +4388,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>125</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getPassiveEffects = (_entity?: number): any[][] => { };
 
     /**
@@ -4397,7 +4397,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>complexity : </b>O(n²)</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getPath = (_start: number, _end: number, _ignoredCells?: number[]): number[] => { };
 
     /**
@@ -4406,7 +4406,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>complexity : </b>O(n²)</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getPathLength = (_cell1: number, _cell2: number, _ignoredCells?: number[]): number => { };
 
     /**
@@ -4415,7 +4415,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>15</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getPower = (_entity?: number): number => { };
 
     /**
@@ -4424,7 +4424,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>20</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getPreviousPlayer = (): number => { };
 
     /**
@@ -4433,7 +4433,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>10</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getRed = (_color: number): number => { };
 
     /**
@@ -4442,7 +4442,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>15</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getRegister = (_key: string): string => { };
 
     /**
@@ -4451,7 +4451,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>25</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getRegisters = (): string[] => { };
 
     /**
@@ -4460,7 +4460,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>15</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getRelativeShield = (_entity?: number): number => { };
 
     /**
@@ -4469,7 +4469,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>15</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getResistance = (_entity?: number): number => { };
 
     /**
@@ -4478,7 +4478,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>15</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getScience = (_entity?: number): number => { };
 
     /**
@@ -4487,7 +4487,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>15</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getStrength = (_entity?: number): number => { };
 
     /**
@@ -4496,7 +4496,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>15</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getSummoner = (_entity?: number): number => { };
 
     /**
@@ -4505,7 +4505,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>15</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getSummons = (_entity?: number): number[] => { };
 
     /**
@@ -4514,7 +4514,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>15</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getTeamID = (_entity?: number): number => { };
 
     /**
@@ -4523,7 +4523,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>15</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getTeamName = (_entity?: number): string => { };
 
     /**
@@ -4532,7 +4532,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>50</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getTime = (): string => { };
 
     /**
@@ -4541,7 +4541,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>5</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getTimestamp = (): number => { };
 
     /**
@@ -4550,7 +4550,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>15</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getTotalLife = (_entity?: number): number => { };
 
     /**
@@ -4559,7 +4559,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>15</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getTotalMP = (_entity?: number): number => { };
 
     /**
@@ -4568,7 +4568,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>15</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getTotalTP = (_entity?: number): number => { };
 
     /**
@@ -4577,7 +4577,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>15</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getTP = (_entity?: number): number => { };
 
     /**
@@ -4586,7 +4586,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>15</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getTurn = (): number => { };
 
     /**
@@ -4595,7 +4595,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>15</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getType = (_entity?: number): number => { };
 
     /**
@@ -4604,7 +4604,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>1</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getUsedRAM = (): number => { };
 
     /**
@@ -4613,7 +4613,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>15</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getWeapon = (_entity?: number): number => { };
 
     /**
@@ -4622,7 +4622,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>15</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getWeaponArea = (_weapon: number): number => { };
 
     /**
@@ -4631,7 +4631,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>15</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getWeaponCost = (_weapon: number): number => { };
 
     /**
@@ -4640,7 +4640,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>78</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getWeaponEffectiveArea = (_weapon?: number, _cell: number, _from?: number): number[] => { };
 
     /**
@@ -4649,7 +4649,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>125</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getWeaponEffects = (_weapon?: number): any[][] => { };
 
     /**
@@ -4658,7 +4658,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>15</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getWeaponLaunchType = (_weapon?: number): number => { };
 
     /**
@@ -4667,7 +4667,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>15</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getWeaponMaxRange = (_weapon: number): number => { };
 
     /**
@@ -4676,7 +4676,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>15</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getWeaponMinRange = (_weapon: number): number => { };
 
     /**
@@ -4685,7 +4685,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>15</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getWeaponName = (_weapon: number): string => { };
 
     /**
@@ -4694,7 +4694,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>125</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getWeaponPassiveEffects = (_weapon: number): any[][] => { };
 
     /**
@@ -4703,7 +4703,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>50</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getWeapons = (_entity?: number): number[] => { };
 
     /**
@@ -4712,7 +4712,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>40</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getWeaponTargets = (_weapon?: number, _cell: number): number[] => { };
 
     /**
@@ -4721,7 +4721,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>15</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static getWisdom = (_entity?: number): number => { };
 
     /**
@@ -4730,7 +4730,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>10</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static hexString = (_x: number): string => { };
 
     /**
@@ -4739,7 +4739,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>187</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static hypot = (_x: number, _y: number): number => { };
 
     /**
@@ -4748,7 +4748,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>complexity : </b>O(n)</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static inArray = <T>(_array: T[], _element: T): boolean => { };
 
     /**
@@ -4757,7 +4757,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>1</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static include = (_ai: string): void => { };
 
     /**
@@ -4766,7 +4766,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>complexity : </b>O(n)</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static indexOf = (_string: string, _search: string, _start?: number): number => { };
 
     /**
@@ -4775,7 +4775,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>complexity : </b>O(n)</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static insert = <T>(_array: T[], _element: T, _position: number): void => { };
 
     /**
@@ -4784,7 +4784,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>3</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static intervalAverage = (_interval: number[]): number => { };
 
     /**
@@ -4793,7 +4793,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>3</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static intervalCombine = (_interval1: number[], _interval2: number[]): number[] => { };
 
     /**
@@ -4802,7 +4802,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>3</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static intervalIntersection = (_interval1: number[], _interval2: number[]): number[] => { };
 
     /**
@@ -4811,7 +4811,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>1</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static intervalIsBounded = (_interval: number[]): boolean => { };
 
     /**
@@ -4820,7 +4820,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>1</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static intervalIsClosed = (_interval: number[]): boolean => { };
 
     /**
@@ -4829,7 +4829,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>1</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static intervalIsEmpty = (_interval: number[]): boolean => { };
 
     /**
@@ -4838,7 +4838,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>1</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static intervalIsLeftBounded = (_interval: number[]): boolean => { };
 
     /**
@@ -4847,7 +4847,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>1</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static intervalIsLeftClosed = (_interval: number[]): boolean => { };
 
     /**
@@ -4856,7 +4856,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>1</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static intervalIsRightBounded = (_interval: number[]): boolean => { };
 
     /**
@@ -4865,7 +4865,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>1</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static intervalIsRightClosed = (_interval: number[]): boolean => { };
 
     /**
@@ -4874,7 +4874,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>1</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static intervalMax = (_interval: number[]): number => { };
 
     /**
@@ -4883,7 +4883,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>1</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static intervalMin = (_interval: number[]): number => { };
 
     /**
@@ -4892,7 +4892,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>1</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static intervalSize = (_interval: number[]): number => { };
 
     /**
@@ -4901,7 +4901,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>complexity : </b>O(n)</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static intervalToArray = (_interval: number[], _step?: number): number[] => { };
 
     /**
@@ -4910,7 +4910,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>15</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static isAlive = (_entity: number): boolean => { };
 
     /**
@@ -4919,7 +4919,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>15</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static isAlly = (_entity: number): boolean => { };
 
     /**
@@ -4928,7 +4928,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>10</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static isChip = (_value: number): boolean => { };
 
     /**
@@ -4937,7 +4937,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>15</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static isDead = (_entity: number): boolean => { };
 
     /**
@@ -4946,7 +4946,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>2</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static isEmpty = <T>(_array: T[]): boolean => { };
 
     /**
@@ -4955,7 +4955,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>10</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static isEmptyCell = (_cell: number): boolean => { };
 
     /**
@@ -4964,7 +4964,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>15</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static isEnemy = (_entity: number): boolean => { };
 
     /**
@@ -4973,7 +4973,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>1</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static isEntity = (_cell: number): boolean => { };
 
     /**
@@ -4982,7 +4982,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>1</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static isFinite = (_x: number): boolean => { };
 
     /**
@@ -4991,7 +4991,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>1</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static isInfinite = (_x: number): boolean => { };
 
     /**
@@ -5000,7 +5000,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>1</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static isNaN = (_x: number): boolean => { };
 
     /**
@@ -5009,7 +5009,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>10</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static isObstacle = (_cell: number): boolean => { };
 
     /**
@@ -5018,7 +5018,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>15</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static isOnSameLine = (_cell1: number, _cell2: number): boolean => { };
 
     /**
@@ -5027,7 +5027,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>50</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static isPermutation = (_x: number, _y: number): boolean => { };
 
     /**
@@ -5036,7 +5036,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>15</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static isStatic = (_entity?: number): boolean => { };
 
     /**
@@ -5045,7 +5045,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>10</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static isSummon = (_entity?: number): boolean => { };
 
     /**
@@ -5054,7 +5054,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>15</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static isWeapon = (_value: number): boolean => { };
 
     /**
@@ -5063,7 +5063,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>complexity : </b>O(n)</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static join = <T>(_array: T[], _glue: string): string => { };
 
     /**
@@ -5072,7 +5072,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>complexity : </b>O(n)</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static jsonDecode = (_json: string): any => { };
 
     /**
@@ -5081,7 +5081,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>complexity : </b>∞</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static jsonEncode = (_object: string): string => { };
 
     /**
@@ -5090,7 +5090,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>complexity : </b>O(nlog(n))</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static keySort = <T>(_array: T[], _order?: number): void => { };
 
     /**
@@ -5099,7 +5099,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>1</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static leadingZeros = (_x: number): number => { };
 
     /**
@@ -5108,7 +5108,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>15</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static length = (_string: string): number => { };
 
     /**
@@ -5117,7 +5117,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>31</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static lineOfSight = (_start: number, _end: number, _entityToIgnore?: number): boolean => { };
 
     /**
@@ -5126,7 +5126,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>78</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static listen = (): any[] => { };
 
     /**
@@ -5135,7 +5135,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>39</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static log = (_number: number): number => { };
 
     /**
@@ -5144,7 +5144,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>23</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static log10 = (_number: number): number => { };
 
     /**
@@ -5153,7 +5153,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>1</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static log2 = (_number: number): number => { };
 
     /**
@@ -5162,7 +5162,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>complexity : </b>O(n)</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static mapAverage = <T, U>(_map: Map<T, U>): number => { };
 
     /**
@@ -5171,7 +5171,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>1</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static mapClear = <T, U>(_map: Map<T, U>): void => { };
 
     /**
@@ -5180,7 +5180,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>complexity : </b>O(n)</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static mapContains = <T, U>(_map: Map<T, U>, _value: U): boolean => { };
 
     /**
@@ -5189,7 +5189,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>2</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static mapContainsKey = <T, U>(_map: Map<T, U>, _key: T): boolean => { };
 
     /**
@@ -5198,7 +5198,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>complexity : </b>O(n)</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static mapEvery = <T, U>(_map: Map<T, U>, _callback: (arg: T) => boolean): boolean => { };
 
     /**
@@ -5207,7 +5207,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>complexity : </b>O(n)</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static mapFill = <T, U>(_map: Map<T, U>, _value: U): void => { };
 
     /**
@@ -5216,7 +5216,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>complexity : </b>O(n)</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static mapFilter = <T, U>(_map: Map<T, U>, _callback: (arg: T) => boolean): Map<T, U> => { };
 
     /**
@@ -5225,7 +5225,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>complexity : </b>O(n)</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static mapFold = <T, U>(_map: Map<T, U>, _f: (arg1: U, arg2: U, arg3: T, arg4: Map<T, U>[]) => boolean, _v: U): U => { };
 
     /**
@@ -5234,7 +5234,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>2</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static mapGet = <T, U>(_map: Map<T, U>, _key: T, _defaut?: U): U | undefined => { };
 
     /**
@@ -5243,7 +5243,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>2</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static mapIsEmpty = <T, U>(_map: Map<T, U>): boolean => { };
 
     /**
@@ -5252,7 +5252,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>complexity : </b>O(n)</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static mapIter = <T, U>(_map: Map<T, U>, _callback: (arg1: U, arg2: T, arg3: Map<T, U>) => void): void => { };
 
     /**
@@ -5261,7 +5261,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>complexity : </b>O(n)</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static mapKeys = <T, U>(_map: Map<T, U>): T[] => { };
 
     /**
@@ -5270,7 +5270,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>complexity : </b>O(n)</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static mapMap = <T, U, V>(_map: Map<T, U>, _callback: (arg1: U, arg2: T, arg3: Map<T, U>) => V): Map<T, V> => { };
 
     /**
@@ -5279,7 +5279,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>complexity : </b>O(n)</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static mapMax = <T, U>(_map: Map<T, U>): number => { };
 
     /**
@@ -5288,7 +5288,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>complexity : </b>O(n)</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static mapMerge = <T, U>(_map1: Map<T, U>, _map2: Map<T, U>): Map<T, U> => { };
 
     /**
@@ -5297,7 +5297,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>complexity : </b>O(n)</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static mapMin = <T>(_map: Map<T, number>): number => { };
 
     /**
@@ -5306,7 +5306,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>3</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static mapPut = <T, U>(_map: Map<T, U>, _key: T, _value: U): U | undefined => { };
 
     /**
@@ -5315,7 +5315,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>complexity : </b>O(n)</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static mapPutAll = <T, U>(_map: Map<T, U>, _elements: Map<T, U>): void => { };
 
     /**
@@ -5324,7 +5324,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>2</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static mapRemove = <T, U>(_map: Map<T, U>, _key: T): U | undefined => { };
 
     /**
@@ -5333,7 +5333,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>complexity : </b>O(n)</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static mapRemoveAll = <T, U>(_map: Map<T, U>, _value: U): void => { };
 
     /**
@@ -5342,7 +5342,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>3</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static mapReplace = <T, U>(_map: Map<T, U>, _key: T, _value: U): U => { };
 
     /**
@@ -5351,7 +5351,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>complexity : </b>O(n)</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static mapReplaceAll = <T, U>(_map1: Map<T, U>, _map2: Map<T, U>): void => { };
 
     /**
@@ -5360,7 +5360,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>complexity : </b>O(n)</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static mapSearch = <T, U>(_map: Map<T, U>, _value: U): number => { };
 
     /**
@@ -5369,7 +5369,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>1</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static mapSize = <T, U>(_map: Map<T, U>): number => { };
 
     /**
@@ -5378,7 +5378,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>complexity : </b>O(n)</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static mapSome = <T, U>(_map: Map<T, U>, _callback: (arg1: U, arg2: T, arg3: Map<T, U>) => boolean): boolean => { };
 
     /**
@@ -5387,7 +5387,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>complexity : </b>O(n)</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static mapSum = <T, U>(_map: Map<T, U>): number => { };
 
     /**
@@ -5396,7 +5396,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>complexity : </b>O(n)</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static mapValues = <T, U>(_map: Map<T, U>): U[] => { };
 
     /**
@@ -5405,7 +5405,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>164</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static mark = (_cells: number | number[], _color?: number, _duration?: number): boolean => { };
 
     /**
@@ -5414,7 +5414,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>164</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static markText = (_cells: number | number[], _text?: string, _color?: number, _duration?: number): boolean => { };
 
     /**
@@ -5423,7 +5423,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>2</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static max = (_a: number, _b: number): number => { };
 
     /**
@@ -5432,7 +5432,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>2</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static min = (_a: number, _b: number): number => { };
 
     /**
@@ -5441,7 +5441,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>500</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static moveAwayFrom = (_entity: number, _mp?: number): number => { };
 
     /**
@@ -5450,7 +5450,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>500</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static moveAwayFromCell = (_cell: number, _mp?: number): number => { };
 
     /**
@@ -5459,7 +5459,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>500</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static moveAwayFromCells = (_cells: number[], _mp?: number): number => { };
 
     /**
@@ -5468,7 +5468,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>500</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static moveAwayFromEntities = (_entities: number[], _mp?: number): number => { };
 
     /**
@@ -5477,7 +5477,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>500</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static moveAwayFromLine = (_cell1: number, _cell2: number, _mp?: number): number => { };
 
     /**
@@ -5486,7 +5486,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>500</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static moveToward = (_entity: number, _mp?: number): number => { };
 
     /**
@@ -5495,7 +5495,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>500</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static moveTowardCell = (_cell: number, _mp?: number): number => { };
 
     /**
@@ -5504,7 +5504,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>500</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static moveTowardCells = (_cells: number[], _mp?: number): number => { };
 
     /**
@@ -5513,7 +5513,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>500</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static moveTowardEntities = (_entities: number[], _mp?: number): number => { };
 
     /**
@@ -5522,7 +5522,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>500</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static moveTowardLine = (_cell1: number, _cell2: number, _mp?: number): number => { };
 
     /**
@@ -5531,7 +5531,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>20</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static number = (_value: any): number | undefined => { };
 
     /**
@@ -5540,7 +5540,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>30</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static pause = (): void => { };
 
     /**
@@ -5549,7 +5549,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>5</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static pop = <T>(_array: T[]): T => { };
 
     /**
@@ -5558,7 +5558,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>140</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static pow = (_base: number, _exp: number): number => { };
 
     /**
@@ -5567,7 +5567,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>2</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static push = <T>(_array: T[], _element: T): void => { };
 
     /**
@@ -5576,7 +5576,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>complexity : </b>O(n)</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static pushAll = <T>(_array: T[], _elements: T[]): void => { };
 
     /**
@@ -5585,7 +5585,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>30</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static rand = (): number => { };
 
     /**
@@ -5594,7 +5594,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>30</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static randInt = (_a: number, _b: number): number => { };
 
     /**
@@ -5603,7 +5603,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>30</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static randReal = (_a: number, _b: number): number => { };
 
     /**
@@ -5612,7 +5612,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>1</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static realBits = (_x: number): number => { };
 
     /**
@@ -5621,7 +5621,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>complexity : </b>O(n)</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static remove = <T>(_array: T[], _position: number): T => { };
 
     /**
@@ -5630,7 +5630,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>complexity : </b>O(n)</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static removeElement = <T>(_array: T[], _element: T): void => { };
 
     /**
@@ -5639,7 +5639,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>5</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static removeKey = <T>(_array: T[], _key: number): void => { };
 
     /**
@@ -5648,7 +5648,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>complexity : </b>O(n)</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static replace = (_string: string, _search: string, _replace: string): string => { };
 
     /**
@@ -5657,7 +5657,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>500</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static resurrect = (_entity: number, _cell: number): number => { };
 
     /**
@@ -5666,7 +5666,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>complexity : </b>O(n)</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static reverse = <T>(_array: T[]): void => { };
 
     /**
@@ -5675,7 +5675,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>1</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static rotateLeft = (_x: number, _s: number): number => { };
 
     /**
@@ -5684,7 +5684,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>1</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static rotateRight = (_x: number, _s: number): number => { };
 
     /**
@@ -5693,7 +5693,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>2</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static round = (_number: number): number => { };
 
     /**
@@ -5702,7 +5702,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>30</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static say = (_message: string): void => { };
 
     /**
@@ -5711,7 +5711,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>complexity : </b>O(n)</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static search = <T>(_array: T[], _element: T, _start?: number): number => { };
 
     /**
@@ -5720,7 +5720,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>40</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static sendAll = (_type: number, _params: any): void => { };
 
     /**
@@ -5729,7 +5729,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>15</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static sendTo = (_entity: number, _type: number, _params: any): boolean => { };
 
     /**
@@ -5738,7 +5738,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>1</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static setClear = <T>(_set: Set<T>): Set<T> => { };
 
     /**
@@ -5747,7 +5747,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>2</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static setContains = <T>(_set: Set<T>, _element: T): boolean => { };
 
     /**
@@ -5756,7 +5756,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>complexity : </b>O(n)</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static setDifference = <T>(_set1: Set<T>, _set2: Set<T>): Set<T> => { };
 
     /**
@@ -5765,7 +5765,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>complexity : </b>O(n)</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static setDisjunction = <T>(_set1: Set<T>, _set2: Set<T>): Set<T> => { };
 
     /**
@@ -5774,7 +5774,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>complexity : </b>O(n)</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static setIntersection = <T>(_set1: Set<T>, _set2: Set<T>): Set<T> => { };
 
     /**
@@ -5783,7 +5783,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>2</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static setIsEmpty = <T>(_set: Set<T>): boolean => { };
 
     /**
@@ -5792,7 +5792,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>complexity : </b>O(n)</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static setIsSubsetOf = <T>(_set1: Set<T>, _set2: Set<T>): boolean => { };
 
     /**
@@ -5801,7 +5801,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>3</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static setPut = <T>(_set: Set<T>, _element: T): boolean => { };
 
     /**
@@ -5810,7 +5810,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>50</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static setRegister = (_key: string, _value: string): boolean => { };
 
     /**
@@ -5819,7 +5819,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>2</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static setRemove = <T>(_set: Set<T>, _element: T): boolean => { };
 
     /**
@@ -5828,7 +5828,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>1</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static setSize = (_set: Set<any>): number => { };
 
     /**
@@ -5837,7 +5837,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>complexity : </b>O(n)</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static setToArray = <T>(_set: Set<T>): T[] => { };
 
     /**
@@ -5846,7 +5846,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>complexity : </b>O(n)</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static setUnion = <T>(_set1: Set<T>, _set2: Set<T>): Set<T> => { };
 
     /**
@@ -5855,7 +5855,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>15</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static setWeapon = (_weapon: number): void => { };
 
     /**
@@ -5864,7 +5864,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>complexity : </b>O(n)</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static shift = <T>(_array: T[]): T => { };
 
     /**
@@ -5873,7 +5873,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>8</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static show = (_cell: number, _color?: number): void => { };
 
     /**
@@ -5882,7 +5882,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>complexity : </b>O(n)</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static shuffle = (_array: any[]): void => { };
 
     /**
@@ -5891,7 +5891,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>2</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static signum = (_number: number): number => { };
 
     /**
@@ -5900,7 +5900,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>30</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static sin = (_angle: number): number => { };
 
     /**
@@ -5909,7 +5909,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>complexity : </b>O(nlog(n))</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static sort = (_array: any[], _order?: number): void => { };
 
     /**
@@ -5918,7 +5918,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>complexity : </b>O(n)</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static split = (_string: string, _delimiter: string, _limit?: number): string[] => { };
 
     /**
@@ -5927,7 +5927,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>8</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static sqrt = (_number: number): number => { };
 
     /**
@@ -5936,7 +5936,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>complexity : </b>O(n)</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static startsWith = (_string: string, _prefix: string): boolean => { };
 
     /**
@@ -5945,7 +5945,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>8</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static string = (_value: any): string => { };
 
     /**
@@ -5954,7 +5954,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>complexity : </b>O(n)</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static subArray = <T>(_array: T[], _start: number, _end: number): T[] => { };
 
     /**
@@ -5963,7 +5963,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>complexity : </b>O(n)</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static substring = (_string: string, _start: number, _length?: number): string => { };
 
     /**
@@ -5972,7 +5972,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>complexity : </b>O(n)</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static sum = (_array: number[]): number => { };
 
     /**
@@ -5981,7 +5981,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>1750</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static summon = (_chip: number, _cell: number, _ai: (...args: any[]) => void): number => { };
 
     /**
@@ -5990,7 +5990,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>30</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static tan = (_angle: number): number => { };
 
     /**
@@ -5999,7 +5999,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>1</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static toDegrees = (_radians: number): number => { };
 
     /**
@@ -6008,7 +6008,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>complexity : </b>O(n)</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static toLower = (_string: string): string => { };
 
     /**
@@ -6017,7 +6017,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>31</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static toRadians = (_degrees: number): number => { };
 
     /**
@@ -6026,7 +6026,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>complexity : </b>O(n)</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static toUpper = (_string: string): string => { };
 
     /**
@@ -6035,7 +6035,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>1</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static trailingZeros = (_x: number): number => { };
 
     /**
@@ -6044,7 +6044,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>8</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static typeOf = (_value: any): number => { };
 
     /**
@@ -6053,7 +6053,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>complexity : </b>O(n)</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static unshift = <T>(_array: T[], _element: T): void => { };
 
     /**
@@ -6062,7 +6062,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>3000</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static useChip = (_chip: number, _entity: number = getEntity()): number => { };
 
     /**
@@ -6071,7 +6071,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>3000</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static useChipOnCell = (_chip: number, _cell: number): number => { };
 
     /**
@@ -6080,7 +6080,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>3000</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static useWeapon = (_entity: number): number => { };
 
     /**
@@ -6089,7 +6089,7 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>3000</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static useWeaponOnCell = (_cell: number): number => { };
 
     /**
@@ -6098,6 +6098,6 @@ export class LS {
      * <p><b>description : </b>TODO</p>
      * <p><b>operations : </b>10</p>
      */
-        // @ts-ignore
+    // @ts-ignore
     static weaponNeedLos = (_weapon?: number): boolean => { };
 }
