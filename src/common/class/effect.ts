@@ -46,7 +46,7 @@ export class Effect {
 
 	static hasEffects(entity: number, searchedEffects: number[]) {
 		const entityEffects: Effect[] = Effect.getAllEffects(entity);
-		return searchedEffects.every((searchedEffect: number) => findFirst(entityEffects, (effect: Effect) => effect.type === searchedEffect));
+		return searchedEffects.every((searchedEffect: number) => !!findFirst(entityEffects, (effect: Effect) => effect.type === searchedEffect));
 	}
 
 	static isDeadByPoison(target: number) {

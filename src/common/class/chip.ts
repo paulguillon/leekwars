@@ -4,6 +4,7 @@ import { findFirst } from "../utils";
 import { enemy, field, myLeek } from "../vars";
 import { Cell } from "./cell";
 import { chips } from "../data/chips";
+import { Damage } from "./damage";
 
 export class Chip {
     id: number;
@@ -22,22 +23,22 @@ export class Chip {
     aoeSize: number;
     los: boolean;
 
-    constructor(obj) {
-        this.id = obj.id;
-        this.types = obj.types;
-        this.cost = obj.cost;
-        this.minValues = obj.minValues;
-        this.maxValues = obj.maxValues;
-        this.cooldown = obj.cooldown;
-        this.sourceStat = obj.sourceStat;
-        this.targetStat = obj.targetStat;
-        this.duration = obj.duration;
-        this.minRange = obj.minRange;
-        this.maxRange = obj.maxRange;
-        this.launchType = obj.launchType;
-        this.aoeType = obj.aoeType;
-        this.aoeSize = obj.aoeSize;
-        this.los = obj.los;
+    constructor(id: number, types: ChipType[], cost: number, minValues: number[], maxValues: number[], cooldown: number, sourceStat: Stat[], targetStat: Stat[], duration: number, minRange: number, maxRange: number, launchType: AoeType, aoeType: AoeType, aoeSize: number, los: boolean) {
+        this.id = id;
+        this.types = types;
+        this.cost = cost;
+        this.minValues = minValues;
+        this.maxValues = maxValues;
+        this.cooldown = cooldown;
+        this.sourceStat = sourceStat;
+        this.targetStat = targetStat;
+        this.duration = duration;
+        this.minRange = minRange;
+        this.maxRange = maxRange;
+        this.launchType = launchType;
+        this.aoeType = aoeType;
+        this.aoeSize = aoeSize;
+        this.los = los;
     }
 
     canMoveToUse(caster: number = myLeek.id, target: number = enemy.id) {
@@ -57,16 +58,16 @@ export class Chip {
     static bestCellToUseChipOn(chipId: number, caster: number, target: number) {
         const chip: Chip = chips[chipId];
 
-        if (!chip) return undefined;
+        if (!chip) return null;
 
-        if (LS.getTP() < chip.cost) return undefined;
-        if (LS.getCooldown(chipId)) return undefined;
+        if (LS.getTP() < chip.cost) return null;
+        if (LS.getCooldown(chipId)) return null;
 
         const launchCells: Cell[] = Cell.getCellsByArea(field[LS.getCell(caster)], chip.launchType, chip.minRange, chip.maxRange);
-        if (!LS.count(launchCells)) return undefined;
+        if (!LS.count(launchCells)) return null;
 
         const launchCellsWithLos: Cell[] = Cell.visibleCells(launchCells);
-        if (!LS.count(launchCellsWithLos)) return undefined;
+        if (!LS.count(launchCellsWithLos)) return null;
 
         // If target is in launch range
         const response = findFirst(launchCellsWithLos, (cell: Cell) => cell.number == LS.getCell(target));
@@ -76,12 +77,12 @@ export class Chip {
             const aoeCells: Cell[] = Cell.getCellsByArea(cell, chip.aoeType, 0, chip.aoeSize);
             return aoeCells.includes(field[LS.getCell(target)]);
         });
-        if (!LS.count(cellsToHitTarget)) return undefined;
+        if (!LS.count(cellsToHitTarget)) return null;
 
         return Cell.getClosestCellDistanceTo(cellsToHitTarget, target);
     }
 
-    static use(chipId: number, caster: number = myLeek.id, target: number = enemy.id, cellToUseChipOn: Cell | undefined = undefined): number {
+    static use(chipId: number, caster: number = myLeek.id, target: number = enemy.id, cellToUseChipOn: Cell | null = null): number {
         cellToUseChipOn = cellToUseChipOn ? cellToUseChipOn : Chip.bestCellToUseChipOn(chipId, caster, target);
         if (!cellToUseChipOn) return LS.USE_INVALID_TARGET;
 
@@ -94,14 +95,14 @@ export class Chip {
             return;
         }
 
-        const cell: Cell | undefined = this.canMoveToUse(caster, target);
+        const cell: Cell | null = this.canMoveToUse(caster, target);
 
         if (!cell) return;
 
         LS.moveTowardCell(cell.number);
 
         if (this.aoeType != AoeType.POINT) {
-            const bestCell: Cell | undefined = Chip.bestCellToUseChipOn(this.id, caster, target);
+            const bestCell: Cell | null = Chip.bestCellToUseChipOn(this.id, caster, target);
             if (bestCell) {
                 LS.useChipOnCell(this.id, bestCell.number);
             }
@@ -116,40 +117,35 @@ export class Chip {
     }
 
     getChipDamage(source: number, target: number): Object {
-        let dmg = {
-            damage: [0, 0],
-            poison: [0, 0],
-            nova: [0, 0],
-            total: [0, 0]
-        };
+        let dmg: Damage = new Damage();
 
-        let damageMin = 0;
-        let damageMax = 0;
+        let minStrength = 0;
+        let maxStrength = 0;
 
         for (let i = 0; i < LS.count(this.types); i++) {
             const type: ChipType = this.types[i];
 
-            if (type == ChipType.DAMAGE) {
+            if (type == ChipType.STRENGTH) {
                 const formula: number = (LS.getStrength(source) / 100 + 1) * (LS.getPower(source) / 100 + 1) * (1 - LS.getRelativeShield(target) / 100) - LS.getAbsoluteShield(target);
-                damageMin += this.minValues[i] * formula;
-                damageMax += this.maxValues[i] * formula;
+                minStrength += this.minValues[i] * formula;
+                maxStrength += this.maxValues[i] * formula;
             } else if (type == ChipType.POISON) {
                 const formula: number = (LS.getMagic(source) / 100 + 1) * (LS.getPower(source) / 100 + 1);
-                const minDmg: number = this.minValues[i] * formula;
-                const maxDmg: number = this.maxValues[i] * formula;
-                dmg.poison = [minDmg, maxDmg];
+                const minPoison: number = this.minValues[i] * formula;
+                const maxPoison: number = this.maxValues[i] * formula;
+                dmg.poison = [minPoison, maxPoison];
             } else if (type == ChipType.NOVA) {
-                const formula: Function = (value): number => Math.min(LS.getTotalLife(target) - LS.getLife(target), value * (LS.getScience(source) / 100 + 1) * (LS.getPower(source) / 100 + 1));
-                const minDmg: number = formula(this.minValues[i]);
-                const maxDmg: number = formula(this.maxValues[i]);
-                dmg.nova = [minDmg, maxDmg];
+                const formula: Function = (value): number => LS.min(LS.getTotalLife(target) - LS.getLife(target), value * (LS.getScience(source) / 100 + 1) * (LS.getPower(source) / 100 + 1));
+                const minNova: number = formula(this.minValues[i]);
+                const maxNova: number = formula(this.maxValues[i]);
+                dmg.nova = [minNova, maxNova];
             }
         }
-        dmg.damage = [damageMin, damageMax];
+        dmg.strength = [minStrength, maxStrength];
 
-        const totalMin: number = LS.intervalMin(dmg.damage) + LS.intervalMin(dmg.poison);
-        const totalMax: number = LS.intervalMax(dmg.damage) + LS.intervalMax(dmg.poison);
-        dmg.total = [totalMin, totalMax];
+        const minTotal: number = LS.intervalMin(dmg.strength) + LS.intervalMin(dmg.poison);
+        const maxTotal: number = LS.intervalMax(dmg.strength) + LS.intervalMax(dmg.poison);
+        dmg.total = [minTotal, maxTotal];
 
         return dmg;
     }

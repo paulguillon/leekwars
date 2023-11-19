@@ -1,4 +1,3 @@
-// Example
 export enum AoeType {
     CIRCLE,
     CROSS,
@@ -10,7 +9,7 @@ export enum AoeType {
 }
 
 export enum ChipType {
-    DAMAGE,
+    STRENGTH,
     NOVA,
     HEAL,
     BUFF,
@@ -24,7 +23,7 @@ export enum ChipType {
 }
 
 export enum WeaponType {
-    DAMAGE,
+    STRENGTH,
     NOVA,
     HEAL,
     BUFF,
@@ -44,5 +43,6 @@ export enum Stat {
     SCIENCE,
     MAGIC,
     MP,
-    TP
+    TP,
+    NONE
 }

@@ -3,16 +3,16 @@ import { Effect } from "./common/class/effect";
 import { Move } from "./common/class/move";
 import { distanceTo, pathDistanceBetween } from "./common/utils";
 import { enemy, myLeek, searchEnemy, turn } from "./common/vars";
-import { chips } from "./common/data/chips";
-import { weapons } from "./common/data/weapons";
+import { ICEBERG, LIBERATION, ROCKFALL, STALACTITE } from "./common/data/chips";
+import { GRENADELAUNCHER } from "./common/data/weapons";
 
 /*
- * Stat : 200 agility, 300 strength, 5 MP, 15 TP, 100 resistance and 200 wisdom then full HP
- * Chips :  wall, shield, armor, motiv, warm up, solidification, steroid, protein, liberation/antidote/adrenaline, regen, stalactite, iceberg, rockfall, armoring, knowledge, helmet, vaccine
- * Weapons : unstable destroyer, axe, grenade launcher
+ * Stat : 200 agility, 350 strength, 5 MP, 18 TP, 100 resistance and 200 wisdom then full HP
+ * Chips :  wall, fortress, shield, armor, motiv, adrenaline, solidification/antidote, steroid, protein, liberation, regen, stalactite, iceberg, rockfall, armoring, serum
+ * Weapons : unstable destroyer, axe, bazooka
  */
 
-if (turn == 1) {
+if (!LS.getWeapon()) {
     LS.setWeapon(LS.WEAPON_AXE);
 }
 
@@ -25,9 +25,9 @@ if (LS.getTP() > 17) {
         LS.useWeapon(enemy.id);
         LS.useWeapon(enemy.id);
     } else {
-        chips[LS.CHIP_STALACTITE].moveAndUse();
-        chips[LS.CHIP_ROCKFALL].moveAndUse();
-        chips[LS.CHIP_ICEBERG].moveAndUse();
+        STALACTITE.moveAndUse();
+        ROCKFALL.moveAndUse();
+        ICEBERG.moveAndUse();
     }
 }
 
@@ -105,16 +105,16 @@ if (distanceTo(enemy.id) > 1) {
 }
 
 if (LS.getTP() > 9 && Effect.getEffectsOfTypeAmount(enemy.id, LS.EFFECT_ABSOLUTE_SHIELD, 2) > 100 && LS.canUseChip(LS.CHIP_LIBERATION, enemy.id)) {
-    chips[LS.CHIP_LIBERATION].moveAndUse();
+    LIBERATION.moveAndUse();
 }
 
 if (LS.getTP() > 4) {
-    chips[LS.CHIP_STALACTITE].moveAndUse();
-    chips[LS.CHIP_ROCKFALL].moveAndUse();
-    chips[LS.CHIP_ICEBERG].moveAndUse();
+    STALACTITE.moveAndUse();
+    ROCKFALL.moveAndUse();
+    ICEBERG.moveAndUse();
 }
 
-var cell = weapons[LS.WEAPON_GRENADE_LAUNCHER].canMoveToUse();
+var cell = GRENADELAUNCHER.canMoveToUse();
 
 if (cell && LS.getTP() % 6 == 2 && LS.getTP() > 7) {
     LS.setWeapon(LS.WEAPON_GRENADE_LAUNCHER);
@@ -134,8 +134,8 @@ if (LS.isDead(enemy.id)) {
     LS.moveToward(enemy.id);
 } else if (LS.getTP() > 4) {
     var other = LS.getNearestEnemy();
-    chips[LS.CHIP_STALACTITE].moveAndUse(myLeek.id, other);
-    chips[LS.CHIP_ROCKFALL].moveAndUse(myLeek.id, other);
-    chips[LS.CHIP_ICEBERG].moveAndUse(myLeek.id, other);
+    STALACTITE.moveAndUse(myLeek.id, other);
+    ROCKFALL.moveAndUse(myLeek.id, other);
+    ICEBERG.moveAndUse(myLeek.id, other);
     LS.useWeapon(other);
 }

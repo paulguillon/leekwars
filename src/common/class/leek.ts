@@ -15,8 +15,8 @@ export class Leek {
     magic: number;
     mp: number;
     tp: number;
-    weapons: Array<Weapon>;
-    chips: Array<Chip>;
+    weapons: Weapon[];
+    chips: Chip[];
 
     constructor(entityId: number) {
         this.id = entityId;

@@ -4,7 +4,7 @@ import { Effect } from "./class/effect";
 import { Leek } from "./class/leek";
 
 export const mode: number = LS.getFightType();
-export const field: Array<Cell> = Cell.initField();
+export const field: Cell[] = Cell.initField();
 export let turn: number = 0;
 turn++;
 
