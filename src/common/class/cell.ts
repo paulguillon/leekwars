@@ -162,21 +162,21 @@ export class Cell {
     static visibleCells(cellsToCheck: Cell[], targetCell: number = LS.getCell(myLeek.id)): Cell[] {
         if (!LS.count(cellsToCheck)) return [];
 
-        return cellsToCheck.filter((cell: Cell) => LS.lineOfSight(cell.number, targetCell));
+        return LS.arrayFilter(cellsToCheck, (cell: Cell) => LS.lineOfSight(cell.number, targetCell));
     }
 
     static hiddenCells(cellsToCheck: Cell[], target: number = enemy.id): Cell[] {
         if (!LS.count(cellsToCheck)) return [];
 
-        return cellsToCheck.filter((cell: Cell) => !LS.lineOfSight(cell.number, LS.getCell(target)));
+        return LS.arrayFilter(cellsToCheck, (cell: Cell) => !LS.lineOfSight(cell.number, LS.getCell(target)));
     }
 
     static getCellsInRange(cells: Cell[], min: number, max: number, target: number = enemy.id): Cell[] {
-        return cells.filter((cell: Cell) => LS.getCellDistance(cell.number, LS.getCell(target)) >= min && max <= LS.getCellDistance(cell.number, LS.getCell(target)));
+        return LS.arrayFilter(cells, (cell: Cell) => LS.getCellDistance(cell.number, LS.getCell(target)) >= min && max <= LS.getCellDistance(cell.number, LS.getCell(target)));
     }
 
     static toCells(cells: Cell[]): number[] {
-        return cells.map((cell: Cell) => cell.number);
+        return LS.arrayMap(cells, (cell: Cell) => cell.number);
     }
 
     string(): string {

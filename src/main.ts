@@ -3,8 +3,8 @@ import { Effect } from "./common/class/effect";
 import { Move } from "./common/class/move";
 import { distanceTo, pathDistanceBetween } from "./common/utils";
 import { enemy, myLeek, searchEnemy } from "./common/vars";
-import { ICEBERG, LIBERATION, ROCKFALL, STALACTITE } from "./common/data/chips";
-import { GRENADELAUNCHER } from "./common/data/weapons";
+import { ICEBERG, LIBERATION, PROTEIN, ROCKFALL, STALACTITE } from "./common/data/chips";
+import { AXE, BAZOOKA, DOUBLEGUN, RHINO } from "./common/data/weapons";
 
 /*
  * Stat : 200 agility, 400 strength, 5 MP, 18 TP, 200 resistance and 200 wisdom then full HP
@@ -18,28 +18,42 @@ if (!LS.getWeapon()) {
 
 LS.useChip(LS.CHIP_ADRENALINE);
 
-if (LS.getTP() > 17) {
-    if (distanceTo(enemy.id) <= LS.getMP() + 1) {
-        LS.moveToward(enemy.id);
-        LS.useWeapon(enemy.id);
-        LS.useWeapon(enemy.id);
-        LS.useWeapon(enemy.id);
-    } else {
-        STALACTITE.moveAndUse();
-        ROCKFALL.moveAndUse();
-        ICEBERG.moveAndUse();
-    }
+let currentTP: number = LS.getTP();
+
+if (LS.getWeapon() !== LS.WEAPON_AXE) {
+    currentTP--;
 }
 
-// If enemy low life
-// Attack twice at 50 avg base dmg * strength * power * relative - absolute
-const minDmg: boolean = LS.getLife(enemy.id) <= (LS.getTP() - LS.getTP() % 6) / 6 * 55 * (LS.getStrength() + ((!LS.getCooldown(LS.CHIP_PROTEIN) && LS.getTP() % 6 > 2) ? 80 : 0) / 100 + 1) * (LS.getPower() / 100 + 1) * (1 - LS.getRelativeShield(enemy.id) / 100) - LS.getAbsoluteShield(enemy.id);
-if (minDmg && LS.getWeapon() && LS.getTP() > 5 && pathDistanceBetween(myLeek.id, enemy.id) <= LS.getMP()) {
+const nbUses: number = LS.floor(currentTP / AXE.cost);
+
+const canUseProtein: boolean = currentTP % AXE.cost >= PROTEIN.cost && !LS.getCooldown(LS.CHIP_PROTEIN);
+
+const dist: boolean = pathDistanceBetween(myLeek.id, enemy.id) <= LS.getMP();
+
+if (canUseProtein && dist) {
+    LS.useChip(LS.CHIP_PROTEIN);
+}
+const minAxeDmg: number = AXE.getWeaponDamage().strengthMin;
+
+const canKill: boolean = LS.getLife(enemy.id) <= minAxeDmg * nbUses;
+
+if (canKill && dist) {
     LS.debug("C'est CIAO !")
 
-    LS.moveToward(enemy.id);
+    if (!LS.getCooldown(LS.CHIP_STALACTITE)) {
+        while (LS.getMP() && !LS.canUseChip(LS.CHIP_STALACTITE, enemy.id)) {
+            LS.moveToward(enemy.id, 1);
+        }
+        STALACTITE.use();
+    }
 
-    LS.useChip(LS.CHIP_PROTEIN);
+    if (!LS.isDead(enemy.id)) {
+        LS.moveToward(enemy.id);
+
+        if (LS.getWeapon() != LS.WEAPON_AXE) {
+            LS.setWeapon(LS.WEAPON_AXE);
+        }
+    }
 
     while (LS.getTP() > 5 && !LS.isDead(enemy.id)) {
         LS.useWeapon(enemy.id);
@@ -114,10 +128,10 @@ if (LS.getTP() > 4) {
     ICEBERG.moveAndUse();
 }
 
-var cell = GRENADELAUNCHER.canMoveToUse();
+var cell = BAZOOKA.canMoveToUse();
 
 if (cell && LS.getTP() % 6 == 2 && LS.getTP() > 7) {
-    LS.setWeapon(LS.WEAPON_GRENADE_LAUNCHER);
+    LS.setWeapon(LS.WEAPON_BAZOOKA);
 
     LS.useWeaponOnCell(cell.number);
     LS.useWeaponOnCell(cell.number);

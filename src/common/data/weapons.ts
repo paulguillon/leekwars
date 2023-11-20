@@ -124,7 +124,7 @@ export const GRENADELAUNCHER: Weapon = new Weapon(
 	LS.WEAPON_GRENADE_LAUNCHER,
 	"Lance-grenades",
 	[WeaponType.STRENGTH],
-	5,
+	6,
 	[55],
 	[63],
 	[Stat.STRENGTH],
@@ -141,7 +141,7 @@ export const BAZOOKA: Weapon = new Weapon(
 	LS.WEAPON_BAZOOKA,
 	"Bazooka",
 	[WeaponType.STRENGTH],
-	1,
+	11,
 	[115],
 	[123],
 	[Stat.STRENGTH],
@@ -154,5 +154,22 @@ export const BAZOOKA: Weapon = new Weapon(
 	AoeType.CIRCLE,
 	3
 )
+export const RHINO: Weapon = new Weapon(
+	LS.WEAPON_RHINO,
+	"Rhino",
+	[WeaponType.STRENGTH],
+	5,
+	[54],
+	[60],
+	[Stat.STRENGTH],
+	[],
+	0,
+	true,
+	2,
+	4,
+	AoeType.CIRCLE,
+	AoeType.POINT,
+	0
+)
 
-export const weapons: Weapon[] = [DOUBLEGUN, FLAMETHROWER, UNSTABLEDESTROYER, LASER, AXE, SWORD, BROADSWORD, GRENADELAUNCHER, BAZOOKA];
+export const weapons: Weapon[] = [DOUBLEGUN, FLAMETHROWER, UNSTABLEDESTROYER, LASER, AXE, SWORD, BROADSWORD, GRENADELAUNCHER, BAZOOKA, RHINO];

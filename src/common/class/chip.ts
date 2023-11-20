@@ -55,15 +55,11 @@ export class Chip {
         return Cell.getClosestCellPathTo(cellsInRange, myLeek.id);
     }
 
-    static bestCellToUseChipOn(chipId: number, caster: number, target: number) {
-        const chip: Chip = chips[chipId];
+    bestCellToUseChipOn(caster: number, target: number) {
+        if (LS.getTP() < this.cost) return null;
+        if (LS.getCooldown(this.id)) return null;
 
-        if (!chip) return null;
-
-        if (LS.getTP() < chip.cost) return null;
-        if (LS.getCooldown(chipId)) return null;
-
-        const launchCells: Cell[] = Cell.getCellsByArea(field[LS.getCell(caster)], chip.launchType, chip.minRange, chip.maxRange);
+        const launchCells: Cell[] = Cell.getCellsByArea(field[LS.getCell(caster)], this.launchType, this.minRange, this.maxRange);
         if (!LS.count(launchCells)) return null;
 
         const launchCellsWithLos: Cell[] = Cell.visibleCells(launchCells);
@@ -73,8 +69,8 @@ export class Chip {
         const response = findFirst(launchCellsWithLos, (cell: Cell) => cell.number == LS.getCell(target));
         if (response) return response;
 
-        const cellsToHitTarget: Cell[] = launchCellsWithLos.filter((cell: Cell) => {
-            const aoeCells: Cell[] = Cell.getCellsByArea(cell, chip.aoeType, 0, chip.aoeSize);
+        const cellsToHitTarget: Cell[] = LS.arrayFilter(launchCellsWithLos, (cell: Cell) => {
+            const aoeCells: Cell[] = Cell.getCellsByArea(cell, this.aoeType, 0, this.aoeSize);
             return aoeCells.includes(field[LS.getCell(target)]);
         });
         if (!LS.count(cellsToHitTarget)) return null;
@@ -82,11 +78,11 @@ export class Chip {
         return Cell.getClosestCellDistanceTo(cellsToHitTarget, target);
     }
 
-    static use(chipId: number, caster: number = myLeek.id, target: number = enemy.id, cellToUseChipOn: Cell | null = null): number {
-        cellToUseChipOn = cellToUseChipOn ? cellToUseChipOn : Chip.bestCellToUseChipOn(chipId, caster, target);
-        if (!cellToUseChipOn) return LS.USE_INVALID_TARGET;
-
-        return LS.useChipOnCell(chipId, cellToUseChipOn.number);
+    use(caster: number = myLeek.id, target: number = enemy.id, cellToUseChipOn: Cell = this.bestCellToUseChipOn(caster, target)): number {
+        if(!cellToUseChipOn) {
+            cellToUseChipOn = field[LS.getCell(target)];
+        }
+        return LS.useChipOnCell(this.id, cellToUseChipOn.number);
     }
 
     moveAndUse(caster: number = myLeek.id, target: number = enemy.id) {
@@ -102,7 +98,7 @@ export class Chip {
         LS.moveTowardCell(cell.number);
 
         if (this.aoeType != AoeType.POINT) {
-            const bestCell: Cell | null = Chip.bestCellToUseChipOn(this.id, caster, target);
+            const bestCell: Cell | null = this.bestCellToUseChipOn(caster, target);
             if (bestCell) {
                 LS.useChipOnCell(this.id, bestCell.number);
             }
@@ -117,37 +113,49 @@ export class Chip {
     }
 
     getChipDamage(source: number, target: number): Object {
-        let dmg: Damage = new Damage();
-
-        let minStrength = 0;
-        let maxStrength = 0;
+        let damage: Damage = new Damage();
 
         for (let i = 0; i < LS.count(this.types); i++) {
             const type: ChipType = this.types[i];
 
             if (type == ChipType.STRENGTH) {
-                const formula: number = (LS.getStrength(source) / 100 + 1) * (LS.getPower(source) / 100 + 1) * (1 - LS.getRelativeShield(target) / 100) - LS.getAbsoluteShield(target);
-                minStrength += this.minValues[i] * formula;
-                maxStrength += this.maxValues[i] * formula;
+                damage.strengthMin += this.minValues[i];
+                damage.strengthMax += this.maxValues[i];
             } else if (type == ChipType.POISON) {
                 const formula: number = (LS.getMagic(source) / 100 + 1) * (LS.getPower(source) / 100 + 1);
-                const minPoison: number = this.minValues[i] * formula;
-                const maxPoison: number = this.maxValues[i] * formula;
-                dmg.poison = [minPoison, maxPoison];
+                damage.poisonMin = LS.round(this.minValues[i] * formula);
+                damage.poisonMax = LS.round(this.maxValues[i] * formula);
+                damage.poisonAvg = (damage.poisonMin + damage.poisonMax) / 2;
+                damage.poisonMinByTP = this.minValues[i] / this.cost;
+                damage.poisonMaxByTP = this.maxValues[i] / this.cost;
+                damage.poisonAvgByTP = (this.minValues[i] + this.maxValues[i]) / 2 / this.cost;
             } else if (type == ChipType.NOVA) {
                 const formula: Function = (value): number => LS.min(LS.getTotalLife(target) - LS.getLife(target), value * (LS.getScience(source) / 100 + 1) * (LS.getPower(source) / 100 + 1));
-                const minNova: number = formula(this.minValues[i]);
-                const maxNova: number = formula(this.maxValues[i]);
-                dmg.nova = [minNova, maxNova];
+                damage.novaMin = LS.round(formula(this.minValues[i]));
+                damage.novaMax = LS.round(formula(this.maxValues[i]));
+                damage.novaAvg = (damage.novaMin + damage.novaMax) / 2;
+                damage.novaMinByTP = this.minValues[i] / this.cost;
+                damage.novaMaxByTP = this.maxValues[i] / this.cost;
+                damage.novaAvgByTP = (this.minValues[i] + this.maxValues[i]) / 2 / this.cost;
             }
         }
-        dmg.strength = [minStrength, maxStrength];
 
-        const minTotal: number = LS.intervalMin(dmg.strength) + LS.intervalMin(dmg.poison);
-        const maxTotal: number = LS.intervalMax(dmg.strength) + LS.intervalMax(dmg.poison);
-        dmg.total = [minTotal, maxTotal];
+        const formula: number = (LS.getStrength(source) / 100 + 1) * (LS.getPower(source) / 100 + 1) * (1 - LS.getRelativeShield(target) / 100) - LS.getAbsoluteShield(target);
+        damage.strengthMinByTP = damage.strengthMin / this.cost;
+        damage.strengthMaxByTP = damage.strengthMax / this.cost;
+        damage.strengthAvgByTP = (damage.strengthMin + damage.strengthMax) / 2 / this.cost;
+        damage.strengthMin = LS.round(damage.strengthMin * formula);
+        damage.strengthMax = LS.round(damage.strengthMax * formula);
+        damage.strengthAvg = (damage.strengthMin + damage.strengthMax) / 2;
 
-        return dmg;
+		damage.totalMin = damage.strengthMin + damage.poisonMin;
+		damage.totalMax = damage.strengthMax + damage.poisonMax;
+		damage.totalAvg = damage.strengthAvg + damage.poisonAvg;
+		damage.totalMinByTP = damage.strengthMinByTP + damage.poisonMinByTP;
+		damage.totalMaxByTP = damage.strengthMaxByTP + damage.poisonMaxByTP;
+		damage.totalAvgByTP = damage.strengthAvgByTP + damage.poisonAvgByTP;
+
+        return damage;
     }
 
     static getChipsOf(entity: number = enemy.id): Chip[] {
