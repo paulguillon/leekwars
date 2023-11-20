@@ -2,14 +2,14 @@ import { LS } from "./globaux/ls";
 import { Effect } from "./common/class/effect";
 import { Move } from "./common/class/move";
 import { distanceTo, pathDistanceBetween } from "./common/utils";
-import { enemy, myLeek, searchEnemy, turn } from "./common/vars";
+import { enemy, myLeek, searchEnemy } from "./common/vars";
 import { ICEBERG, LIBERATION, ROCKFALL, STALACTITE } from "./common/data/chips";
 import { GRENADELAUNCHER } from "./common/data/weapons";
 
 /*
- * Stat : 200 agility, 350 strength, 5 MP, 18 TP, 100 resistance and 200 wisdom then full HP
+ * Stat : 200 agility, 400 strength, 5 MP, 18 TP, 200 resistance and 200 wisdom then full HP
  * Chips :  wall, fortress, shield, armor, motiv, adrenaline, solidification/antidote, steroid, protein, liberation, regen, stalactite, iceberg, rockfall, armoring, serum
- * Weapons : unstable destroyer, axe, bazooka
+ * Weapons : unstable destroyer, axe, bazooka, rhino
  */
 
 if (!LS.getWeapon()) {

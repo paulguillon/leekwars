@@ -1,5 +1,5 @@
 import fs from "fs";
-import {TYPE_CHIP} from "../editor/globaux/types";
+import "dotenv/config";
 
 export default (code: string) => {
     code = refactoType(code);
@@ -108,7 +108,10 @@ const refactoConsoleLog = (code: string) => {
 };
 
 export const refactoEnum = (code: string) => {
-    let enumCode = fs.readFileSync("./src/editor/globaux/enums.ts", {encoding: "utf8"});
+    if(!process.env.ABSOLUTE_PATH_TO_ENUMS) {
+        console.error("Aucun path vers les enums sources n'a été fournis")
+    }
+    let enumCode = fs.readFileSync(`${process.env.ABSOLUTE_PATH_TO_ENUMS}`, {encoding: "utf8"});
     const enums: string[] = [];
 
 

@@ -4,7 +4,7 @@ import { Weapon } from "../class/weapon";
 
 export const DOUBLEGUN: Weapon = new Weapon(	LS.WEAPON_DOUBLE_GUN,
 	"Double gun",
-	[WeaponType.DAMAGE, WeaponType.POISON],
+	[WeaponType.STRENGTH, WeaponType.POISON],
 	4,
 	[18, 9],
 	[25, 12],
@@ -21,7 +21,7 @@ export const DOUBLEGUN: Weapon = new Weapon(	LS.WEAPON_DOUBLE_GUN,
 export const FLAMETHROWER: Weapon = new Weapon(
 	LS.WEAPON_FLAME_THROWER,
 	"Lance-flammes",
-	[WeaponType.DAMAGE, WeaponType.POISON],
+	[WeaponType.STRENGTH, WeaponType.POISON],
 	6,
 	[35, 24],
 	[40, 30],
@@ -38,7 +38,7 @@ export const FLAMETHROWER: Weapon = new Weapon(
 export const UNSTABLEDESTROYER: Weapon = new Weapon(
 	LS.WEAPON_UNSTABLE_DESTROYER,
 	"Destroyer instable",
-	[WeaponType.DAMAGE, WeaponType.PASSIVE],
+	[WeaponType.STRENGTH, WeaponType.PASSIVE],
 	6,
 	[10, 50],
 	[90, 150],
@@ -55,7 +55,7 @@ export const UNSTABLEDESTROYER: Weapon = new Weapon(
 export const LASER: Weapon = new Weapon(
 	LS.WEAPON_LASER,
 	"Laser",
-	[WeaponType.DAMAGE],
+	[WeaponType.STRENGTH],
 	6,
 	[43],
 	[59],
@@ -72,7 +72,7 @@ export const LASER: Weapon = new Weapon(
 export const AXE: Weapon = new Weapon(
 	LS.WEAPON_AXE,
 	"Hache",
-	[WeaponType.DAMAGE],
+	[WeaponType.STRENGTH],
 	6,
 	[55],
 	[77],
@@ -89,7 +89,7 @@ export const AXE: Weapon = new Weapon(
 export const SWORD: Weapon = new Weapon(
 	LS.WEAPON_SWORD,
 	"Épée",
-	[WeaponType.DAMAGE, WeaponType.RELATIVE],
+	[WeaponType.STRENGTH, WeaponType.RELATIVE],
 	6,
 	[50, 8],
 	[60, 8],
@@ -106,7 +106,7 @@ export const SWORD: Weapon = new Weapon(
 export const BROADSWORD: Weapon = new Weapon(
 	LS.WEAPON_BROADSWORD,
 	"Glaive",
-	[WeaponType.DAMAGE, WeaponType.BUFF],
+	[WeaponType.STRENGTH, WeaponType.BUFF],
 	5,
 	[39, 40],
 	[41, 40],
@@ -123,7 +123,7 @@ export const BROADSWORD: Weapon = new Weapon(
 export const GRENADELAUNCHER: Weapon = new Weapon(
 	LS.WEAPON_GRENADE_LAUNCHER,
 	"Lance-grenades",
-	[WeaponType.DAMAGE],
+	[WeaponType.STRENGTH],
 	5,
 	[55],
 	[63],
@@ -140,7 +140,7 @@ export const GRENADELAUNCHER: Weapon = new Weapon(
 export const BAZOOKA: Weapon = new Weapon(
 	LS.WEAPON_BAZOOKA,
 	"Bazooka",
-	[WeaponType.DAMAGE],
+	[WeaponType.STRENGTH],
 	1,
 	[115],
 	[123],

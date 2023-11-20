@@ -4,7 +4,7 @@ import { Chip } from "../class/chip";
 
 export const SHOCK: Chip = new Chip(
 	LS.CHIP_SHOCK,
-	[ChipType.DAMAGE],
+	[ChipType.STRENGTH],
 	LS.getChipCost(LS.CHIP_SHOCK),
 	[7],
 	[9],
@@ -38,7 +38,7 @@ export const BANDAGE: Chip = new Chip(
 )
 export const PEBBLE: Chip = new Chip(
 	LS.CHIP_PEBBLE,
-	[ChipType.DAMAGE],
+	[ChipType.STRENGTH],
 	LS.getChipCost(LS.CHIP_PEBBLE),
 	[2],
 	[34],
@@ -72,7 +72,7 @@ export const PROTEIN: Chip = new Chip(
 )
 export const ICE: Chip = new Chip(
 	LS.CHIP_ICE,
-	[ChipType.DAMAGE],
+	[ChipType.STRENGTH],
 	LS.getChipCost(LS.CHIP_ICE),
 	[17],
 	[19],
@@ -106,7 +106,7 @@ export const HELMET: Chip = new Chip(
 )
 export const ROCK: Chip = new Chip(
 	LS.CHIP_ROCK,
-	[ChipType.DAMAGE],
+	[ChipType.STRENGTH],
 	LS.getChipCost(LS.CHIP_ROCK),
 	[38],
 	[39],
@@ -174,7 +174,7 @@ export const WALL: Chip = new Chip(
 )
 export const SPARK: Chip = new Chip(
 	LS.CHIP_SPARK,
-	[ChipType.DAMAGE],
+	[ChipType.STRENGTH],
 	LS.getChipCost(LS.CHIP_SPARK),
 	[8],
 	[16],
@@ -225,7 +225,7 @@ export const LEATHER_BOOTS: Chip = new Chip(
 )
 export const FLASH: Chip = new Chip(
 	LS.CHIP_FLASH,
-	[ChipType.DAMAGE],
+	[ChipType.STRENGTH],
 	LS.getChipCost(LS.CHIP_FLASH),
 	[32],
 	[35],
@@ -242,7 +242,7 @@ export const FLASH: Chip = new Chip(
 )
 export const FLAME: Chip = new Chip(
 	LS.CHIP_FLAME,
-	[ChipType.DAMAGE],
+	[ChipType.STRENGTH],
 	LS.getChipCost(LS.CHIP_FLAME),
 	[29],
 	[31],
@@ -276,7 +276,7 @@ export const KNOWLEDGE: Chip = new Chip(
 )
 export const ROCKFALL: Chip = new Chip(
 	LS.CHIP_ROCKFALL,
-	[ChipType.DAMAGE],
+	[ChipType.STRENGTH],
 	LS.getChipCost(LS.CHIP_ROCKFALL),
 	[50],
 	[58],
@@ -293,7 +293,7 @@ export const ROCKFALL: Chip = new Chip(
 )
 export const STALACTITE: Chip = new Chip(
 	LS.CHIP_STALACTITE,
-	[ChipType.DAMAGE],
+	[ChipType.STRENGTH],
 	LS.getChipCost(LS.CHIP_STALACTITE),
 	[64],
 	[67],
@@ -310,7 +310,7 @@ export const STALACTITE: Chip = new Chip(
 )
 export const ICEBERG: Chip = new Chip(
 	LS.CHIP_ICEBERG,
-	[ChipType.DAMAGE],
+	[ChipType.STRENGTH],
 	LS.getChipCost(LS.CHIP_ICEBERG),
 	[82],
 	[90],
