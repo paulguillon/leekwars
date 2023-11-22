@@ -116,6 +116,10 @@ if (LS.getTP() > 9 && Effect.getEffectsOfTypeAmount(enemy.id, LS.EFFECT_ABSOLUTE
     LIBERATION.moveAndUse();
 }
 
+if (distanceTo(enemy.id) > 1) {
+    Move.hideToward();
+}
+
 if (LS.getTP() > 6) {
     ICEBERG.moveAndUse();
 }
@@ -124,10 +128,6 @@ if (LS.getTP() > 5) {
 }
 if (LS.getTP() > 4) {
     ROCKFALL.moveAndUse();
-}
-
-if (distanceTo(enemy.id) > 1) {
-    Move.hideToward();
 }
 
 var cell = BAZOOKA.canMoveToUse();
