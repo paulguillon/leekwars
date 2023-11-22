@@ -25,7 +25,7 @@ export class Effect {
 	}
 
 	static getAllEffects(entity: number) {
-		return LS.arrayMap(LS.getEffects(entity), effect => new Effect(effect))
+		return LS.arrayMap(LS.getEffects(entity), effect => new Effect(effect));
 	}
 
 	static getEffectOfType(target: number, searchedEffect: number) {
@@ -37,6 +37,7 @@ export class Effect {
 	}
 
 	static getEffectsOfTypeAmount(target: number, searchedEffect: number, minTurnValue: number = 1) {
+		LS.debug("Total d'armure fixe à plus d'un tour : " + LS.sum(LS.arrayMap(Effect.getEffectsOfType(target, searchedEffect, minTurnValue), effect => effect.value)))
 		return LS.sum(LS.arrayMap(Effect.getEffectsOfType(target, searchedEffect, minTurnValue), effect => effect.value));
 	}
 

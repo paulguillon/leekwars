@@ -22,6 +22,7 @@ export class Chip {
     aoeType: AoeType;
     aoeSize: number;
     los: boolean;
+    damage: Damage;
 
     constructor(id: number, types: ChipType[], cost: number, minValues: number[], maxValues: number[], cooldown: number, sourceStat: Stat[], targetStat: Stat[], duration: number, minRange: number, maxRange: number, launchType: AoeType, aoeType: AoeType, aoeSize: number, los: boolean) {
         this.id = id;
@@ -39,9 +40,11 @@ export class Chip {
         this.aoeType = aoeType;
         this.aoeSize = aoeSize;
         this.los = los;
+        this.damage = new Damage();
     }
 
     canMoveToUse(caster: number = myLeek.id, target: number = enemy.id) {
+        if (LS.getCooldown(this.id)) return null;
         if (LS.canUseChip(this.id, target)) return field[LS.getCell(caster)];
 
         const cellsToGo: Cell[] = Cell.getCellsByArea(field[LS.getCell(caster)], AoeType.CIRCLE, 1, LS.getMP(caster), true);
@@ -113,49 +116,51 @@ export class Chip {
     }
 
     getChipDamage(source: number, target: number): Object {
-        let damage: Damage = new Damage();
-
         for (let i = 0; i < LS.count(this.types); i++) {
             const type: ChipType = this.types[i];
 
             if (type == ChipType.STRENGTH) {
-                damage.strengthMin += this.minValues[i];
-                damage.strengthMax += this.maxValues[i];
+                this.damage.strengthMin += this.minValues[i];
+                this.damage.strengthMax += this.maxValues[i];
             } else if (type == ChipType.POISON) {
                 const formula: number = (LS.getMagic(source) / 100 + 1) * (LS.getPower(source) / 100 + 1);
-                damage.poisonMin = LS.round(this.minValues[i] * formula);
-                damage.poisonMax = LS.round(this.maxValues[i] * formula);
-                damage.poisonAvg = (damage.poisonMin + damage.poisonMax) / 2;
-                damage.poisonMinByTP = this.minValues[i] / this.cost;
-                damage.poisonMaxByTP = this.maxValues[i] / this.cost;
-                damage.poisonAvgByTP = (this.minValues[i] + this.maxValues[i]) / 2 / this.cost;
+                this.damage.poisonMin = LS.round(this.minValues[i] * formula);
+                this.damage.poisonMax = LS.round(this.maxValues[i] * formula);
+                this.damage.poisonAvg = (this.damage.poisonMin + this.damage.poisonMax) / 2;
+                this.damage.poisonMinByTP = this.minValues[i] / this.cost;
+                this.damage.poisonMaxByTP = this.maxValues[i] / this.cost;
+                this.damage.poisonAvgByTP = (this.minValues[i] + this.maxValues[i]) / 2 / this.cost;
             } else if (type == ChipType.NOVA) {
                 const formula: Function = (value): number => LS.min(LS.getTotalLife(target) - LS.getLife(target), value * (LS.getScience(source) / 100 + 1) * (LS.getPower(source) / 100 + 1));
-                damage.novaMin = LS.round(formula(this.minValues[i]));
-                damage.novaMax = LS.round(formula(this.maxValues[i]));
-                damage.novaAvg = (damage.novaMin + damage.novaMax) / 2;
-                damage.novaMinByTP = this.minValues[i] / this.cost;
-                damage.novaMaxByTP = this.maxValues[i] / this.cost;
-                damage.novaAvgByTP = (this.minValues[i] + this.maxValues[i]) / 2 / this.cost;
+                this.damage.novaMin = LS.round(formula(this.minValues[i]));
+                this.damage.novaMax = LS.round(formula(this.maxValues[i]));
+                this.damage.novaAvg = (this.damage.novaMin + this.damage.novaMax) / 2;
+                this.damage.novaMinByTP = this.minValues[i] / this.cost;
+                this.damage.novaMaxByTP = this.maxValues[i] / this.cost;
+                this.damage.novaAvgByTP = (this.minValues[i] + this.maxValues[i]) / 2 / this.cost;
             }
         }
 
-        const formula: number = (LS.getStrength(source) / 100 + 1) * (LS.getPower(source) / 100 + 1) * (1 - LS.getRelativeShield(target) / 100) - LS.getAbsoluteShield(target);
-        damage.strengthMinByTP = damage.strengthMin / this.cost;
-        damage.strengthMaxByTP = damage.strengthMax / this.cost;
-        damage.strengthAvgByTP = (damage.strengthMin + damage.strengthMax) / 2 / this.cost;
-        damage.strengthMin = LS.round(damage.strengthMin * formula);
-        damage.strengthMax = LS.round(damage.strengthMax * formula);
-        damage.strengthAvg = (damage.strengthMin + damage.strengthMax) / 2;
+        const multiplier: number = (LS.getStrength(source) / 100 + 1) * (LS.getPower(source) / 100 + 1)
+        const relative: number = (1 - LS.getRelativeShield(target) / 100);
+        const absolute: number = LS.getAbsoluteShield(target);
+        const calculateDmg: Function = (base) => LS.round(base * multiplier * relative - absolute);
 
-		damage.totalMin = damage.strengthMin + damage.poisonMin;
-		damage.totalMax = damage.strengthMax + damage.poisonMax;
-		damage.totalAvg = damage.strengthAvg + damage.poisonAvg;
-		damage.totalMinByTP = damage.strengthMinByTP + damage.poisonMinByTP;
-		damage.totalMaxByTP = damage.strengthMaxByTP + damage.poisonMaxByTP;
-		damage.totalAvgByTP = damage.strengthAvgByTP + damage.poisonAvgByTP;
+        this.damage.strengthMinByTP = this.damage.strengthMin / this.cost;
+        this.damage.strengthMaxByTP = this.damage.strengthMax / this.cost;
+        this.damage.strengthAvgByTP = (this.damage.strengthMin + this.damage.strengthMax) / 2 / this.cost;
+        this.damage.strengthMin = calculateDmg(this.damage.strengthMin);
+        this.damage.strengthMax = calculateDmg(this.damage.strengthMax);
+        this.damage.strengthAvg = (this.damage.strengthMin + this.damage.strengthMax) / 2;
 
-        return damage;
+		this.damage.totalMin = this.damage.strengthMin + this.damage.poisonMin;
+		this.damage.totalMax = this.damage.strengthMax + this.damage.poisonMax;
+		this.damage.totalAvg = this.damage.strengthAvg + this.damage.poisonAvg;
+		this.damage.totalMinByTP = this.damage.strengthMinByTP + this.damage.poisonMinByTP;
+		this.damage.totalMaxByTP = this.damage.strengthMaxByTP + this.damage.poisonMaxByTP;
+		this.damage.totalAvgByTP = this.damage.strengthAvgByTP + this.damage.poisonAvgByTP;
+
+        return this.damage;
     }
 
     static getChipsOf(entity: number = enemy.id): Chip[] {

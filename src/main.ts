@@ -4,7 +4,8 @@ import { Move } from "./common/class/move";
 import { distanceTo, pathDistanceBetween } from "./common/utils";
 import { enemy, myLeek, searchEnemy } from "./common/vars";
 import { ICEBERG, LIBERATION, PROTEIN, ROCKFALL, STALACTITE } from "./common/data/chips";
-import { AXE, BAZOOKA, DOUBLEGUN, RHINO } from "./common/data/weapons";
+import { AXE, BAZOOKA } from "./common/data/weapons";
+import { Damage } from "./common/class/damage";
 
 /*
  * Stat : 200 agility, 400 strength, 5 MP, 18 TP, 200 resistance and 200 wisdom then full HP
@@ -12,7 +13,10 @@ import { AXE, BAZOOKA, DOUBLEGUN, RHINO } from "./common/data/weapons";
  * Weapons : unstable destroyer, axe, bazooka, rhino
  */
 
-LS.useChip(LS.CHIP_WARM_UP);
+if (distanceTo(enemy.id) > LS.getMP() || LS.getLife(enemy.id) > 1200) {
+    LS.useChip(LS.CHIP_WARM_UP);
+}
+
 LS.useChip(LS.CHIP_ADRENALINE);
 
 let currentTP: number = LS.getTP();
@@ -30,32 +34,33 @@ const dist: boolean = pathDistanceBetween(myLeek.id, enemy.id) <= LS.getMP();
 if (canUseProtein && dist) {
     LS.useChip(LS.CHIP_PROTEIN);
 }
-const minAxeDmg: number = AXE.getWeaponDamage().strengthMin;
+const axeDmg: Damage = AXE.getWeaponDamage();
 
-const canKill: boolean = LS.getLife(enemy.id) <= minAxeDmg * nbUses;
+LS.debug("Nombres de cac : " + nbUses);
+LS.debug("Dégats min : " + axeDmg.strengthMin);
+LS.debug("Dégats avg : " + axeDmg.strengthAvg);
+LS.debug("Dégats max : " + axeDmg.strengthMax);
+LS.debug("Total min : " + nbUses * axeDmg.strengthMin);
+LS.debug("Total avg : " + nbUses * axeDmg.strengthAvg);
+LS.debug("Total max : " + nbUses * axeDmg.strengthMax);
+
+const canKill: boolean = LS.getLife(enemy.id) <= axeDmg.strengthAvg * nbUses;
 
 if (canKill && dist) {
-    LS.debug("C'est CIAO !")
+    LS.debug("C'est CIAO !");
 
-    if (!LS.getCooldown(LS.CHIP_STALACTITE)) {
-        while (LS.getMP() && !LS.canUseChip(LS.CHIP_STALACTITE, enemy.id)) {
-            LS.moveToward(enemy.id, 1);
-        }
-        STALACTITE.use();
-    }
+    LS.moveToward(enemy.id);
 
-    if (!LS.isDead(enemy.id)) {
-        LS.moveToward(enemy.id);
-
-        if (LS.getWeapon() != LS.WEAPON_AXE) {
-            LS.setWeapon(LS.WEAPON_AXE);
-        }
+    if (LS.getWeapon() != LS.WEAPON_AXE) {
+        LS.setWeapon(LS.WEAPON_AXE);
     }
 
     while (LS.getTP() > 5 && !LS.isDead(enemy.id)) {
         LS.useWeapon(enemy.id);
     }
 }
+
+LS.useChip(LS.CHIP_WARM_UP);
 
 if (LS.getLife() < LS.getTotalLife() / 4) {
     if (!LS.getCooldown(LS.CHIP_REGENERATION)) {
@@ -102,22 +107,14 @@ if (!LS.getWeapon()) {
     LS.setWeapon(LS.WEAPON_AXE);
 }
 
-if (LS.getAbsoluteShield(enemy.id) < 100 || LS.getMagic(enemy.id) > 149) {
-    if (distanceTo(enemy.id) <= LS.getMP() + 1) {
-        LS.moveToward(enemy.id);
-        LS.useWeapon(enemy.id);
-        LS.useWeapon(enemy.id);
-    }
-}
-
-LS.useChip(LS.CHIP_SERUM);
-
-if (LS.getTP() > 9 && Effect.getEffectsOfTypeAmount(enemy.id, LS.EFFECT_ABSOLUTE_SHIELD, 2) > 100 && LS.canUseChip(LS.CHIP_LIBERATION, enemy.id)) {
+if (LS.getTP() > 9 && Effect.getEffectsOfTypeAmount(enemy.id, LS.EFFECT_ABSOLUTE_SHIELD, 2) > 100) {
     LIBERATION.moveAndUse();
 }
 
-if (distanceTo(enemy.id) > 1) {
+if (pathDistanceBetween(myLeek.id, enemy.id) > LS.getMP()) {
     Move.hideToward();
+} else {
+    LS.moveToward(enemy.id);
 }
 
 if (LS.getTP() > 6) {
@@ -129,6 +126,13 @@ if (LS.getTP() > 5) {
 if (LS.getTP() > 4) {
     ROCKFALL.moveAndUse();
 }
+
+Move.hideToward();
+LS.useWeapon(enemy.id);
+LS.useWeapon(enemy.id);
+LS.useWeapon(enemy.id);
+
+LS.useChip(LS.CHIP_SERUM);
 
 var cell = BAZOOKA.canMoveToUse();
 
