@@ -12,10 +12,7 @@ import { AXE, BAZOOKA, DOUBLEGUN, RHINO } from "./common/data/weapons";
  * Weapons : unstable destroyer, axe, bazooka, rhino
  */
 
-if (!LS.getWeapon()) {
-    LS.setWeapon(LS.WEAPON_AXE);
-}
-
+LS.useChip(LS.CHIP_WARM_UP);
 LS.useChip(LS.CHIP_ADRENALINE);
 
 let currentTP: number = LS.getTP();
@@ -65,7 +62,7 @@ if (LS.getLife() < LS.getTotalLife() / 4) {
         LS.useChip(LS.CHIP_REGENERATION);
     } else {
         LS.useChip(LS.CHIP_WARM_UP);
-        LS.useChip(LS.CHIP_VACCINE);
+        LS.useChip(LS.CHIP_SERUM);
         Move.hide(false);
     }
 }
@@ -85,23 +82,24 @@ if (distanceTo(enemy.id) > 7) {
         LS.useChip(LS.CHIP_KNOWLEDGE);
         LS.useChip(LS.CHIP_ARMORING);
     }
-    LS.useChip(LS.CHIP_WARM_UP);
 }
 
-if (distanceTo(enemy.id) < 17 && LS.getStrength(enemy.id) > 149) {
-    if (distanceTo(enemy.id) > 5) {
-        LS.useChip(LS.CHIP_SOLIDIFICATION);
-    }
+LS.useChip(LS.CHIP_SOLIDIFICATION);
+
+if (distanceTo(enemy.id) < 20 && LS.getStrength(enemy.id) > 149) {
     LS.useChip(LS.CHIP_ARMOR);
     LS.useChip(LS.CHIP_SHIELD);
     LS.useChip(LS.CHIP_WALL);
-    LS.useChip(LS.CHIP_HELMET);
 }
 
 if (distanceTo(enemy.id) in [...Array(10).keys()] && LS.getTP() > 10) {
     LS.useChip(LS.CHIP_MOTIVATION);
     LS.useChip(LS.CHIP_PROTEIN);
     LS.useChip(LS.CHIP_STEROID);
+}
+
+if (!LS.getWeapon()) {
+    LS.setWeapon(LS.WEAPON_AXE);
 }
 
 if (LS.getAbsoluteShield(enemy.id) < 100 || LS.getMagic(enemy.id) > 149) {
@@ -112,20 +110,24 @@ if (LS.getAbsoluteShield(enemy.id) < 100 || LS.getMagic(enemy.id) > 149) {
     }
 }
 
-LS.useChip(LS.CHIP_VACCINE);
-
-if (distanceTo(enemy.id) > 1) {
-    Move.hideToward();
-}
+LS.useChip(LS.CHIP_SERUM);
 
 if (LS.getTP() > 9 && Effect.getEffectsOfTypeAmount(enemy.id, LS.EFFECT_ABSOLUTE_SHIELD, 2) > 100 && LS.canUseChip(LS.CHIP_LIBERATION, enemy.id)) {
     LIBERATION.moveAndUse();
 }
 
-if (LS.getTP() > 4) {
-    STALACTITE.moveAndUse();
-    ROCKFALL.moveAndUse();
+if (LS.getTP() > 6) {
     ICEBERG.moveAndUse();
+}
+if (LS.getTP() > 5) {
+    STALACTITE.moveAndUse();
+}
+if (LS.getTP() > 4) {
+    ROCKFALL.moveAndUse();
+}
+
+if (distanceTo(enemy.id) > 1) {
+    Move.hideToward();
 }
 
 var cell = BAZOOKA.canMoveToUse();
@@ -148,8 +150,8 @@ if (LS.isDead(enemy.id)) {
     LS.moveToward(enemy.id);
 } else if (LS.getTP() > 4) {
     var other = LS.getNearestEnemy();
+    ICEBERG.moveAndUse(myLeek.id, other);
     STALACTITE.moveAndUse(myLeek.id, other);
     ROCKFALL.moveAndUse(myLeek.id, other);
-    ICEBERG.moveAndUse(myLeek.id, other);
     LS.useWeapon(other);
 }
