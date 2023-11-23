@@ -1,6 +1,6 @@
 import { AoeType, ChipType, Stat } from "../../globaux/enums";
 import { LS } from "../../globaux/ls";
-import { Chip } from "../class/chip";
+import { Chip } from "../class/chip/chip";
 
 export const SHOCK: Chip = new Chip(
 	LS.CHIP_SHOCK,
@@ -12,12 +12,12 @@ export const SHOCK: Chip = new Chip(
 	[Stat.STRENGTH],
 	[],
 	0,
-	0,
-	6,
+	LS.getChipMinRange(LS.CHIP_SHOCK),
+	LS.getChipMaxRange(LS.CHIP_SHOCK),
 	AoeType.CIRCLE,
 	AoeType.POINT,
 	0,
-	true
+	LS.chipNeedLos(LS.CHIP_SHOCK)
 )
 export const BANDAGE: Chip = new Chip(
 	LS.CHIP_BANDAGE,
@@ -29,12 +29,12 @@ export const BANDAGE: Chip = new Chip(
 	[Stat.WISDOM],
 	[],
 	0,
-	0,
-	6,
+	LS.getChipMinRange(LS.CHIP_BANDAGE),
+	LS.getChipMaxRange(LS.CHIP_BANDAGE),
 	AoeType.CIRCLE,
 	AoeType.POINT,
 	0,
-	true
+	LS.chipNeedLos(LS.CHIP_BANDAGE)
 )
 export const PEBBLE: Chip = new Chip(
 	LS.CHIP_PEBBLE,
@@ -46,12 +46,12 @@ export const PEBBLE: Chip = new Chip(
 	[Stat.STRENGTH],
 	[],
 	0,
-	0,
-	5,
+	LS.getChipMinRange(LS.CHIP_PEBBLE),
+	LS.getChipMaxRange(LS.CHIP_PEBBLE),
 	AoeType.CIRCLE,
 	AoeType.POINT,
 	0,
-	true
+	LS.chipNeedLos(LS.CHIP_PEBBLE)
 )
 export const PROTEIN: Chip = new Chip(
 	LS.CHIP_PROTEIN,
@@ -63,12 +63,12 @@ export const PROTEIN: Chip = new Chip(
 	[],
 	[Stat.STRENGTH],
 	2,
-	0,
-	4,
+	LS.getChipMinRange(LS.CHIP_PROTEIN),
+	LS.getChipMaxRange(LS.CHIP_PROTEIN),
 	AoeType.CIRCLE,
 	AoeType.POINT,
 	0,
-	true
+	LS.chipNeedLos(LS.CHIP_PROTEIN)
 )
 export const ICE: Chip = new Chip(
 	LS.CHIP_ICE,
@@ -80,12 +80,12 @@ export const ICE: Chip = new Chip(
 	[Stat.STRENGTH],
 	[],
 	0,
-	0,
-	8,
+	LS.getChipMinRange(LS.CHIP_ICE),
+	LS.getChipMaxRange(LS.CHIP_ICE),
 	AoeType.CIRCLE,
 	AoeType.POINT,
 	0,
-	true
+	LS.chipNeedLos(LS.CHIP_ICE)
 )
 export const HELMET: Chip = new Chip(
 	LS.CHIP_HELMET,
@@ -97,12 +97,12 @@ export const HELMET: Chip = new Chip(
 	[Stat.RESISTANCE],
 	[],
 	2,
-	0,
-	4,
+	LS.getChipMinRange(LS.CHIP_HELMET),
+	LS.getChipMaxRange(LS.CHIP_HELMET),
 	AoeType.CIRCLE,
 	AoeType.POINT,
 	0,
-	true
+	LS.chipNeedLos(LS.CHIP_HELMET)
 )
 export const ROCK: Chip = new Chip(
 	LS.CHIP_ROCK,
@@ -114,12 +114,12 @@ export const ROCK: Chip = new Chip(
 	[Stat.RESISTANCE],
 	[],
 	2,
-	0,
-	4,
+	LS.getChipMinRange(LS.CHIP_ROCK),
+	LS.getChipMaxRange(LS.CHIP_ROCK),
 	AoeType.CIRCLE,
 	AoeType.POINT,
 	0,
-	true
+	LS.chipNeedLos(LS.CHIP_ROCK)
 )
 export const MOTIVATION: Chip = new Chip(
 	LS.CHIP_MOTIVATION,
@@ -131,12 +131,12 @@ export const MOTIVATION: Chip = new Chip(
 	[],
 	[Stat.TP],
 	2,
-	0,
-	5,
+	LS.getChipMinRange(LS.CHIP_MOTIVATION),
+	LS.getChipMaxRange(LS.CHIP_MOTIVATION),
 	AoeType.CIRCLE,
 	AoeType.POINT,
 	0,
-	true
+	LS.chipNeedLos(LS.CHIP_MOTIVATION)
 )
 export const STRETCHING: Chip = new Chip(
 	LS.CHIP_STRETCHING,
@@ -148,12 +148,12 @@ export const STRETCHING: Chip = new Chip(
 	[],
 	[Stat.AGILITY],
 	2,
-	0,
-	5,
+	LS.getChipMinRange(LS.CHIP_STRETCHING),
+	LS.getChipMaxRange(LS.CHIP_STRETCHING),
 	AoeType.CIRCLE,
 	AoeType.POINT,
 	0,
-	true
+	LS.chipNeedLos(LS.CHIP_STRETCHING)
 )
 export const WALL: Chip = new Chip(
 	LS.CHIP_WALL,
@@ -165,12 +165,12 @@ export const WALL: Chip = new Chip(
 	[Stat.RESISTANCE],
 	[],
 	2,
-	0,
-	3,
+	LS.getChipMinRange(LS.CHIP_WALL),
+	LS.getChipMaxRange(LS.CHIP_WALL),
 	AoeType.CIRCLE,
 	AoeType.POINT,
 	0,
-	true
+	LS.chipNeedLos(LS.CHIP_WALL)
 )
 export const SPARK: Chip = new Chip(
 	LS.CHIP_SPARK,
@@ -182,12 +182,12 @@ export const SPARK: Chip = new Chip(
 	[Stat.STRENGTH],
 	[],
 	0,
-	0,
-	10,
+	LS.getChipMinRange(LS.CHIP_SPARK),
+	LS.getChipMaxRange(LS.CHIP_SPARK),
 	AoeType.CIRCLE,
 	AoeType.POINT,
 	0,
-	false
+	LS.chipNeedLos(LS.CHIP_SPARK)
 )
 export const CURE: Chip = new Chip(
 	LS.CHIP_CURE,
@@ -204,7 +204,7 @@ export const CURE: Chip = new Chip(
 	AoeType.CIRCLE,
 	AoeType.POINT,
 	0,
-	true
+	LS.chipNeedLos(LS.CHIP_CURE)
 )
 export const LEATHER_BOOTS: Chip = new Chip(
 	LS.CHIP_LEATHER_BOOTS,
@@ -221,7 +221,7 @@ export const LEATHER_BOOTS: Chip = new Chip(
 	AoeType.CIRCLE,
 	AoeType.POINT,
 	0,
-	true
+	LS.chipNeedLos(LS.CHIP_LEATHER_BOOTS)
 )
 export const FLASH: Chip = new Chip(
 	LS.CHIP_FLASH,
@@ -238,7 +238,7 @@ export const FLASH: Chip = new Chip(
 	AoeType.PLUS,
 	AoeType.CIRCLE,
 	1,
-	true
+	LS.chipNeedLos(LS.CHIP_FLASH)
 )
 export const FLAME: Chip = new Chip(
 	LS.CHIP_FLAME,
@@ -255,7 +255,7 @@ export const FLAME: Chip = new Chip(
 	AoeType.CIRCLE,
 	AoeType.POINT,
 	0,
-	true
+	LS.chipNeedLos(LS.CHIP_FLAME)
 )
 export const KNOWLEDGE: Chip = new Chip(
 	LS.CHIP_KNOWLEDGE,
@@ -272,7 +272,7 @@ export const KNOWLEDGE: Chip = new Chip(
 	AoeType.CIRCLE,
 	AoeType.POINT,
 	0,
-	true
+	LS.chipNeedLos(LS.CHIP_KNOWLEDGE)
 )
 export const ROCKFALL: Chip = new Chip(
 	LS.CHIP_ROCKFALL,
@@ -289,7 +289,7 @@ export const ROCKFALL: Chip = new Chip(
 	AoeType.CIRCLE,
 	AoeType.CIRCLE,
 	2,
-	true
+	LS.chipNeedLos(LS.CHIP_ROCKFALL)
 )
 export const STALACTITE: Chip = new Chip(
 	LS.CHIP_STALACTITE,
@@ -306,7 +306,7 @@ export const STALACTITE: Chip = new Chip(
 	AoeType.CIRCLE,
 	AoeType.POINT,
 	0,
-	true
+	LS.chipNeedLos(LS.CHIP_STALACTITE)
 )
 export const ICEBERG: Chip = new Chip(
 	LS.CHIP_ICEBERG,
@@ -323,7 +323,7 @@ export const ICEBERG: Chip = new Chip(
 	AoeType.PLUS,
 	AoeType.CIRCLE,
 	2,
-	true
+	LS.chipNeedLos(LS.CHIP_ICEBERG)
 )
 export const TOXIN: Chip = new Chip(
 	LS.CHIP_TOXIN,
@@ -340,58 +340,58 @@ export const TOXIN: Chip = new Chip(
 	AoeType.CIRCLE,
 	AoeType.CIRCLE,
 	2,
-	true
+	LS.chipNeedLos(LS.CHIP_TOXIN)
 )
 export const TRANQUILIZER: Chip = new Chip(
 	LS.CHIP_TRANQUILIZER,
 	[ChipType.DEBUFF],
-	3,
+	LS.getChipCost(LS.CHIP_TRANQUILIZER),
 	[0.3],
 	[0.4],
-	0,
+	LS.getChipCooldown(LS.CHIP_TRANQUILIZER),
 	[Stat.MAGIC],
 	[Stat.TP],
 	1,
-	1,
-	8,
+	LS.getChipMinRange(LS.CHIP_TRANQUILIZER),
+	LS.getChipMaxRange(LS.CHIP_TRANQUILIZER),
 	AoeType.CIRCLE,
 	AoeType.CIRCLE,
 	1,
-	true
+	LS.chipNeedLos(LS.CHIP_TRANQUILIZER)
 )
 export const VENOM: Chip = new Chip(
 	LS.CHIP_VENOM,
 	[ChipType.POISON],
-	4,
+	LS.getChipCost(LS.CHIP_VENOM),
 	[15],
 	[20],
-	1,
+	LS.getChipCooldown(LS.CHIP_VENOM),
 	[Stat.MAGIC],
 	[],
 	3,
-	1,
-	8,
+	LS.getChipMinRange(LS.CHIP_VENOM),
+	LS.getChipMaxRange(LS.CHIP_VENOM),
 	AoeType.CIRCLE,
 	AoeType.POINT,
 	0,
-	true
+	LS.chipNeedLos(LS.CHIP_VENOM)
 )
 export const LIBERATION: Chip = new Chip(
 	LS.CHIP_LIBERATION,
 	[ChipType.DEBUFF],
-	5,
+	LS.getChipCost(LS.CHIP_LIBERATION),
 	[60],
 	[60],
-	5,
+	LS.getChipCooldown(LS.CHIP_LIBERATION),
 	[],
 	[],
 	0,
-	0,
-	6,
+	LS.getChipMinRange(LS.CHIP_LIBERATION),
+	LS.getChipMaxRange(LS.CHIP_LIBERATION),
 	AoeType.CIRCLE,
 	AoeType.POINT,
 	0,
-	true
+	LS.chipNeedLos(LS.CHIP_LIBERATION)
 )
 
 export const chips: Chip[] = [SHOCK, BANDAGE, PEBBLE, PROTEIN, ICE, HELMET, ROCK, MOTIVATION, STRETCHING, WALL, SPARK, CURE, LEATHER_BOOTS, FLASH, FLAME, KNOWLEDGE, ROCKFALL, STALACTITE, ICEBERG, TOXIN, TRANQUILIZER, VENOM, LIBERATION];

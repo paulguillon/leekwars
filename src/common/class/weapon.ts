@@ -44,6 +44,20 @@ export class Weapon {
 		this.damage = new Damage();
 	}
 
+	use(caster: number = myLeek.id, target: number = enemy.id) {
+		if (LS.canUseWeapon(this.id, target)) {
+			LS.useWeapon(target);
+		}
+	}
+
+	moveAndUse(caster: number = myLeek.id, target: number = enemy.id) {
+		const cell: Cell | null = this.canMoveToUse(caster, target);
+
+		if (cell && LS.canUseWeapon(this.id, target)) {
+			LS.useWeaponOnCell(cell.number);
+		}
+	}
+
 	canMoveToUse(caster: number = myLeek.id, target: number = enemy.id) {
 		const casterCell: Cell = field[LS.getCell(caster)];
 		const targetCellNumber: number = LS.getCell(target);

@@ -1,45 +1,49 @@
-import { AoeType, ChipType, Stat } from "../../globaux/enums";
-import { LS } from "../../globaux/ls";
-import { findFirst } from "../utils";
-import { enemy, field, myLeek } from "../vars";
-import { Cell } from "./cell";
-import { chips } from "../data/chips";
-import { Damage } from "./damage";
+import { AoeType, ChipType } from "../../../globaux/enums";
+import { LS } from "../../../globaux/ls";
+import { findFirst } from "../../utils";
+import { enemy, field, myLeek } from "../../vars";
+import { Cell } from "../cell";
+import { chips } from "../../data/chips";
+import { Damage } from "../damage";
+import {ChipEffect} from "./chipEffect";
+import {areaToAoeSize, areaToAoeType, launchTypeToAoeType} from "../../mapping";
 
 export class Chip {
     id: number;
-    types: ChipType[];
-    cost: number;
-    minValues: number[];
-    maxValues: number[];
-    cooldown: number;
-    sourceStat: Stat[];
-    targetStat: Stat[];
-    duration: number;
+    name: string;
+    level: number;
     minRange: number;
     maxRange: number;
     launchType: AoeType;
+    effects: ChipEffect[];
+    cost: number;
     aoeType: AoeType;
     aoeSize: number;
+    cooldown: number;
     los: boolean;
+    teamCooldown: boolean;
+    initialCooldown: number;
+    template: number;
+    type: number;
     damage: Damage;
 
-    constructor(id: number, types: ChipType[], cost: number, minValues: number[], maxValues: number[], cooldown: number, sourceStat: Stat[], targetStat: Stat[], duration: number, minRange: number, maxRange: number, launchType: AoeType, aoeType: AoeType, aoeSize: number, los: boolean) {
+    constructor(id: number) {
         this.id = id;
-        this.types = types;
-        this.cost = cost;
-        this.minValues = minValues;
-        this.maxValues = maxValues;
-        this.cooldown = cooldown;
-        this.sourceStat = sourceStat;
-        this.targetStat = targetStat;
-        this.duration = duration;
-        this.minRange = minRange;
-        this.maxRange = maxRange;
-        this.launchType = launchType;
-        this.aoeType = aoeType;
-        this.aoeSize = aoeSize;
-        this.los = los;
+        this.name = LS.getChipName(id);
+        this.level = 1;
+        this.minRange = LS.getChipMinRange(id);
+        this.maxRange = LS.getChipMaxRange(id);
+        this.launchType = launchTypeToAoeType(LS.getChipLaunchType(id));
+        this.effects = LS.arrayMap(LS.getEffects(), (effect: number[]) => new ChipEffect(effect));
+        this.cost = LS.getChipCost(id);
+        this.aoeType = areaToAoeType(LS.getChipArea(id));
+        this.aoeSize = areaToAoeSize(LS.getChipArea(id));
+        this.cooldown = LS.getChipCooldown(id);
+        this.los = LS.chipNeedLos(id);
+        this.teamCooldown = false;
+        this.initialCooldown = 0;
+        this.template = 0;
+        this.type = 0;
         this.damage = new Damage();
     }
 
@@ -82,6 +86,9 @@ export class Chip {
     }
 
     use(caster: number = myLeek.id, target: number = enemy.id, cellToUseChipOn: Cell = this.bestCellToUseChipOn(caster, target)): number {
+        if (LS.getCooldown(this.id)) return LS.USE_INVALID_COOLDOWN;
+        if (LS.getTP() < this.cost) return LS.USE_NOT_ENOUGH_TP;
+
         if(!cellToUseChipOn) {
             cellToUseChipOn = field[LS.getCell(target)];
         }
@@ -89,6 +96,9 @@ export class Chip {
     }
 
     moveAndUse(caster: number = myLeek.id, target: number = enemy.id) {
+        if (LS.getCooldown(this.id)) return LS.USE_INVALID_COOLDOWN;
+        if (LS.getTP() < this.cost) return LS.USE_NOT_ENOUGH_TP;
+
         if (LS.canUseChip(this.id, target)) {
             LS.useChip(this.id, target);
             return;

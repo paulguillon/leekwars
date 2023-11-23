@@ -1,11 +1,13 @@
 export enum AoeType {
     CIRCLE,
     CROSS,
-    FIRST,
+    CROSSINVERTED,
     LASER,
     PLUS,
     POINT,
-    SQUARE
+    SQUARE,
+    STAR,
+    STARINVERTED
 }
 
 export enum ChipType {
