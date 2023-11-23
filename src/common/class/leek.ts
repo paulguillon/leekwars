@@ -21,41 +21,41 @@ export class Leek {
         this.weapon = this.weapons[0];
     }
 
-    get life() {
+    life() {
         return LS.getLife(this.id);
     }
-    get totalLife() {
+    totalLife() {
         return LS.getTotalLife(this.id);
     }
-    get lifePercent() {
-        return this.life * 100 / this.totalLife;
+    lifePercent() {
+        return this.life() * 100 / this.totalLife();
     }
-    get strength() {
+    strength() {
         return LS.getStrength(this.id);
     }
-    get power() {
+    power() {
         return LS.getPower(this.id);
     }
-    get wisdom() {
+    wisdom() {
         return LS.getWisdom(this.id);
     }
-    get agility() {
+    agility() {
         return LS.getAgility(this.id);
     }
-    get resistance() {
+    resistance() {
         return LS.getResistance(this.id);
     }
-    get magic() {
+    magic() {
         return LS.getMagic(this.id);
     }
-    get mp() {
+    mp() {
         return LS.getMP(this.id);
     }
-    get tp() {
+    tp() {
         return LS.getTP(this.id);
     }
 
-    get isDead() {
+    isDead() {
         return LS.isDead(this.id);
     }
 

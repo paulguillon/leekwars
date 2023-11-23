@@ -14,7 +14,7 @@ import { Cell } from "./common/class/cell";
  * Weapons : unstable destroyer, axe, bazooka, rhino
  */
 
-if (distanceTo(enemy.id) > myLeek.mp || enemy.life > 1200) {
+if (distanceTo(enemy.id) > myLeek.mp() || enemy.life() > 1200) {
     LS.useChip(LS.CHIP_WARM_UP);
 }
 
@@ -23,7 +23,7 @@ LS.useChip(LS.CHIP_ADRENALINE);
 // Test if can kill with any weapon
 for (const weapon of myLeek.weapons) {
 
-    let currentTP: number = myLeek.tp;
+    let currentTP: number = myLeek.tp();
 
     if (myLeek.weapon !== weapon) {
         currentTP--;
@@ -51,14 +51,14 @@ for (const weapon of myLeek.weapons) {
     LS.debug("Total avg : " + nbUses * weaponDmg.strengthAvg);
     LS.debug("Total max : " + nbUses * weaponDmg.strengthMax);
 
-    const canKill: boolean = enemy.life <= weaponDmg.strengthAvg * nbUses;
+    const canKill: boolean = enemy.life() <= weaponDmg.strengthAvg * nbUses;
 
     if (canKill) {
         LS.debug("C'est CIAO !");
 
         myLeek.changeWeapon(weapon);
 
-        while (myLeek.tp >= weapon.cost && !enemy.isDead) {
+        while (myLeek.tp() >= weapon.cost && !enemy.isDead()) {
             myLeek.moveAndAttack()
         }
         break;
@@ -67,7 +67,7 @@ for (const weapon of myLeek.weapons) {
 
 LS.useChip(LS.CHIP_WARM_UP);
 
-if (myLeek.life < myLeek.totalLife / 4) {
+if (myLeek.lifePercent() < 25) {
     if (!LS.getCooldown(LS.CHIP_REGENERATION)) {
         LS.useChip(LS.CHIP_REGENERATION);
     } else {
@@ -88,7 +88,7 @@ if (Effect.getEffectOfType(myLeek.id, LS.EFFECT_POISON)) {
     }
 }
 if (distanceTo(enemy.id) > 7) {
-    if (myLeek.tp > 9 && !LS.getCooldown(LS.CHIP_KNOWLEDGE) && !LS.getCooldown(LS.CHIP_ARMORING) && (myLeek.lifePercent > 2 / 3 || Effect.getEffectsOfTypeAmount(myLeek.id, LS.EFFECT_ABSOLUTE_SHIELD) > 99)) {
+    if (myLeek.tp() > 9 && !LS.getCooldown(LS.CHIP_KNOWLEDGE) && !LS.getCooldown(LS.CHIP_ARMORING) && (myLeek.lifePercent() > 2 / 3 || Effect.getEffectsOfTypeAmount(myLeek.id, LS.EFFECT_ABSOLUTE_SHIELD) > 99)) {
         LS.useChip(LS.CHIP_KNOWLEDGE);
         LS.useChip(LS.CHIP_ARMORING);
     }
@@ -96,13 +96,13 @@ if (distanceTo(enemy.id) > 7) {
 
 LS.useChip(LS.CHIP_SOLIDIFICATION);
 
-if (distanceTo(enemy.id) < 20 && enemy.strength > 149) {
+if (distanceTo(enemy.id) < 20 && enemy.strength() > 149) {
     LS.useChip(LS.CHIP_ARMOR);
     LS.useChip(LS.CHIP_SHIELD);
     LS.useChip(LS.CHIP_WALL);
 }
 
-if (distanceTo(enemy.id) in [...Array(10).keys()] && myLeek.tp > 10) {
+if (distanceTo(enemy.id) in [...Array(10).keys()] && myLeek.tp() > 10) {
     LS.useChip(LS.CHIP_MOTIVATION);
     LS.useChip(LS.CHIP_PROTEIN);
     LS.useChip(LS.CHIP_STEROID);
@@ -110,11 +110,11 @@ if (distanceTo(enemy.id) in [...Array(10).keys()] && myLeek.tp > 10) {
 
 myLeek.changeWeapon(BAZOOKA);
 
-if (myLeek.tp > 9 && Effect.getEffectsOfTypeAmount(enemy.id, LS.EFFECT_ABSOLUTE_SHIELD, 2) > 100) {
+if (myLeek.tp() > 9 && Effect.getEffectsOfTypeAmount(enemy.id, LS.EFFECT_ABSOLUTE_SHIELD, 2) > 100) {
     LIBERATION.moveAndUse();
 }
 
-if (pathDistanceBetween(myLeek.id, enemy.id) > myLeek.mp) {
+if (pathDistanceBetween(myLeek.id, enemy.id) > myLeek.mp()) {
     Move.hideToward();
 } else {
     LS.moveToward(enemy.id);
@@ -132,7 +132,7 @@ LS.useChip(LS.CHIP_SERUM);
 
 const cell: Cell | null = BAZOOKA.canMoveToUse();
 
-if (cell && myLeek.tp > BAZOOKA.cost) {
+if (cell && myLeek.tp() > BAZOOKA.cost) {
     myLeek.changeWeapon(BAZOOKA);
 
     LS.useWeaponOnCell(cell.number);
@@ -141,15 +141,15 @@ if (cell && myLeek.tp > BAZOOKA.cost) {
     myLeek.changeWeapon(AXE);
 }
 
-if (enemy.isDead) {
+if (enemy.isDead()) {
     searchEnemy();
-    if (distanceTo(enemy.id) <= myLeek.mp) {
+    if (distanceTo(enemy.id) <= myLeek.mp()) {
         LS.moveToward(enemy.id);
     }
     myLeek.moveAndAttack();
     myLeek.attack();
     Move.hideToward();
-} else if (myLeek.tp > 4) {
+} else if (myLeek.tp() > 4) {
     var other = LS.getNearestEnemy();
     ICEBERG.moveAndUse(myLeek.id, other);
     STALACTITE.moveAndUse(myLeek.id, other);

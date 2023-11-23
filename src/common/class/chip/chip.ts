@@ -188,4 +188,8 @@ export class Chip {
     static haveChipEquipped(chipId: number, entity: number = enemy.id): boolean {
         return !!findFirst(LS.getChips(entity), id => id == chipId);
     }
+
+    string() {
+        return this.name;
+    }
 }
