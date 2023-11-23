@@ -1,4 +1,4 @@
-import { AoeType, ChipType } from "../../../globaux/enums";
+import { AoeType, ChipType, Effect } from "../../../globaux/enums";
 import { LS } from "../../../globaux/ls";
 import { findFirst } from "../../utils";
 import { enemy, field, myLeek } from "../../vars";
@@ -121,33 +121,31 @@ export class Chip {
         LS.useChip(this.id, target);
     }
 
-    hasChipType(chipType: ChipType): boolean {
-        return !!findFirst(this.types, type => type == chipType);
+    hasChipType(searchedEffect: Effect): boolean {
+        return !!findFirst(this.effects, effect => effect.type == searchedEffect);
     }
 
     getChipDamage(source: number, target: number): Object {
-        for (let i = 0; i < LS.count(this.types); i++) {
-            const type: ChipType = this.types[i];
-
-            if (type == ChipType.STRENGTH) {
-                this.damage.strengthMin += this.minValues[i];
-                this.damage.strengthMax += this.maxValues[i];
-            } else if (type == ChipType.POISON) {
+        for (const effect of this.effects) {
+            if (effect.type == LS.EFFECT_DAMAGE) {
+                this.damage.strengthMin += effect.min;
+                this.damage.strengthMax += effect.max;
+            } else if (effect.type == LS.EFFECT_POISON) {
                 const formula: number = (LS.getMagic(source) / 100 + 1) * (LS.getPower(source) / 100 + 1);
-                this.damage.poisonMin = LS.round(this.minValues[i] * formula);
-                this.damage.poisonMax = LS.round(this.maxValues[i] * formula);
+                this.damage.poisonMin = LS.round(effect.min * formula);
+                this.damage.poisonMax = LS.round(effect.max * formula);
                 this.damage.poisonAvg = (this.damage.poisonMin + this.damage.poisonMax) / 2;
-                this.damage.poisonMinByTP = this.minValues[i] / this.cost;
-                this.damage.poisonMaxByTP = this.maxValues[i] / this.cost;
-                this.damage.poisonAvgByTP = (this.minValues[i] + this.maxValues[i]) / 2 / this.cost;
-            } else if (type == ChipType.NOVA) {
+                this.damage.poisonMinByTP = effect.min / this.cost;
+                this.damage.poisonMaxByTP = effect.max / this.cost;
+                this.damage.poisonAvgByTP = (effect.min + effect.max) / 2 / this.cost;
+            } else if (effect.type == LS.EFFECT_NOVA_DAMAGE) {
                 const formula: Function = (value): number => LS.min(LS.getTotalLife(target) - LS.getLife(target), value * (LS.getScience(source) / 100 + 1) * (LS.getPower(source) / 100 + 1));
-                this.damage.novaMin = LS.round(formula(this.minValues[i]));
-                this.damage.novaMax = LS.round(formula(this.maxValues[i]));
+                this.damage.novaMin = LS.round(formula(effect.min));
+                this.damage.novaMax = LS.round(formula(effect.max));
                 this.damage.novaAvg = (this.damage.novaMin + this.damage.novaMax) / 2;
-                this.damage.novaMinByTP = this.minValues[i] / this.cost;
-                this.damage.novaMaxByTP = this.maxValues[i] / this.cost;
-                this.damage.novaAvgByTP = (this.minValues[i] + this.maxValues[i]) / 2 / this.cost;
+                this.damage.novaMinByTP = effect.min / this.cost;
+                this.damage.novaMaxByTP = effect.max / this.cost;
+                this.damage.novaAvgByTP = (effect.min + effect.max) / 2 / this.cost;
             }
         }
 
@@ -177,8 +175,14 @@ export class Chip {
         return LS.arrayMap(LS.getChips(entity), (chipId: number) => chips[chipId]);
     }
 
-    static getChipsOfType(chipType: ChipType, entity: number = enemy.id): Chip[] {
-        return LS.arrayFilter(Chip.getChipsOf(entity), chip => LS.inArray(chip.types, chipType));
+    /**
+     * Get entity chips of type
+     * @param effect searched type of chip
+     * @param entity target
+     * @returns array of Chip
+     */
+    static getChipsOfType(effect: Effect, entity: number = enemy.id): Chip[] {
+        return LS.arrayFilter(Chip.getChipsOf(entity), chip => LS.inArray(LS.arrayMap(chip.effects, e => e.type), effect));
     }
 
     static haveChipEquipped(chipId: number, entity: number = enemy.id): boolean {

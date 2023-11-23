@@ -1,6 +1,6 @@
 import { LS } from "../../globaux/ls";
 import { findFirst } from "../utils";
-import { Chip } from "./chip";
+import { Chip } from "./chip/chip";
 import { Weapon } from "./weapon";
 
 export class Effect {
