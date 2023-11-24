@@ -27,23 +27,23 @@ export class Chip {
     type: number;
     damage: Damage;
 
-    constructor(id: number) {
+    constructor(id: number, level: number, teamCooldown: boolean, initialCooldown: number, template: number, type: number) {
         this.id = id;
         this.name = LS.getChipName(id);
-        this.level = 1;
+        this.level = level;
         this.minRange = LS.getChipMinRange(id);
         this.maxRange = LS.getChipMaxRange(id);
         this.launchType = launchTypeToAoeType(LS.getChipLaunchType(id));
-        this.effects = LS.arrayMap(LS.getEffects(), (effect: number[]) => new ChipEffect(effect));
+        this.effects = LS.arrayMap(LS.getChipEffects(id), (effect: number[]) => new ChipEffect(effect));
         this.cost = LS.getChipCost(id);
         this.aoeType = areaToAoeType(LS.getChipArea(id));
         this.aoeSize = areaToAoeSize(LS.getChipArea(id));
         this.cooldown = LS.getChipCooldown(id);
         this.los = LS.chipNeedLos(id);
-        this.teamCooldown = false;
-        this.initialCooldown = 0;
-        this.template = 0;
-        this.type = 0;
+        this.teamCooldown = teamCooldown;
+        this.initialCooldown = initialCooldown;
+        this.template = template;
+        this.type = type;
         this.damage = new Damage();
     }
 

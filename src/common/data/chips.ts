@@ -3,395 +3,188 @@ import { LS } from "../../globaux/ls";
 import { Chip } from "../class/chip/chip";
 
 export const SHOCK: Chip = new Chip(
-	LS.CHIP_SHOCK,
-	[ChipType.STRENGTH],
-	LS.getChipCost(LS.CHIP_SHOCK),
-	[7],
-	[9],
-	LS.getChipCooldown(LS.CHIP_SHOCK),
-	[Stat.STRENGTH],
-	[],
-	0,
-	LS.getChipMinRange(LS.CHIP_SHOCK),
-	LS.getChipMaxRange(LS.CHIP_SHOCK),
-	AoeType.CIRCLE,
-	AoeType.POINT,
-	0,
-	LS.chipNeedLos(LS.CHIP_SHOCK)
+	LS.CHIP_SHOCK, // id
+	2, // level
+	false, // team cooldown
+	0, // initial cooldown
+	0, // template
+	1 // type
 )
 export const BANDAGE: Chip = new Chip(
-	LS.CHIP_BANDAGE,
-	[ChipType.HEAL],
-	LS.getChipCost(LS.CHIP_BANDAGE),
-	[13],
-	[18],
-	LS.getChipCooldown(LS.CHIP_BANDAGE),
-	[Stat.WISDOM],
-	[],
-	0,
-	LS.getChipMinRange(LS.CHIP_BANDAGE),
-	LS.getChipMaxRange(LS.CHIP_BANDAGE),
-	AoeType.CIRCLE,
-	AoeType.POINT,
-	0,
-	LS.chipNeedLos(LS.CHIP_BANDAGE)
+	LS.CHIP_BANDAGE, // id
+	3, // level
+	false, // team cooldown
+	0, // initial cooldown
+	0, // template
+	2 // type
 )
 export const PEBBLE: Chip = new Chip(
-	LS.CHIP_PEBBLE,
-	[ChipType.STRENGTH],
-	LS.getChipCost(LS.CHIP_PEBBLE),
-	[2],
-	[34],
-	LS.getChipCooldown(LS.CHIP_PEBBLE),
-	[Stat.STRENGTH],
-	[],
-	0,
-	LS.getChipMinRange(LS.CHIP_PEBBLE),
-	LS.getChipMaxRange(LS.CHIP_PEBBLE),
-	AoeType.CIRCLE,
-	AoeType.POINT,
-	0,
-	LS.chipNeedLos(LS.CHIP_PEBBLE)
+	LS.CHIP_PEBBLE, // id
+	4, // level
+	false, // team cooldown
+	0, // initial cooldown
+	0, // template
+	1 // type
 )
 export const PROTEIN: Chip = new Chip(
-	LS.CHIP_PROTEIN,
-	[ChipType.BUFF],
-	LS.getChipCost(LS.CHIP_PROTEIN),
-	[80],
-	[100],
-	LS.getChipCooldown(LS.CHIP_PROTEIN),
-	[],
-	[Stat.STRENGTH],
-	2,
-	LS.getChipMinRange(LS.CHIP_PROTEIN),
-	LS.getChipMaxRange(LS.CHIP_PROTEIN),
-	AoeType.CIRCLE,
-	AoeType.POINT,
-	0,
-	LS.chipNeedLos(LS.CHIP_PROTEIN)
+	LS.CHIP_PROTEIN, // id
+	6, // level
+	false, // team cooldown
+	0, // initial cooldown
+	0, // template
+	38 // type
 )
 export const ICE: Chip = new Chip(
-	LS.CHIP_ICE,
-	[ChipType.STRENGTH],
-	LS.getChipCost(LS.CHIP_ICE),
-	[17],
-	[19],
-	LS.getChipCooldown(LS.CHIP_ICE),
-	[Stat.STRENGTH],
-	[],
-	0,
-	LS.getChipMinRange(LS.CHIP_ICE),
-	LS.getChipMaxRange(LS.CHIP_ICE),
-	AoeType.CIRCLE,
-	AoeType.POINT,
-	0,
-	LS.chipNeedLos(LS.CHIP_ICE)
+	LS.CHIP_ICE, // id
+	9, // level
+	false, // team cooldown
+	0, // initial cooldown
+	0, // template
+	1 // type
 )
 export const HELMET: Chip = new Chip(
-	LS.CHIP_HELMET,
-	[ChipType.ABSOLUTE],
-	LS.getChipCost(LS.CHIP_HELMET),
-	[15],
-	[15],
-	LS.getChipCooldown(LS.CHIP_HELMET),
-	[Stat.RESISTANCE],
-	[],
-	2,
-	LS.getChipMinRange(LS.CHIP_HELMET),
-	LS.getChipMaxRange(LS.CHIP_HELMET),
-	AoeType.CIRCLE,
-	AoeType.POINT,
-	0,
-	LS.chipNeedLos(LS.CHIP_HELMET)
+	LS.CHIP_HELMET, // id
+	10, // level
+	false, // team cooldown
+	0, // initial cooldown
+	0, // template
+	6 // type
 )
 export const ROCK: Chip = new Chip(
-	LS.CHIP_ROCK,
-	[ChipType.STRENGTH],
-	LS.getChipCost(LS.CHIP_ROCK),
-	[38],
-	[39],
-	LS.getChipCooldown(LS.CHIP_ROCK),
-	[Stat.RESISTANCE],
-	[],
-	2,
-	LS.getChipMinRange(LS.CHIP_ROCK),
-	LS.getChipMaxRange(LS.CHIP_ROCK),
-	AoeType.CIRCLE,
-	AoeType.POINT,
-	0,
-	LS.chipNeedLos(LS.CHIP_ROCK)
+	LS.CHIP_ROCK, // id
+	13, // level
+	false, // team cooldown
+	0, // initial cooldown
+	0, // template
+	1 // type
 )
 export const MOTIVATION: Chip = new Chip(
-	LS.CHIP_MOTIVATION,
-	[ChipType.BUFF],
-	LS.getChipCost(LS.CHIP_MOTIVATION),
-	[3],
-	[3],
-	LS.getChipCooldown(LS.CHIP_MOTIVATION),
-	[],
-	[Stat.TP],
-	2,
-	LS.getChipMinRange(LS.CHIP_MOTIVATION),
-	LS.getChipMaxRange(LS.CHIP_MOTIVATION),
-	AoeType.CIRCLE,
-	AoeType.POINT,
-	0,
-	LS.chipNeedLos(LS.CHIP_MOTIVATION)
+	LS.CHIP_MOTIVATION, // id
+	14, // level
+	false, // team cooldown
+	0, // initial cooldown
+	0, // template
+	32 // type
 )
 export const STRETCHING: Chip = new Chip(
-	LS.CHIP_STRETCHING,
-	[ChipType.BUFF],
-	LS.getChipCost(LS.CHIP_STRETCHING),
-	[80],
-	[100],
-	LS.getChipCooldown(LS.CHIP_STRETCHING),
-	[],
-	[Stat.AGILITY],
-	2,
-	LS.getChipMinRange(LS.CHIP_STRETCHING),
-	LS.getChipMaxRange(LS.CHIP_STRETCHING),
-	AoeType.CIRCLE,
-	AoeType.POINT,
-	0,
-	LS.chipNeedLos(LS.CHIP_STRETCHING)
+	LS.CHIP_STRETCHING, // id
+	17, // level
+	false, // team cooldown
+	0, // initial cooldown
+	0, // template
+	41 // type
 )
 export const WALL: Chip = new Chip(
-	LS.CHIP_WALL,
-	[ChipType.RELATIVE],
-	LS.getChipCost(LS.CHIP_WALL),
-	[5],
-	[6],
-	LS.getChipCooldown(LS.CHIP_WALL),
-	[Stat.RESISTANCE],
-	[],
-	2,
-	LS.getChipMinRange(LS.CHIP_WALL),
-	LS.getChipMaxRange(LS.CHIP_WALL),
-	AoeType.CIRCLE,
-	AoeType.POINT,
-	0,
-	LS.chipNeedLos(LS.CHIP_WALL)
+	LS.CHIP_WALL, // id
+	18, // level
+	false, // team cooldown
+	0, // initial cooldown
+	0, // template
+	5 // type
 )
 export const SPARK: Chip = new Chip(
-	LS.CHIP_SPARK,
-	[ChipType.STRENGTH],
-	LS.getChipCost(LS.CHIP_SPARK),
-	[8],
-	[16],
-	LS.getChipCooldown(LS.CHIP_SPARK),
-	[Stat.STRENGTH],
-	[],
-	0,
-	LS.getChipMinRange(LS.CHIP_SPARK),
-	LS.getChipMaxRange(LS.CHIP_SPARK),
-	AoeType.CIRCLE,
-	AoeType.POINT,
-	0,
-	LS.chipNeedLos(LS.CHIP_SPARK)
+	LS.CHIP_SPARK, // id
+	19, // level
+	false, // team cooldown
+	0, // initial cooldown
+	0, // template
+	1 // type
 )
 export const CURE: Chip = new Chip(
-	LS.CHIP_CURE,
-	[ChipType.HEAL],
-	LS.getChipCost(LS.CHIP_CURE),
-	[35],
-	[43],
-	LS.getChipCooldown(LS.CHIP_CURE),
-	[Stat.WISDOM],
-	[],
-	0,
-	LS.getChipMinRange(LS.CHIP_CURE),
-	LS.getChipMaxRange(LS.CHIP_CURE),
-	AoeType.CIRCLE,
-	AoeType.POINT,
-	0,
-	LS.chipNeedLos(LS.CHIP_CURE)
+	LS.CHIP_CURE, // id
+	20, // level
+	false, // team cooldown
+	0, // initial cooldown
+	0, // template
+	2 // type
 )
 export const LEATHER_BOOTS: Chip = new Chip(
-	LS.CHIP_LEATHER_BOOTS,
-	[ChipType.BUFF],
-	LS.getChipCost(LS.CHIP_LEATHER_BOOTS),
-	[2],
-	[2],
-	LS.getChipCooldown(LS.CHIP_LEATHER_BOOTS),
-	[],
-	[Stat.MP],
-	2,
-	LS.getChipMinRange(LS.CHIP_LEATHER_BOOTS),
-	LS.getChipMaxRange(LS.CHIP_LEATHER_BOOTS),
-	AoeType.CIRCLE,
-	AoeType.POINT,
-	0,
-	LS.chipNeedLos(LS.CHIP_LEATHER_BOOTS)
+	LS.CHIP_LEATHER_BOOTS, // id
+	22, // level
+	false, // team cooldown
+	0, // initial cooldown
+	0, // template
+	31 // type
 )
 export const FLASH: Chip = new Chip(
-	LS.CHIP_FLASH,
-	[ChipType.STRENGTH],
-	LS.getChipCost(LS.CHIP_FLASH),
-	[32],
-	[35],
-	LS.getChipCooldown(LS.CHIP_FLASH),
-	[Stat.STRENGTH],
-	[],
-	0,
-	LS.getChipMinRange(LS.CHIP_FLASH),
-	LS.getChipMaxRange(LS.CHIP_FLASH),
-	AoeType.PLUS,
-	AoeType.CIRCLE,
-	1,
-	LS.chipNeedLos(LS.CHIP_FLASH)
+	LS.CHIP_FLASH, // id
+	24, // level
+	false, // team cooldown
+	0, // initial cooldown
+	0, // template
+	1 // type
 )
 export const FLAME: Chip = new Chip(
-	LS.CHIP_FLAME,
-	[ChipType.STRENGTH],
-	LS.getChipCost(LS.CHIP_FLAME),
-	[29],
-	[31],
-	LS.getChipCooldown(LS.CHIP_FLAME),
-	[Stat.STRENGTH],
-	[],
-	0,
-	LS.getChipMinRange(LS.CHIP_FLAME),
-	LS.getChipMaxRange(LS.CHIP_FLAME),
-	AoeType.CIRCLE,
-	AoeType.POINT,
-	0,
-	LS.chipNeedLos(LS.CHIP_FLAME)
+	LS.CHIP_FLAME, // id
+	29, // level
+	false, // team cooldown
+	0, // initial cooldown
+	0, // template
+	1 // type
 )
 export const KNOWLEDGE: Chip = new Chip(
-	LS.CHIP_KNOWLEDGE,
-	[ChipType.BUFF],
-	LS.getChipCost(LS.CHIP_KNOWLEDGE),
-	[150],
-	[170],
-	LS.getChipCooldown(LS.CHIP_KNOWLEDGE),
-	[],
-	[Stat.WISDOM],
-	2,
-	LS.getChipMinRange(LS.CHIP_KNOWLEDGE),
-	LS.getChipMaxRange(LS.CHIP_KNOWLEDGE),
-	AoeType.CIRCLE,
-	AoeType.POINT,
-	0,
-	LS.chipNeedLos(LS.CHIP_KNOWLEDGE)
+	LS.CHIP_KNOWLEDGE, // id
+	32, // level
+	false, // team cooldown
+	0, // initial cooldown
+	0, // template
+	22 // type
 )
 export const ROCKFALL: Chip = new Chip(
-	LS.CHIP_ROCKFALL,
-	[ChipType.STRENGTH],
-	LS.getChipCost(LS.CHIP_ROCKFALL),
-	[50],
-	[58],
-	LS.getChipCooldown(LS.CHIP_ROCKFALL),
-	[Stat.STRENGTH],
-	[],
-	0,
-	LS.getChipMinRange(LS.CHIP_ROCKFALL),
-	LS.getChipMaxRange(LS.CHIP_ROCKFALL),
-	AoeType.CIRCLE,
-	AoeType.CIRCLE,
-	2,
-	LS.chipNeedLos(LS.CHIP_ROCKFALL)
+	LS.CHIP_ROCKFALL, // id
+	77, // level
+	false, // team cooldown
+	0, // initial cooldown
+	0, // template
+	1 // type
 )
 export const STALACTITE: Chip = new Chip(
-	LS.CHIP_STALACTITE,
-	[ChipType.STRENGTH],
-	LS.getChipCost(LS.CHIP_STALACTITE),
-	[64],
-	[67],
-	LS.getChipCooldown(LS.CHIP_STALACTITE),
-	[Stat.STRENGTH],
-	[],
-	0,
-	LS.getChipMinRange(LS.CHIP_STALACTITE),
-	LS.getChipMaxRange(LS.CHIP_STALACTITE),
-	AoeType.CIRCLE,
-	AoeType.POINT,
-	0,
-	LS.chipNeedLos(LS.CHIP_STALACTITE)
+	LS.CHIP_STALACTITE, // id
+	50, // level
+	false, // team cooldown
+	0, // initial cooldown
+	0, // template
+	1 // type
 )
 export const ICEBERG: Chip = new Chip(
-	LS.CHIP_ICEBERG,
-	[ChipType.STRENGTH],
-	LS.getChipCost(LS.CHIP_ICEBERG),
-	[82],
-	[90],
-	LS.getChipCooldown(LS.CHIP_ICEBERG),
-	[Stat.STRENGTH],
-	[],
-	0,
-	LS.getChipMinRange(LS.CHIP_ICEBERG),
-	LS.getChipMaxRange(LS.CHIP_ICEBERG),
-	AoeType.PLUS,
-	AoeType.CIRCLE,
-	2,
-	LS.chipNeedLos(LS.CHIP_ICEBERG)
+	LS.CHIP_ICEBERG, // id
+	100, // level
+	false, // team cooldown
+	0, // initial cooldown
+	0, // template
+	1 // type
 )
 export const TOXIN: Chip = new Chip(
-	LS.CHIP_TOXIN,
-	[ChipType.POISON],
-	LS.getChipCost(LS.CHIP_TOXIN),
-	[25],
-	[35],
-	LS.getChipCooldown(LS.CHIP_TOXIN),
-	[Stat.MAGIC],
-	[],
-	3,
-	LS.getChipMinRange(LS.CHIP_TOXIN),
-	LS.getChipMaxRange(LS.CHIP_TOXIN),
-	AoeType.CIRCLE,
-	AoeType.CIRCLE,
-	2,
-	LS.chipNeedLos(LS.CHIP_TOXIN)
+	LS.CHIP_TOXIN, // id
+	125, // level
+	false, // team cooldown
+	0, // initial cooldown
+	0, // template
+	6 // type
 )
 export const TRANQUILIZER: Chip = new Chip(
-	LS.CHIP_TRANQUILIZER,
-	[ChipType.DEBUFF],
-	LS.getChipCost(LS.CHIP_TRANQUILIZER),
-	[0.3],
-	[0.4],
-	LS.getChipCooldown(LS.CHIP_TRANQUILIZER),
-	[Stat.MAGIC],
-	[Stat.TP],
-	1,
-	LS.getChipMinRange(LS.CHIP_TRANQUILIZER),
-	LS.getChipMaxRange(LS.CHIP_TRANQUILIZER),
-	AoeType.CIRCLE,
-	AoeType.CIRCLE,
-	1,
-	LS.chipNeedLos(LS.CHIP_TRANQUILIZER)
+	LS.CHIP_TRANQUILIZER, // id
+	65, // level
+	false, // team cooldown
+	0, // initial cooldown
+	0, // template
+	18 // type
 )
 export const VENOM: Chip = new Chip(
-	LS.CHIP_VENOM,
-	[ChipType.POISON],
-	LS.getChipCost(LS.CHIP_VENOM),
-	[15],
-	[20],
-	LS.getChipCooldown(LS.CHIP_VENOM),
-	[Stat.MAGIC],
-	[],
-	3,
-	LS.getChipMinRange(LS.CHIP_VENOM),
-	LS.getChipMaxRange(LS.CHIP_VENOM),
-	AoeType.CIRCLE,
-	AoeType.POINT,
-	0,
-	LS.chipNeedLos(LS.CHIP_VENOM)
+	LS.CHIP_VENOM, // id
+	42, // level
+	false, // team cooldown
+	0, // initial cooldown
+	0, // template
+	6 // type
 )
 export const LIBERATION: Chip = new Chip(
-	LS.CHIP_LIBERATION,
-	[ChipType.DEBUFF],
-	LS.getChipCost(LS.CHIP_LIBERATION),
-	[60],
-	[60],
-	LS.getChipCooldown(LS.CHIP_LIBERATION),
-	[],
-	[],
-	0,
-	LS.getChipMinRange(LS.CHIP_LIBERATION),
-	LS.getChipMaxRange(LS.CHIP_LIBERATION),
-	AoeType.CIRCLE,
-	AoeType.POINT,
-	0,
-	LS.chipNeedLos(LS.CHIP_LIBERATION)
+	LS.CHIP_LIBERATION, // id
+	60, // level
+	false, // team cooldown
+	0, // initial cooldown
+	0, // template
+	9 // type
 )
 
 export const chips: Chip[] = [SHOCK, BANDAGE, PEBBLE, PROTEIN, ICE, HELMET, ROCK, MOTIVATION, STRETCHING, WALL, SPARK, CURE, LEATHER_BOOTS, FLASH, FLAME, KNOWLEDGE, ROCKFALL, STALACTITE, ICEBERG, TOXIN, TRANQUILIZER, VENOM, LIBERATION];
