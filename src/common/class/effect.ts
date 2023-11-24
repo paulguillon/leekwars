@@ -1,7 +1,7 @@
 import { LS } from "../../globaux/ls";
 import { findFirst } from "../utils";
-import { Chip } from "./chip/chip";
-import { Weapon } from "./weapon";
+import { Chip } from "./item/chip";
+import { Weapon } from "./item/weapon";
 
 export class Effect {
 	type: number;

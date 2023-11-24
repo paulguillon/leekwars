@@ -1,6 +1,6 @@
 import {LS} from "../../../globaux/ls";
 
-export class ChipEffect {
+export class ItemEffect {
     id: number;
     min: number;
     max: number;

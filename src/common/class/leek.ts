@@ -1,6 +1,6 @@
 import { LS } from "../../globaux/ls";
-import { Chip } from "./chip/chip";
-import { Weapon } from "./weapon";
+import { Chip } from "./item/chip";
+import { Weapon } from "./item/weapon";
 import {enemy} from "../vars";
 import {Cell} from "./cell";
 

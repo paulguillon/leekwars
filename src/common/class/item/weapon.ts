@@ -1,47 +1,36 @@
-import { AoeType, Stat, WeaponType } from "../../globaux/enums";
-import { LS } from "../../globaux/ls";
-import { enemy, field, myLeek } from "../vars";
-import { Cell } from "./cell";
-import { findFirst } from "../utils";
-import { weapons } from "../data/weapons";
-import { Leek } from "./leek";
-import { Damage } from "./damage";
+import { AoeType, Stat, WeaponType } from "../../../globaux/enums";
+import { LS } from "../../../globaux/ls";
+import { enemy, field, myLeek } from "../../vars";
+import { Cell } from "../cell";
+import { findFirst } from "../../utils";
+import { weapons } from "../../data/weapons";
+import { Leek } from "../leek";
+import { Damage } from "../damage";
+import { ItemEffect } from "./itemEffect";
+import { Item } from "./item";
+import { areaToAoeSize, areaToAoeType, launchTypeToAoeType } from "../../mapping";
 
-export class Weapon {
-	id: number;
-	name: string;
-	types: WeaponType[];
-	cost: number;
-	minValues: number[];
-	maxValues: number[];
-	sourceStat: Stat[];
-	targetStat: Stat[];
-	duration: number;
-	stackable: boolean;
-	minRange: number;
-	maxRange: number;
-	launchType: AoeType;
-	aoeType: AoeType;
-	aoeSize: number;
-	damage: Damage;
+export class Weapon extends Item{
+	passive: ItemEffect[];
+	item: number;
 
-	constructor(id: number, name: string, types: WeaponType[], cost: number, minValues: number[], maxValues: number[], sourceStat: Stat[], targetStat: Stat[], duration: number, stackable: boolean, minRange: number, maxRange: number, launchType: AoeType, aoeType: AoeType, aoeSize: number) {
-		this.id = id;
-		this.name = name;
-		this.types = types;
-		this.cost = cost;
-		this.minValues = minValues;
-		this.maxValues = maxValues;
-		this.sourceStat = sourceStat;
-		this.targetStat = targetStat;
-		this.duration = duration;
-		this.stackable = stackable;
-		this.minRange = minRange;
-		this.maxRange = maxRange;
-		this.launchType = launchType;
-		this.aoeType = aoeType;
-		this.aoeSize = aoeSize;
-		this.damage = new Damage();
+	constructor(id: number, level: number, template: number, item: number) {
+		super(
+			id, 
+			LS.getWeaponName(id), 
+			level, 
+			LS.getWeaponMinRange(id), 
+			LS.getWeaponMaxRange(id), 
+			launchTypeToAoeType(LS.getWeaponLaunchType(id)), 
+			LS.arrayMap(LS.getWeaponEffects(id), (effect: number[]) => new ItemEffect(effect)), 
+			LS.getWeaponCost(id),
+            areaToAoeType(LS.getWeaponArea(id)), 
+            areaToAoeSize(LS.getWeaponArea(id)), 
+            LS.weaponNeedLos(id), 
+            template
+		);
+		this.passive = LS.arrayMap(LS.getWeaponPassiveEffects(id), (effect: number[]) => new ItemEffect(effect));
+		this.item = item;
 	}
 
 	use(caster: number = myLeek.id, target: number = enemy.id) {

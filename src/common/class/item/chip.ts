@@ -1,51 +1,41 @@
-import { AoeType, ChipType, Effect } from "../../../globaux/enums";
+import { AoeType, Effect } from "../../../globaux/enums";
 import { LS } from "../../../globaux/ls";
 import { findFirst } from "../../utils";
 import { enemy, field, myLeek } from "../../vars";
 import { Cell } from "../cell";
 import { chips } from "../../data/chips";
 import { Damage } from "../damage";
-import {ChipEffect} from "./chipEffect";
-import {areaToAoeSize, areaToAoeType, launchTypeToAoeType} from "../../mapping";
+import { ItemEffect } from "./itemEffect";
+import { Item } from "./item";
+import { areaToAoeSize, areaToAoeType, launchTypeToAoeType } from "../../mapping";
 
-export class Chip {
-    id: number;
-    name: string;
-    level: number;
-    minRange: number;
-    maxRange: number;
-    launchType: AoeType;
-    effects: ChipEffect[];
-    cost: number;
-    aoeType: AoeType;
-    aoeSize: number;
+export class Chip extends Item {
     cooldown: number;
-    los: boolean;
     teamCooldown: boolean;
     initialCooldown: number;
-    template: number;
     type: number;
-    damage: Damage;
 
-    constructor(id: number, level: number, teamCooldown: boolean, initialCooldown: number, template: number, type: number) {
-        this.id = id;
-        this.name = LS.getChipName(id);
-        this.level = level;
-        this.minRange = LS.getChipMinRange(id);
-        this.maxRange = LS.getChipMaxRange(id);
-        this.launchType = launchTypeToAoeType(LS.getChipLaunchType(id));
-        this.effects = LS.arrayMap(LS.getChipEffects(id), (effect: number[]) => new ChipEffect(effect));
-        this.cost = LS.getChipCost(id);
-        this.aoeType = areaToAoeType(LS.getChipArea(id));
-        this.aoeSize = areaToAoeSize(LS.getChipArea(id));
-        this.cooldown = LS.getChipCooldown(id);
-        this.los = LS.chipNeedLos(id);
-        this.teamCooldown = teamCooldown;
-        this.initialCooldown = initialCooldown;
-        this.template = template;
-        this.type = type;
-        this.damage = new Damage();
-    }
+    
+	constructor(id: number, level: number, template: number, cooldown: number, teamCooldown: boolean, initialCooldown: number, type: number) {
+		super(
+            id, 
+            LS.getChipName(id), 
+            level, 
+            LS.getChipMinRange(id), 
+            LS.getChipMaxRange(id), 
+            launchTypeToAoeType(LS.getChipLaunchType(id)), 
+            LS.arrayMap(LS.getChipEffects(id), (effect: number[]) => new ItemEffect(effect)), 
+            LS.getChipCost(id), 
+            areaToAoeType(LS.getChipArea(id)), 
+            areaToAoeSize(LS.getChipArea(id)), 
+            LS.chipNeedLos(id), 
+            template
+        );
+		this.cooldown = cooldown;
+		this.teamCooldown = teamCooldown;
+		this.initialCooldown = initialCooldown;
+		this.type = type;
+	}
 
     canMoveToUse(caster: number = myLeek.id, target: number = enemy.id) {
         if (LS.getCooldown(this.id)) return null;
@@ -89,7 +79,7 @@ export class Chip {
         if (LS.getCooldown(this.id)) return LS.USE_INVALID_COOLDOWN;
         if (LS.getTP() < this.cost) return LS.USE_NOT_ENOUGH_TP;
 
-        if(!cellToUseChipOn) {
+        if (!cellToUseChipOn) {
             cellToUseChipOn = field[LS.getCell(target)];
         }
         return LS.useChipOnCell(this.id, cellToUseChipOn.number);
@@ -161,12 +151,12 @@ export class Chip {
         this.damage.strengthMax = calculateDmg(this.damage.strengthMax);
         this.damage.strengthAvg = (this.damage.strengthMin + this.damage.strengthMax) / 2;
 
-		this.damage.totalMin = this.damage.strengthMin + this.damage.poisonMin;
-		this.damage.totalMax = this.damage.strengthMax + this.damage.poisonMax;
-		this.damage.totalAvg = this.damage.strengthAvg + this.damage.poisonAvg;
-		this.damage.totalMinByTP = this.damage.strengthMinByTP + this.damage.poisonMinByTP;
-		this.damage.totalMaxByTP = this.damage.strengthMaxByTP + this.damage.poisonMaxByTP;
-		this.damage.totalAvgByTP = this.damage.strengthAvgByTP + this.damage.poisonAvgByTP;
+        this.damage.totalMin = this.damage.strengthMin + this.damage.poisonMin;
+        this.damage.totalMax = this.damage.strengthMax + this.damage.poisonMax;
+        this.damage.totalAvg = this.damage.strengthAvg + this.damage.poisonAvg;
+        this.damage.totalMinByTP = this.damage.strengthMinByTP + this.damage.poisonMinByTP;
+        this.damage.totalMaxByTP = this.damage.strengthMaxByTP + this.damage.poisonMaxByTP;
+        this.damage.totalAvgByTP = this.damage.strengthAvgByTP + this.damage.poisonAvgByTP;
 
         return this.damage;
     }
