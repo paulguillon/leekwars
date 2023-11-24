@@ -55,6 +55,8 @@ export class Chip extends Item {
     bestCellToUseChipOn(caster: number, target: number) {
         if (LS.getTP() < this.cost) return null;
         if (LS.getCooldown(this.id)) return null;
+        const targetCell: Cell = field[LS.getCell(target)];
+        if (LS.canUseChip(this.id, target)) return targetCell;
 
         const launchCells: Cell[] = Cell.getCellsByArea(field[LS.getCell(caster)], this.launchType, this.minRange, this.maxRange);
         if (!LS.count(launchCells)) return null;
@@ -68,7 +70,7 @@ export class Chip extends Item {
 
         const cellsToHitTarget: Cell[] = LS.arrayFilter(launchCellsWithLos, (cell: Cell) => {
             const aoeCells: Cell[] = Cell.getCellsByArea(cell, this.aoeType, 0, this.aoeSize);
-            return aoeCells.includes(field[LS.getCell(target)]);
+            return aoeCells.includes(targetCell);
         });
         if (!LS.count(cellsToHitTarget)) return null;
 
