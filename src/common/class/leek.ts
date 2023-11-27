@@ -16,7 +16,7 @@ export class Leek {
         this.id = entityId;
         this.name = LS.getName(entityId);
         this.level = LS.getLevel(entityId);
-        this.weapons = Weapon.getTargetWeapons(entityId);
+        this.weapons = LS.arrayMap(LS.getWeapons(this.id), weaponId => Weapon.getById(weaponId));
         this.chips = Chip.getChipsOf(entityId);
         this.weapon = this.weapons[0];
     }
@@ -44,6 +44,15 @@ export class Leek {
     }
     resistance() {
         return LS.getResistance(this.id);
+    }
+    absolute() {
+        return LS.getAbsoluteShield(this.id);
+    }
+    relative() {
+        return LS.getRelativeShield(this.id);
+    }
+    science() {
+        return LS.getScience(this.id);
     }
     magic() {
         return LS.getMagic(this.id);

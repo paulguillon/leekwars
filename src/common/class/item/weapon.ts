@@ -1,11 +1,10 @@
-import { AoeType, Stat, WeaponType } from "../../../globaux/enums";
+import { AoeType, Type } from "../../../globaux/enums";
 import { LS } from "../../../globaux/ls";
 import { enemy, field, myLeek } from "../../vars";
 import { Cell } from "../cell";
 import { findFirst } from "../../utils";
 import { weapons } from "../../data/weapons";
 import { Leek } from "../leek";
-import { Damage } from "../damage";
 import { ItemEffect } from "./itemEffect";
 import { Item } from "./item";
 import { areaToAoeSize, areaToAoeType, launchTypeToAoeType } from "../../mapping";
@@ -22,15 +21,19 @@ export class Weapon extends Item{
 			LS.getWeaponMinRange(id), 
 			LS.getWeaponMaxRange(id), 
 			launchTypeToAoeType(LS.getWeaponLaunchType(id)), 
-			LS.arrayMap(LS.getWeaponEffects(id), (effect: number[]) => new ItemEffect(effect)), 
+			LS.arrayMap(LS.getWeaponEffects(id), (itemEffect: number[]) => new ItemEffect(itemEffect)), 
 			LS.getWeaponCost(id),
             areaToAoeType(LS.getWeaponArea(id)), 
             areaToAoeSize(LS.getWeaponArea(id)), 
             LS.weaponNeedLos(id), 
             template
 		);
-		this.passive = LS.arrayMap(LS.getWeaponPassiveEffects(id), (effect: number[]) => new ItemEffect(effect));
+		this.passive = LS.arrayMap(LS.getWeaponPassiveEffects(id), (passive: number[]) => new ItemEffect(passive));
 		this.item = item;
+	}
+
+	static getById(weaponId: number) {
+		return findFirst(weapons, weapon => weapon.id == weaponId);
 	}
 
 	use(caster: number = myLeek.id, target: number = enemy.id) {
@@ -89,20 +92,12 @@ export class Weapon extends Item{
 		return Cell.getClosestCellPathTo(cells, myLeek.id);
 	}
 
-	static getTargetWeapons(targetId: number): Weapon[] {
-		return LS.arrayMap(LS.getWeapons(targetId), (weaponId: number) => weapons[weaponId]);
-	}
-
 	static hasWeaponEquipped(target: Leek, weaponId: number): boolean {
 		return !!findFirst(LS.getWeapons(target.id), (id: number) => id == weaponId);
 	}
 
-	hasWeaponType(weaponType: WeaponType): boolean {
-		return LS.inArray(this.types, weaponType);
-	}
-
-	isCurrentlyEquippedOn(holder: Leek): boolean {
-		return LS.getWeapon(holder.id) == this.id;
+	hasWeaponEffect(searchedType: Type): boolean {
+		return !!findFirst(this.itemEffects, itemEffect => itemEffect.type == searchedType);
 	}
 
 	/**
@@ -111,41 +106,38 @@ export class Weapon extends Item{
 	 * @param target Cible
 	 * @returns Dégats de l'arme
 	 */
-	getWeaponDamage(source: number = myLeek.id, target: number = enemy.id) {
-		const strength: number = LS.search(this.types, WeaponType.STRENGTH);
-		const poison: number = LS.search(this.types, WeaponType.POISON);
-		const nova: number = LS.search(this.types, WeaponType.NOVA);
-
-		if (strength > -1) {
-			const multiplier: number = (LS.getStrength(source) / 100 + 1) * (LS.getPower(source) / 100 + 1)
-			const relative: number = (1 - LS.getRelativeShield(target) / 100);
-			const absolute: number = LS.getAbsoluteShield(target);
-			const calculateDmg: Function = (base) => LS.round(base * multiplier * relative - absolute);
-			
-			this.damage.strengthMin = calculateDmg(this.minValues[strength]);
-			this.damage.strengthMax = calculateDmg(this.maxValues[strength]);
-			this.damage.strengthAvg = (this.damage.strengthMin + this.damage.strengthMax) / 2;
-			this.damage.strengthMinByTP = this.minValues[strength] / this.cost;
-			this.damage.strengthMaxByTP = this.maxValues[strength] / this.cost;
-			this.damage.strengthAvgByTP = (this.minValues[strength] + this.maxValues[strength]) / 2 / this.cost;
-		}
-		if (poison > -1) {
-			const formula: number = (LS.getMagic(source) / 100 + 1) * (LS.getPower(source) / 100 + 1);
-			this.damage.poisonMin = LS.round(this.minValues[poison] * formula);
-			this.damage.poisonMax = LS.round(this.maxValues[poison] * formula);
-			this.damage.poisonAvg = (this.damage.poisonMin + this.damage.poisonMax) / 2;
-			this.damage.poisonMinByTP = this.minValues[poison] / this.cost;
-			this.damage.poisonMaxByTP = this.maxValues[poison] / this.cost;
-			this.damage.poisonAvgByTP = (this.minValues[poison] + this.maxValues[poison]) / 2 / this.cost;
-		}
-		if (nova > -1) {
-			const formula: Function = (value: number) => LS.min(LS.getTotalLife(target) - LS.getLife(target), value * (LS.getScience(source) / 100 + 1) * (LS.getPower(source) / 100 + 1));
-			this.damage.novaMin = LS.round(formula(this.minValues[nova]));
-			this.damage.novaMax = LS.round(formula(this.maxValues[nova]));
-			this.damage.novaAvg = (this.damage.novaMin + this.damage.novaMax) / 2;
-			this.damage.novaMinByTP = this.minValues[nova] / this.cost;
-			this.damage.novaMaxByTP = this.maxValues[nova] / this.cost;
-			this.damage.novaAvgByTP = (this.minValues[nova] + this.maxValues[nova]) / 2 / this.cost;
+	getWeaponDamage(source: Leek = myLeek, target: Leek = enemy) {
+		
+		for (const effect of this.itemEffects) {
+			if (effect.type == Type.DAMAGE) {
+				const multiplier: number = (source.strength() / 100 + 1) * (source.power() / 100 + 1)
+				const relative: number = (1 - target.relative() / 100);
+				const absolute: number = target.absolute();
+				const calculateDmg: Function = (base) => LS.round(base * multiplier * relative - absolute);
+				
+				this.damage.strengthMin = calculateDmg(effect.min);
+				this.damage.strengthMax = calculateDmg(effect.max);
+				this.damage.strengthAvg = (this.damage.strengthMin + this.damage.strengthMax) / 2;
+				this.damage.strengthMinByTP = effect.min / this.cost;
+				this.damage.strengthMaxByTP = effect.max / this.cost;
+				this.damage.strengthAvgByTP = (effect.min + effect.max) / 2 / this.cost;
+			} else if (effect.type == Type.POISON) {
+				const formula: number = (source.magic() / 100 + 1) * (source.power() / 100 + 1);
+				this.damage.poisonMin = LS.round(effect.min * formula);
+				this.damage.poisonMax = LS.round(effect.max * formula);
+				this.damage.poisonAvg = (this.damage.poisonMin + this.damage.poisonMax) / 2;
+				this.damage.poisonMinByTP = effect.min / this.cost;
+				this.damage.poisonMaxByTP = effect.max / this.cost;
+				this.damage.poisonAvgByTP = (effect.min + effect.max) / 2 / this.cost;
+			} else if (effect.type == Type.NOVA_DAMAGE) {
+				const formula: Function = (value: number) => LS.min(target.totalLife() - target.life(), value * (source.science() / 100 + 1) * (source.power() / 100 + 1));
+				this.damage.novaMin = LS.round(formula(effect.min));
+				this.damage.novaMax = LS.round(formula(effect.max));
+				this.damage.novaAvg = (this.damage.novaMin + this.damage.novaMax) / 2;
+				this.damage.novaMinByTP = effect.min / this.cost;
+				this.damage.novaMaxByTP = effect.max / this.cost;
+				this.damage.novaAvgByTP = (effect.min + effect.max) / 2 / this.cost;
+			}
 		}
 
 		this.damage.totalMin = this.damage.strengthMin + this.damage.poisonMin;

@@ -9,7 +9,7 @@ export class Item {
     minRange: number;
     maxRange: number;
     launchType: AoeType;
-    effects: ItemEffect[];
+    itemEffects: ItemEffect[];
     cost: number;
     aoeType: AoeType;
     aoeSize: number;
@@ -17,14 +17,14 @@ export class Item {
     template: number;
     damage: Damage;
 
-    constructor(id: number, name: string, level: number, minRange: number, maxRange: number, launchType: AoeType, effects: ItemEffect[], cost: number, aoeType: AoeType, aoeSize: number, los: boolean, template: number) {
+    constructor(id: number, name: string, level: number, minRange: number, maxRange: number, launchType: AoeType, itemEffects: ItemEffect[], cost: number, aoeType: AoeType, aoeSize: number, los: boolean, template: number) {
         this.id = id;
         this.name = name;
         this.level = level;
         this.minRange = minRange;
         this.maxRange = maxRange;
         this.launchType = launchType;
-        this.effects = effects;
+        this.itemEffects = itemEffects;
         this.cost = cost;
         this.aoeType = aoeType;
         this.aoeSize = aoeSize;

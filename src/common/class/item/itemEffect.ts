@@ -1,7 +1,7 @@
+import { Type } from "../../../globaux/enums";
 import {LS} from "../../../globaux/ls";
 
 export class ItemEffect {
-    id: number;
     min: number;
     max: number;
     turns: number;
@@ -15,10 +15,10 @@ export class ItemEffect {
     hitCaster: boolean;
     notReplaceable: boolean;
     irreductible: boolean;
-    type: number;
+    type: Type;
 
     constructor(effect: number[]) {
-        this.id = effect[0];
+        this.type = effect[0];
         this.min = effect[1];
         this.max = effect[2];
         this.turns = effect[3];
@@ -46,7 +46,5 @@ export class ItemEffect {
         this.notReplaceable = LS.inArray([8, 9, 10, 11, 12, 13, 14 , 15, 24, 25, 26, 27, 28 , 29, 30, 31], modifiers);
         //16
         this.irreductible = modifiers >= 16;
-
-        this.type = effect[6];
     }
 }

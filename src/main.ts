@@ -1,9 +1,9 @@
 import { LS } from "./globaux/ls";
+import { ICEBERG, LIBERATION, PROTEIN, ROCKFALL, STALACTITE } from "./common/data/chips";
+import { enemy, myLeek, searchEnemy } from "./common/vars";
 import { Effect } from "./common/class/effect";
 import { Move } from "./common/class/move";
 import { distanceTo, pathDistanceBetween } from "./common/utils";
-import { enemy, myLeek, searchEnemy } from "./common/vars";
-import { ICEBERG, LIBERATION, PROTEIN, ROCKFALL, STALACTITE } from "./common/data/chips";
 import { AXE, BAZOOKA } from "./common/data/weapons";
 import { Damage } from "./common/class/damage";
 import { Cell } from "./common/class/cell";
@@ -68,6 +68,10 @@ for (const weapon of myLeek.weapons) {
 LS.useChip(LS.CHIP_WARM_UP);
 
 if (myLeek.lifePercent() < 25) {
+    LS.useChip(LS.CHIP_REMISSION);
+}
+
+if (myLeek.lifePercent() < 25) {
     if (!LS.getCooldown(LS.CHIP_REGENERATION)) {
         LS.useChip(LS.CHIP_REGENERATION);
     } else {
@@ -94,12 +98,11 @@ if (distanceTo(enemy.id) > 7) {
     }
 }
 
-LS.useChip(LS.CHIP_SOLIDIFICATION);
-
 if (distanceTo(enemy.id) < 20 && enemy.strength() > 149) {
-    LS.useChip(LS.CHIP_ARMOR);
-    LS.useChip(LS.CHIP_SHIELD);
     LS.useChip(LS.CHIP_WALL);
+    LS.useChip(LS.CHIP_SHIELD);
+    LS.useChip(LS.CHIP_ARMOR);
+    LS.useChip(LS.CHIP_FORTRESS);
 }
 
 if (distanceTo(enemy.id) in [...Array(10).keys()] && myLeek.tp() > 10) {
@@ -108,10 +111,21 @@ if (distanceTo(enemy.id) in [...Array(10).keys()] && myLeek.tp() > 10) {
     LS.useChip(LS.CHIP_STEROID);
 }
 
-myLeek.changeWeapon(BAZOOKA);
+myLeek.changeWeapon(AXE);
 
-if (myLeek.tp() > 9 && Effect.getEffectsOfTypeAmount(enemy.id, LS.EFFECT_ABSOLUTE_SHIELD, 2) > 100) {
+if (Effect.getEffectsOfTypeAmount(enemy.id, LS.EFFECT_ABSOLUTE_SHIELD, 2) > 100 && Effect.getEffectsOfTypeAmount(enemy.id, LS.EFFECT_RELATIVE_SHIELD, 2) > 20) {
     LIBERATION.moveAndUse();
+}
+
+if(pathDistanceBetween(myLeek.id, enemy.id) <= myLeek.mp()) {
+    myLeek.moveAndAttack();
+    myLeek.attack();
+    myLeek.attack();
+} else {
+    ICEBERG.moveAndUse();
+    STALACTITE.moveAndUse();
+    ROCKFALL.moveAndUse();
+    Move.hideToward();
 }
 
 if (pathDistanceBetween(myLeek.id, enemy.id) > myLeek.mp()) {
@@ -119,14 +133,6 @@ if (pathDistanceBetween(myLeek.id, enemy.id) > myLeek.mp()) {
 } else {
     LS.moveToward(enemy.id);
 }
-
-ICEBERG.moveAndUse();
-STALACTITE.moveAndUse();
-ROCKFALL.moveAndUse();
-
-myLeek.moveAndAttack();
-myLeek.moveAndAttack();
-myLeek.moveAndAttack();
 
 LS.useChip(LS.CHIP_SERUM);
 

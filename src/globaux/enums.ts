@@ -10,46 +10,7 @@ export enum AoeType {
     STARINVERTED
 }
 
-export enum ChipType {
-    STRENGTH,
-    NOVA,
-    HEAL,
-    BUFF,
-    DEBUFF,
-    ABSOLUTE,
-    RELATIVE,
-    POISON,
-    SPIKE,
-    SUMMON,
-    MOVEMENT
-}
-
-export enum WeaponType {
-    STRENGTH,
-    NOVA,
-    HEAL,
-    BUFF,
-    DEBUFF,
-    ABSOLUTE,
-    RELATIVE,
-    POISON,
-    PASSIVE
-}
-
-export enum Stat {
-    HP,
-    STRENGTH,
-    WISDOM,
-    AGILITY,
-    RESISTANCE,
-    SCIENCE,
-    MAGIC,
-    MP,
-    TP,
-    NONE
-}
-
-export enum Effect {
+export enum Type {
     ABSOLUTE_SHIELD = 6,
     ABSOLUTE_VULNERABILITY = 27,
     AFTEREFFECT = 25,

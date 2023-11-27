@@ -1,10 +1,9 @@
-import { AoeType, Effect } from "../../../globaux/enums";
+import { AoeType, Type } from "../../../globaux/enums";
 import { LS } from "../../../globaux/ls";
 import { findFirst } from "../../utils";
 import { enemy, field, myLeek } from "../../vars";
 import { Cell } from "../cell";
 import { chips } from "../../data/chips";
-import { Damage } from "../damage";
 import { ItemEffect } from "./itemEffect";
 import { Item } from "./item";
 import { areaToAoeSize, areaToAoeType, launchTypeToAoeType } from "../../mapping";
@@ -13,10 +12,10 @@ export class Chip extends Item {
     cooldown: number;
     teamCooldown: boolean;
     initialCooldown: number;
-    type: number;
+    type: Type;
 
     
-	constructor(id: number, level: number, template: number, cooldown: number, teamCooldown: boolean, initialCooldown: number, type: number) {
+	constructor(id: number, level: number, teamCooldown: boolean, initialCooldown: number, template: number, type: number) {
 		super(
             id, 
             LS.getChipName(id), 
@@ -24,17 +23,21 @@ export class Chip extends Item {
             LS.getChipMinRange(id), 
             LS.getChipMaxRange(id), 
             launchTypeToAoeType(LS.getChipLaunchType(id)), 
-            LS.arrayMap(LS.getChipEffects(id), (effect: number[]) => new ItemEffect(effect)), 
+            LS.arrayMap(LS.getChipEffects(id), (chipEffect: number[]) => new ItemEffect(chipEffect)), 
             LS.getChipCost(id), 
             areaToAoeType(LS.getChipArea(id)), 
             areaToAoeSize(LS.getChipArea(id)), 
             LS.chipNeedLos(id), 
             template
         );
-		this.cooldown = cooldown;
+		this.cooldown = LS.getChipCooldown(id);
 		this.teamCooldown = teamCooldown;
 		this.initialCooldown = initialCooldown;
 		this.type = type;
+	}
+
+	static getById(chipId: number) {
+		return findFirst(chips, chip => chip.id == chipId);
 	}
 
     canMoveToUse(caster: number = myLeek.id, target: number = enemy.id) {
@@ -113,12 +116,12 @@ export class Chip extends Item {
         LS.useChip(this.id, target);
     }
 
-    hasChipType(searchedEffect: Effect): boolean {
-        return !!findFirst(this.effects, effect => effect.type == searchedEffect);
+    hasChipType(searchedType: Type): boolean {
+        return !!findFirst(this.itemEffects, effect => effect.type == searchedType);
     }
 
     getChipDamage(source: number, target: number): Object {
-        for (const effect of this.effects) {
+        for (const effect of this.itemEffects) {
             if (effect.type == LS.EFFECT_DAMAGE) {
                 this.damage.strengthMin += effect.min;
                 this.damage.strengthMax += effect.max;
@@ -164,17 +167,17 @@ export class Chip extends Item {
     }
 
     static getChipsOf(entity: number = enemy.id): Chip[] {
-        return LS.arrayMap(LS.getChips(entity), (chipId: number) => chips[chipId]);
+        return LS.arrayMap(LS.getChips(entity), (chipId: number) => Chip.getById(chipId));
     }
 
     /**
      * Get entity chips of type
-     * @param effect searched type of chip
+     * @param type searched type of chip
      * @param entity target
      * @returns array of Chip
      */
-    static getChipsOfType(effect: Effect, entity: number = enemy.id): Chip[] {
-        return LS.arrayFilter(Chip.getChipsOf(entity), chip => LS.inArray(LS.arrayMap(chip.effects, e => e.type), effect));
+    static getChipsOfType(type: Type, entity: number = enemy.id): Chip[] {
+        return LS.arrayFilter(Chip.getChipsOf(entity), chip => LS.inArray(LS.arrayMap(chip.itemEffects, itemEffect => itemEffect.type), type));
     }
 
     static haveChipEquipped(chipId: number, entity: number = enemy.id): boolean {

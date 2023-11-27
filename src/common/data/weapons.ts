@@ -1,4 +1,3 @@
-import { AoeType, Stat, WeaponType } from "../../globaux/enums";
 import { LS } from "../../globaux/ls";
 import { Weapon } from "../class/item/weapon";
 

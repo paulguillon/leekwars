@@ -118,7 +118,7 @@ export const refactoEnum = (code: string) => {
     enumCode.match(/export enum \w+? \{/g)?.forEach(enumStatement => {
         const enumName = enumStatement.substring(12, enumStatement.length - 2);
         enums.push(enumName);
-        const startEnumIndex = enumCode.indexOf(enumName) + enumName.length + 2;
+        const startEnumIndex = enumCode.indexOf(enumStatement) + enumStatement.length;
         const endEnumIndex = enumCode.indexOf("}", startEnumIndex);
         const enumBloc = enumCode.substring(startEnumIndex, endEnumIndex);
 
