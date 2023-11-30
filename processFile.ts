@@ -123,10 +123,18 @@ export const refactoEnum = (code: string) => {
         const enumBloc = enumCode.substring(startEnumIndex, endEnumIndex);
 
         let i = 0;
-        enumBloc.match(/\n {4}\w+/g)?.forEach(enumLine => {
-            const enumValue = enumLine.substring(5);
+        enumBloc.match(/[^,]+/g)?.forEach(enumLine => {
+            // Remove spaces for split
+            const enumLineWithoutSpaces = enumLine.replace(/\s+/g,'');
 
-            code = `global ${enumName}_${enumValue} = ${i++};\n` + code;
+            let enumKey = enumLineWithoutSpaces;
+            let enumValue = '' + i++;
+
+            if (enumLine.includes('=')) {
+                [enumKey, enumValue] = enumLineWithoutSpaces.split('=');
+            }
+
+            code = `global ${enumName}_${enumKey} = ${enumValue};\n` + code;
         });
     });
 

@@ -7,6 +7,7 @@ import { distanceTo, pathDistanceBetween } from "./common/utils";
 import { AXE, BAZOOKA } from "./common/data/weapons";
 import { Damage } from "./common/class/damage";
 import { Cell } from "./common/class/cell";
+import { Weapon } from "./common/class/item/weapon";
 
 /*
  * Stat : 200 agility, 400 strength, 5 MP, 18 TP, 200 resistance and 200 wisdom then full HP
@@ -20,9 +21,10 @@ if (distanceTo(enemy.id) > myLeek.mp() || enemy.life() > 1200) {
 
 LS.useChip(LS.CHIP_ADRENALINE);
 
+let weaponsThatCanKill = new Map<number, Weapon>();
+
 // Test if can kill with any weapon
 for (const weapon of myLeek.weapons) {
-
     let currentTP: number = myLeek.tp();
 
     if (myLeek.weapon !== weapon) {
@@ -31,37 +33,40 @@ for (const weapon of myLeek.weapons) {
 
     const nbUses: number = LS.floor(currentTP / weapon.cost);
 
-    const canUseProtein: boolean = currentTP % weapon.cost >= PROTEIN.cost && !LS.getCooldown(LS.CHIP_PROTEIN);
-
     const canMove: Cell | null = weapon.canMoveToUse();
 
     if (!canMove) continue;
 
-    if (canUseProtein) {
-        LS.useChip(LS.CHIP_PROTEIN);
-    }
-
     const weaponDmg: Damage = weapon.getWeaponDamage();
 
+    LS.debug("Arme : " + weapon.name);
     LS.debug("Nombres de tirs : " + nbUses);
-    LS.debug("Dégats min : " + weaponDmg.strengthMin);
     LS.debug("Dégats avg : " + weaponDmg.strengthAvg);
-    LS.debug("Dégats max : " + weaponDmg.strengthMax);
-    LS.debug("Total min : " + nbUses * weaponDmg.strengthMin);
     LS.debug("Total avg : " + nbUses * weaponDmg.strengthAvg);
-    LS.debug("Total max : " + nbUses * weaponDmg.strengthMax);
 
     const canKill: boolean = enemy.life() <= weaponDmg.strengthAvg * nbUses;
 
     if (canKill) {
-        LS.debug("C'est CIAO !");
+        weaponsThatCanKill[weaponDmg.totalAvg] = weapon;
+    }
+}
 
-        myLeek.changeWeapon(weapon);
+if (!LS.mapIsEmpty(weaponsThatCanKill)) {
+    LS.debug("Les armes qui peuvent tuer : " + weaponsThatCanKill);
+    const rankedAvgDmgDesc = LS.arraySort(LS.mapKeys(weaponsThatCanKill), (a, b) => b - a);
+    const highestDamageWeapon = weaponsThatCanKill[rankedAvgDmgDesc[0]];
 
-        while (myLeek.tp() >= weapon.cost && !enemy.isDead()) {
-            myLeek.moveAndAttack()
-        }
-        break;
+    LS.debug("Best weapon : " + highestDamageWeapon.name);
+    LS.debug("C'est CIAO !");
+    
+    myLeek.changeWeapon(highestDamageWeapon);
+
+    if (myLeek.tp() % highestDamageWeapon.cost >= PROTEIN.cost) {
+        PROTEIN.use();
+    }
+    
+    while (myLeek.tp() >= highestDamageWeapon.cost && !enemy.isDead()) {
+        myLeek.moveAndAttack();
     }
 }
 

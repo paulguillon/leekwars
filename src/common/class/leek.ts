@@ -83,8 +83,9 @@ export class Leek {
 
     moveAndAttack(target: number = enemy.id) {
         const cell: Cell | null = this.weapon.canMoveToUse(this.id, target);
-
-        if (cell && LS.canUseWeapon(this.id, target)) {
+        LS.debug("move and attack : " + cell);
+        if (cell) {
+            LS.moveTowardCell(cell.number);
             LS.useWeaponOnCell(cell.number);
         }
     }

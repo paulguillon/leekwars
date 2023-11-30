@@ -87,7 +87,14 @@ export class Chip extends Item {
         if (!cellToUseChipOn) {
             cellToUseChipOn = field[LS.getCell(target)];
         }
-        return LS.useChipOnCell(this.id, cellToUseChipOn.number);
+
+        if (!LS.canUseChipOnCell(this.id, cellToUseChipOn.number)) return LS.USE_INVALID_POSITION;
+
+        const result: number = LS.useChipOnCell(this.id, cellToUseChipOn.number);
+
+        LS.debug(this.name + " : " + result);
+        
+        return result;
     }
 
     moveAndUse(caster: number = myLeek.id, target: number = enemy.id) {

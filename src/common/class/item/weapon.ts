@@ -109,7 +109,7 @@ export class Weapon extends Item{
 	getWeaponDamage(source: Leek = myLeek, target: Leek = enemy) {
 		
 		for (const effect of this.itemEffects) {
-			if (effect.type == Type.DAMAGE) {
+			if (effect.type === Type.DAMAGE) {
 				const multiplier: number = (source.strength() / 100 + 1) * (source.power() / 100 + 1)
 				const relative: number = (1 - target.relative() / 100);
 				const absolute: number = target.absolute();
@@ -121,7 +121,7 @@ export class Weapon extends Item{
 				this.damage.strengthMinByTP = effect.min / this.cost;
 				this.damage.strengthMaxByTP = effect.max / this.cost;
 				this.damage.strengthAvgByTP = (effect.min + effect.max) / 2 / this.cost;
-			} else if (effect.type == Type.POISON) {
+			} else if (effect.type === Type.POISON) {
 				const formula: number = (source.magic() / 100 + 1) * (source.power() / 100 + 1);
 				this.damage.poisonMin = LS.round(effect.min * formula);
 				this.damage.poisonMax = LS.round(effect.max * formula);
@@ -129,7 +129,7 @@ export class Weapon extends Item{
 				this.damage.poisonMinByTP = effect.min / this.cost;
 				this.damage.poisonMaxByTP = effect.max / this.cost;
 				this.damage.poisonAvgByTP = (effect.min + effect.max) / 2 / this.cost;
-			} else if (effect.type == Type.NOVA_DAMAGE) {
+			} else if (effect.type === Type.NOVA_DAMAGE) {
 				const formula: Function = (value: number) => LS.min(target.totalLife() - target.life(), value * (source.science() / 100 + 1) * (source.power() / 100 + 1));
 				this.damage.novaMin = LS.round(formula(effect.min));
 				this.damage.novaMax = LS.round(formula(effect.max));
