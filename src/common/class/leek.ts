@@ -70,6 +70,7 @@ export class Leek {
 
     changeWeapon(weapon: Weapon) {
         if (this.weapon != weapon) {
+            LS.debug("Changement d'arme pour " + weapon.name);
             this.weapon = weapon;
             LS.setWeapon(weapon.id);
         }

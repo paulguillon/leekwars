@@ -73,7 +73,7 @@ export class Chip extends Item {
 
         const cellsToHitTarget: Cell[] = LS.arrayFilter(launchCellsWithLos, (cell: Cell) => {
             const aoeCells: Cell[] = Cell.getCellsByArea(cell, this.aoeType, 0, this.aoeSize);
-            return aoeCells.includes(targetCell);
+            return LS.inArray(aoeCells, targetCell);
         });
         if (!LS.count(cellsToHitTarget)) return null;
 

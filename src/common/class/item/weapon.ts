@@ -149,4 +149,8 @@ export class Weapon extends Item{
 
 		return this.damage;
 	}
+
+	string() {
+		return this.name;
+	}
 }

@@ -1,13 +1,13 @@
 import { LS } from "./globaux/ls";
-import { ICEBERG, LIBERATION, PROTEIN, ROCKFALL, STALACTITE } from "./common/data/chips";
 import { enemy, myLeek, searchEnemy } from "./common/vars";
 import { Effect } from "./common/class/effect";
 import { Move } from "./common/class/move";
 import { distanceTo, pathDistanceBetween } from "./common/utils";
-import { AXE, BAZOOKA } from "./common/data/weapons";
 import { Damage } from "./common/class/damage";
 import { Cell } from "./common/class/cell";
 import { Weapon } from "./common/class/item/weapon";
+import { AXE, BAZOOKA } from "./common/data/weapons";
+import { ICEBERG, LIBERATION, PROTEIN, ROCKFALL, STALACTITE } from "./common/data/chips";
 
 /*
  * Stat : 200 agility, 400 strength, 5 MP, 18 TP, 200 resistance and 200 wisdom then full HP
@@ -39,6 +39,7 @@ for (const weapon of myLeek.weapons) {
 
     const weaponDmg: Damage = weapon.getWeaponDamage();
 
+    LS.debug("--------------------------");
     LS.debug("Arme : " + weapon.name);
     LS.debug("Nombres de tirs : " + nbUses);
     LS.debug("Dégats avg : " + weaponDmg.strengthAvg);
@@ -72,9 +73,6 @@ if (!LS.mapIsEmpty(weaponsThatCanKill)) {
 
 LS.useChip(LS.CHIP_WARM_UP);
 
-if (myLeek.lifePercent() < 25) {
-    LS.useChip(LS.CHIP_REMISSION);
-}
 
 if (myLeek.lifePercent() < 25) {
     if (!LS.getCooldown(LS.CHIP_REGENERATION)) {
@@ -84,6 +82,10 @@ if (myLeek.lifePercent() < 25) {
         LS.useChip(LS.CHIP_SERUM);
         Move.hide(false);
     }
+}
+
+if (myLeek.lifePercent() < 25) {
+    LS.useChip(LS.CHIP_REMISSION);
 }
 
 // Liberation if poisoned
@@ -118,7 +120,7 @@ if (distanceTo(enemy.id) in [...Array(10).keys()] && myLeek.tp() > 10) {
 
 myLeek.changeWeapon(AXE);
 
-if (Effect.getEffectsOfTypeAmount(enemy.id, LS.EFFECT_ABSOLUTE_SHIELD, 2) > 100 && Effect.getEffectsOfTypeAmount(enemy.id, LS.EFFECT_RELATIVE_SHIELD, 2) > 20) {
+if (Effect.getEffectsOfTypeAmount(enemy.id, LS.EFFECT_ABSOLUTE_SHIELD, 2) > 100 || Effect.getEffectsOfTypeAmount(enemy.id, LS.EFFECT_RELATIVE_SHIELD, 2) > 20) {
     LIBERATION.moveAndUse();
 }
 
@@ -166,4 +168,8 @@ if (enemy.isDead()) {
     STALACTITE.moveAndUse(myLeek.id, other);
     ROCKFALL.moveAndUse(myLeek.id, other);
     myLeek.moveAndAttack(other);
+}
+
+if (myLeek.lifePercent() < 100) {
+    LS.useChip(LS.CHIP_REMISSION);
 }
