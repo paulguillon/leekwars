@@ -54,7 +54,7 @@ export class Weapon extends Item{
 		const casterCell: Cell = field[LS.getCell(caster)];
 		const targetCellNumber: number = LS.getCell(target);
 
-		if (LS.canUseChip(this.id, target)) return casterCell;
+		if (LS.canUseWeapon(this.id, target)) return casterCell;
 
 		const cellsToGo: Cell[] = Cell.getCellsByArea(casterCell, AoeType.CIRCLE, 0, LS.getMP(caster), true);
 

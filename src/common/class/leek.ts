@@ -3,6 +3,7 @@ import { Chip } from "./item/chip";
 import { Weapon } from "./item/weapon";
 import {enemy} from "../vars";
 import {Cell} from "./cell";
+import { RHINO } from "../data/weapons";
 
 export class Leek {
     id: number;
@@ -18,7 +19,7 @@ export class Leek {
         this.level = LS.getLevel(entityId);
         this.weapons = LS.arrayMap(LS.getWeapons(this.id), weaponId => Weapon.getById(weaponId));
         this.chips = Chip.getChipsOf(entityId);
-        this.weapon = this.weapons[0];
+        this.weapon = RHINO;
     }
 
     life() {

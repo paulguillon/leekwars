@@ -70,18 +70,18 @@ export class Cell {
                     if (LS.abs(x) + LS.abs(y) < min) continue;
                     let cell: Cell | null = Cell.getCellFromCoordinates(center.x + x, center.y + y);
                     if (!cell || cell.type == LS.CELL_OBSTACLE) continue;
-                    LS.push(cells, cell);
+                    cells.push(cell);
                 }
             }
         } else if (aoeType == AoeType.PLUS) {
             for (let xy = -max; xy <= max; xy++) {
                 const cell1: Cell | null = Cell.getCellFromCoordinates(center.x + xy, center.y);
                 if (cell1 && LS.getCellDistance(center.number, cell1.number) >= min && cell1.type != LS.CELL_OBSTACLE) {
-                    LS.push(cells, cell1);
+                    cells.push(cell1);
                 }
                 const cell2: Cell | null = Cell.getCellFromCoordinates(center.x, center.y + xy);
                 if (cell2 && LS.getCellDistance(center.number, cell2.number) >= min && cell2.type != LS.CELL_OBSTACLE) {
-                    LS.push(cells, cell2);
+                    cells.push(cell2);
                 }
             }
 
@@ -90,11 +90,14 @@ export class Cell {
                 for (let y = -max; y <= max; y++) {
                     const cell: Cell | null = Cell.getCellFromCoordinates(center.x + x, center.y + y);
                     if (!cell || LS.abs(x) < min && LS.abs(y) < min || cell.type == LS.CELL_OBSTACLE) continue;
-                    LS.push(cells, cell);
+                    cells.push(cell);
                 }
             }
+        } else if (aoeType == AoeType.CROSS) {
+            const cellNumbers: number[] = LS.getCellsToUseWeapon(LS.WEAPON_BAZOOKA, enemy.id);
+            LS.arrayIter(cellNumbers, number => cells.push(field[number]));
         } else if (aoeType == AoeType.POINT) {
-            LS.push(cells, center);
+            cells.push(center);
         }
 
         if (!path) return cells;
