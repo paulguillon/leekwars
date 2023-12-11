@@ -73,6 +73,7 @@ if (!LS.mapIsEmpty(weaponsThatCanKill)) {
     myLeek.attack();
     myLeek.attack();
     myLeek.attack();
+    myLeek.attack();
 }
 
 LS.useChip(LS.CHIP_WARM_UP);
@@ -144,12 +145,14 @@ if (cell && myLeek.tp() > BAZOOKA.cost) {
 
     LS.useWeapon(enemy.id);
     LS.useWeapon(enemy.id);
+    LS.useWeapon(enemy.id);
 }
 
 if(pathDistanceBetween(myLeek.id, enemy.id) <= myLeek.mp()) {
     myLeek.changeWeapon(AXE);
 
     myLeek.moveAndAttack();
+    myLeek.attack();
     myLeek.attack();
     myLeek.attack();
     myLeek.attack();
@@ -175,7 +178,12 @@ if (
 
     if (rhinoDamage.strengthAvg > 150 || myLeek.lifePercent() > 75) {
         myLeek.changeWeapon(RHINO);
-        RHINO.moveAndUse();
+        myLeek.moveAndAttack();
+        myLeek.attack();
+        myLeek.attack();
+        myLeek.attack();
+        myLeek.attack();
+        myLeek.attack();
     }
 }
 
@@ -185,6 +193,10 @@ if (enemy.isDead()) {
         LS.moveToward(enemy.id);
     }
     myLeek.moveAndAttack();
+    myLeek.attack();
+    myLeek.attack();
+    myLeek.attack();
+    myLeek.attack();
     myLeek.attack();
     Move.hideToward();
 } else if (myLeek.tp() > 4) {
