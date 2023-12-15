@@ -19,7 +19,7 @@ export class Leek {
         this.level = LS.getLevel(entityId);
         this.weapons = LS.arrayMap(LS.getWeapons(this.id), weaponId => Weapon.getById(weaponId));
         this.chips = Chip.getChipsOf(entityId);
-        this.weapon = RHINO;
+        this.weapon = this.weapons[0];
     }
 
     life() {

@@ -1,5 +1,5 @@
-import {AoeType} from "../globaux/enums";
-import {LS} from "../globaux/ls";
+import { AoeType } from "../globaux/enums";
+import { LS } from "../globaux/ls";
 
 export function launchTypeToAoeType(launchType: number): AoeType {
     if (launchType == LS.LAUNCH_TYPE_LINE) return AoeType.LASER;
