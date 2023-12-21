@@ -1,25 +1,17 @@
-import { LS } from "../../globaux/ls";
-import { Chip } from "./item/chip";
-import { Weapon } from "./item/weapon";
-import {enemy} from "../vars";
-import {Cell} from "./cell";
-import { RHINO } from "../data/weapons";
+import { LS } from "../../../globaux/ls";
+import { Weapon } from "../item/weapon";
+import { enemy } from "../../vars";
+import { Cell } from "../cell";
+import { Entity } from "./entity";
 
-export class Leek {
-    id: number;
-    name: string;
-    level: number;
+export class Leek extends Entity {
     weapons: Weapon[];
-    chips: Chip[];
     weapon: Weapon;
 
-    constructor(entityId: number) {
-        this.id = entityId;
-        this.name = LS.getName(entityId);
-        this.level = LS.getLevel(entityId);
+    constructor(leekId: number) {
+        super(leekId);
         this.weapons = LS.arrayMap(LS.getWeapons(this.id), weaponId => Weapon.getById(weaponId));
-        this.chips = Chip.getChipsOf(entityId);
-        this.weapon = RHINO;
+        this.weapon = this.weapons[0];
     }
 
     life() {
@@ -57,6 +49,15 @@ export class Leek {
     }
     magic() {
         return LS.getMagic(this.id);
+    }
+    frequency() {
+        return LS.getFrequency(this.id);
+    }
+    cores() {
+        return LS.getCores(this.id);
+    }
+    ram() {
+        return LS.getRAM(this.id);
     }
     mp() {
         return LS.getMP(this.id);

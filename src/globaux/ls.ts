@@ -2074,6 +2074,16 @@ export class LS {
     static ENTITY_LEEK: number;
 
     /**
+     * <p><h1>ENTITY_MOB</h1></p>
+     * <p><b>id</b>: 301</p>
+     * <p><b>value:</b> 5</p>
+     * <p><b>type:</b> 1</p>
+     * <p><b>category:</b> 5</p>
+     */
+    // @ts-ignore
+    static ENTITY_MOB: number;
+
+    /**
      * <p><h1>ENTITY_TURRET</h1></p>
      * <p><b>id</b>: 193</p>
      * <p><b>value:</b> 3</p>
@@ -3978,6 +3988,15 @@ export class LS {
     static getCooldown = (_chip: number, _entity?: number): number => { };
 
     /**
+     * <h1><a href="https://leekwars.com/encyclopedia/fr/getCores">getCores</a></h1>
+     * <p><b>id : </b>197</p>
+     * <p><b>description : </b>TODO</p>
+     * <p><b>operations : </b>15</p>
+     */
+        // @ts-ignore
+    static getCores = (entity?: number): number => { };
+
+    /**
      * <p><b>id : </b>323</p>
      * <p><b>name : </b>getDamageReturn</p>
      * <p><b>description : </b>TODO</p>
@@ -4426,6 +4445,15 @@ export class LS {
      */
     // @ts-ignore
     static getPreviousPlayer = (): number => { };
+
+    /**
+     * <h1><a href="https://leekwars.com/encyclopedia/fr/getRAM">getRAM</a></h1>
+     * <p><b>id : </b>452</p>
+     * <p><b>description : </b>TODO</p>
+     * <p><b>operations : </b>1</p>
+     */
+        // @ts-ignore
+    static getRAM = (entity: number): number => { };
 
     /**
      * <p><b>id : </b>227</p>

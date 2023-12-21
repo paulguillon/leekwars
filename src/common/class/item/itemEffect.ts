@@ -1,4 +1,3 @@
-import { Type } from "../../../globaux/enums";
 import {LS} from "../../../globaux/ls";
 
 export class ItemEffect {
@@ -15,7 +14,7 @@ export class ItemEffect {
     hitCaster: boolean;
     notReplaceable: boolean;
     irreductible: boolean;
-    type: Type;
+    type: number;
 
     constructor(effect: number[]) {
         this.type = effect[0];

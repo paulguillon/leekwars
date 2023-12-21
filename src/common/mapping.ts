@@ -5,7 +5,6 @@ export function launchTypeToAoeType(launchType: number): AoeType {
     if (launchType == LS.LAUNCH_TYPE_LINE) return AoeType.LASER;
     if (launchType == LS.LAUNCH_TYPE_LINE_INVERTED) return AoeType.LASER;
     if (launchType == LS.LAUNCH_TYPE_DIAGONAL) return AoeType.CROSS;
-    if (launchType == LS.LAUNCH_TYPE_DIAGONAL_INVERTED) return AoeType.CROSSINVERTED;
     if (launchType == LS.LAUNCH_TYPE_STAR) return AoeType.STAR;
     if (launchType == LS.LAUNCH_TYPE_STAR_INVERTED) return AoeType.STARINVERTED;
     return AoeType.CIRCLE;

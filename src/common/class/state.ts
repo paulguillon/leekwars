@@ -1,4 +1,5 @@
-import { Leek } from "./leek";
+import { LS } from "../../globaux/ls";
+import { Leek } from "./entity/leek";
 
 export class State {
 	me: Leek;
@@ -7,5 +8,9 @@ export class State {
 	constructor(me: Leek, enemy: Leek) {
 		this.me = me;
 		this.enemy = enemy;
+	}
+
+	aliveLeeks() {
+		return LS.arrayMap(LS.getAliveEnemies(), id => new Leek(id));
 	}
 }

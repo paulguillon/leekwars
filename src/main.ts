@@ -8,10 +8,11 @@ import { Cell } from "./common/class/cell";
 import { Weapon } from "./common/class/item/weapon";
 import { AXE, BAZOOKA, RHINO } from "./common/data/weapons";
 import { ICEBERG, LIBERATION, PROTEIN, ROCKFALL, STALACTITE } from "./common/data/chips";
+import { Chip } from "./common/class/item/chip";
 
 /*
- * Stat : 200 agility, 400 strength, 5 MP, 18 TP, 200 resistance and 200 wisdom then full HP
- * Chips :  wall, fortress, shield, armor, motiv, adrenaline, solidification/antidote, steroid, protein, liberation, regen, stalactite, iceberg, rockfall, armoring, serum
+ * Stat : 400 agility, 400 strength, 5 MP, 18 TP, 200 resistance, 2 cores, 1 ram and 300 wisdom then full HP
+ * Chips :  wall, fortress, shield, motiv, adrenaline, solidification/antidote, steroid, protein, liberation, regen, stalactite, iceberg, rockfall, armoring, serum, covetousness, mirror, elevation
  * Weapons : unstable destroyer, axe, bazooka, rhino
  */
 
@@ -19,7 +20,9 @@ if (distanceTo(enemy.id) > myLeek.mp() || enemy.life() > 1200) {
     LS.useChip(LS.CHIP_WARM_UP);
 }
 
-LS.setWeapon(myLeek.weapon.id);
+if (!LS.getWeapon()) {
+    myLeek.changeWeapon(BAZOOKA);
+}
 
 LS.useChip(LS.CHIP_ADRENALINE);
 
@@ -78,7 +81,7 @@ if (!LS.mapIsEmpty(weaponsThatCanKill)) {
 LS.useChip(LS.CHIP_WARM_UP);
 
 
-if (myLeek.lifePercent() < 25) {
+if (myLeek.lifePercent() < 30) {
     if (!LS.getCooldown(LS.CHIP_REGENERATION)) {
         LS.useChip(LS.CHIP_REGENERATION);
     } else {
@@ -109,10 +112,10 @@ if (distanceTo(enemy.id) > 7) {
     }
 }
 
-if (distanceTo(enemy.id) < 20 && enemy.strength() > 149 && !(pathDistanceBetween(myLeek.id, enemy.id) <= myLeek.mp() && myLeek.lifePercent() > 85)) {
+if (distanceTo(enemy.id) < 20 && enemy.strength() > 249 && !(pathDistanceBetween(myLeek.id, enemy.id) <= myLeek.mp() && myLeek.lifePercent() > 80)) {
     LS.useChip(LS.CHIP_WALL);
     LS.useChip(LS.CHIP_SHIELD);
-    if (LS.getCooldown(LS.CHIP_LIBERATION, enemy.id)) {
+    if (!Chip.haveChipEquipped(LS.CHIP_LIBERATION) || LS.getCooldown(LS.CHIP_LIBERATION, enemy.id)) {
         LS.useChip(LS.CHIP_ARMOR);
         LS.useChip(LS.CHIP_FORTRESS);
     }
@@ -131,7 +134,7 @@ if(myLeek.lifePercent() <= 75) {
     myLeek.changeWeapon(AXE);
 }
 
-if (Effect.getEffectsOfTypeAmount(enemy.id, LS.EFFECT_ABSOLUTE_SHIELD, 2) > 100 || Effect.getEffectsOfTypeAmount(enemy.id, LS.EFFECT_RELATIVE_SHIELD, 2) > 20) {
+if (Effect.getEffectsOfTypeAmount(enemy.id, LS.EFFECT_ABSOLUTE_SHIELD, 2) > 150 || Effect.getEffectsOfTypeAmount(enemy.id, LS.EFFECT_RELATIVE_SHIELD, 2) > 30) {
     LIBERATION.moveAndUse();
 }
 
@@ -175,7 +178,12 @@ if (
 
     if (rhinoDamage.strengthAvg > 150 || myLeek.lifePercent() > 75) {
         myLeek.changeWeapon(RHINO);
-        RHINO.moveAndUse();
+        myLeek.moveAndAttack();
+        myLeek.attack();
+        myLeek.attack();
+        myLeek.attack();
+        myLeek.attack();
+        myLeek.attack();
     }
 }
 
@@ -186,6 +194,9 @@ if (enemy.isDead()) {
     }
     myLeek.moveAndAttack();
     myLeek.attack();
+    myLeek.attack();
+    myLeek.attack();
+    myLeek.attack();
     Move.hideToward();
 } else if (myLeek.tp() > 4) {
     var other = LS.getNearestEnemy();
@@ -193,9 +204,12 @@ if (enemy.isDead()) {
     STALACTITE.moveAndUse(myLeek.id, other);
     ROCKFALL.moveAndUse(myLeek.id, other);
     myLeek.moveAndAttack(other);
+    myLeek.attack(other);
+    myLeek.attack(other);
+    myLeek.attack(other);
 }
 
-if (myLeek.lifePercent() < 100) {
+if (myLeek.lifePercent() < 70) {
     LS.useChip(LS.CHIP_REMISSION);
 }
 
