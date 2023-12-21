@@ -161,7 +161,6 @@ if(pathDistanceBetween(myLeek.id, enemy.id) <= myLeek.mp()) {
     ICEBERG.moveAndUse();
     STALACTITE.moveAndUse();
     ROCKFALL.moveAndUse();
-    LIGHTNING.moveAndUse();
     LS.moveToward(enemy.id);
 }
 
@@ -205,7 +204,6 @@ if (enemy.isDead()) {
     ICEBERG.moveAndUse(myLeek.id, other);
     STALACTITE.moveAndUse(myLeek.id, other);
     ROCKFALL.moveAndUse(myLeek.id, other);
-    LIGHTNING.moveAndUse(myLeek.id, other);
     myLeek.moveAndAttack(other);
     myLeek.attack(other);
     myLeek.attack(other);
