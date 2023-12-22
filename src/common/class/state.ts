@@ -10,7 +10,10 @@ export class State {
 		this.enemy = enemy;
 	}
 
-	aliveLeeks() {
-		return LS.arrayMap(LS.getAliveEnemies(), id => new Leek(id));
+	static aliveLeeks() {
+		return LS.arrayMap(
+			LS.arrayFilter(LS.getAliveEnemies(), e => LS.getType(e) == LS.ENTITY_LEEK), 
+			id => new Leek(id)
+		);
 	}
 }

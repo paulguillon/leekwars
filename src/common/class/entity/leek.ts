@@ -1,6 +1,6 @@
 import { LS } from "../../../globaux/ls";
 import { Weapon } from "../item/weapon";
-import { enemy } from "../../vars";
+import { enemy, field } from "../../vars";
 import { Cell } from "../cell";
 import { Entity } from "./entity";
 
@@ -79,13 +79,20 @@ export class Leek extends Entity {
     }
 
     attack(target: number = enemy.id) {
+        if (!LS.isAlive(target)) return;
+        
         if (LS.canUseWeapon(this.weapon.id, target)) {
             LS.useWeapon(target);
         }
     }
 
     moveAndAttack(target: number = enemy.id) {
-        const cell: Cell | null = this.weapon.canMoveToUse(this.id, target);
+        if (!LS.isAlive(target)) return;
+
+        var cellsToUse = LS.arrayMap(LS.getCellsToUseWeapon(this.weapon.id, target), c => field[c]);
+        var closest = Cell.getClosestCellPathTo(cellsToUse, this.id);
+    
+        const cell: Cell | null = (closest && LS.getPathLength(closest.number, LS.getCell()) < this.mp()) ? closest : null;
         LS.debug("move and attack : " + cell);
         if (cell) {
             LS.moveTowardCell(cell.number);

@@ -7,7 +7,6 @@ import { weapons } from "../../data/weapons";
 import { Leek } from "../entity/leek";
 import { ItemEffect } from "./itemEffect";
 import { Item } from "./item";
-import { areaToAoeSize, areaToAoeType, launchTypeToAoeType } from "../../mapping";
 
 export class Weapon extends Item{
 	passive: ItemEffect[];
@@ -20,11 +19,10 @@ export class Weapon extends Item{
 			level, 
 			LS.getWeaponMinRange(id), 
 			LS.getWeaponMaxRange(id), 
-			launchTypeToAoeType(LS.getWeaponLaunchType(id)), 
+			LS.getWeaponLaunchType(id), 
 			LS.arrayMap(LS.getWeaponEffects(id), (itemEffect: number[]) => new ItemEffect(itemEffect)), 
 			LS.getWeaponCost(id),
-            areaToAoeType(LS.getWeaponArea(id)), 
-            areaToAoeSize(LS.getWeaponArea(id)), 
+            LS.getWeaponArea(id),
             LS.weaponNeedLos(id), 
             template
 		);

@@ -1,19 +1,19 @@
 import { LS } from "./globaux/ls";
-import { enemy, myLeek, searchEnemy } from "./common/vars";
+import { enemy, field, myLeek, searchEnemy } from "./common/vars";
 import { Effect } from "./common/class/effect";
 import { Move } from "./common/class/move";
 import { distanceTo, pathDistanceBetween } from "./common/utils";
 import { Damage } from "./common/class/damage";
 import { Cell } from "./common/class/cell";
 import { Weapon } from "./common/class/item/weapon";
-import { AXE, BAZOOKA, RHINO } from "./common/data/weapons";
+import { AXE, M_LASER, RHINO } from "./common/data/weapons";
 import { ICEBERG, LIBERATION, PROTEIN, ROCKFALL, STALACTITE } from "./common/data/chips";
 import { Chip } from "./common/class/item/chip";
 
 /*
  * Stat : 400 agility, 400 strength, 5 MP, 18 TP, 200 resistance, 2 cores, 1 ram and 300 wisdom then full HP
  * Chips :  wall, fortress, shield, motiv, adrenaline, solidification/antidote, steroid, protein, liberation, regen, stalactite, iceberg, rockfall, armoring, serum, covetousness, mirror, elevation
- * Weapons : unstable destroyer, axe, bazooka, rhino
+ * Weapons : unstable destroyer, axe, m laser, rhino
  */
 
 if (distanceTo(enemy.id) > myLeek.mp() || enemy.life() > 1200) {
@@ -21,7 +21,7 @@ if (distanceTo(enemy.id) > myLeek.mp() || enemy.life() > 1200) {
 }
 
 if (!LS.getWeapon()) {
-    myLeek.changeWeapon(BAZOOKA);
+    myLeek.changeWeapon(M_LASER);
 }
 
 LS.useChip(LS.CHIP_ADRENALINE);
@@ -37,16 +37,24 @@ for (const weapon of myLeek.weapons) {
     }
 
     const nbUses: number = LS.floor(currentTP / weapon.cost);
+    currentTP -= nbUses * weapon.cost;
 
-    const canMove: Cell | null = weapon.canMoveToUse();
+    // TODO rework canmovetouse
+    var cellsToUse = LS.arrayMap(LS.getCellsToUseWeapon(weapon.id, enemy.id), c => field[c]);
+    var closest = Cell.getClosestCellPathTo(cellsToUse, myLeek.id);
+
+    LS.debug("--------------------------");
+    LS.debug(weapon.name);
+    LS.debug("Nb uses : " + nbUses);
+    LS.debug("PA utilisés : " + (myLeek.tp() - currentTP));
+    LS.debug("PA restants : " + currentTP);
+    
+    const canMove: Cell | null = (closest && LS.getPathLength(closest.number, LS.getCell()) < myLeek.mp()) ? closest : null;
 
     if (!canMove) continue;
 
     const weaponDmg: Damage = weapon.getWeaponDamage();
 
-    LS.debug("--------------------------");
-    LS.debug("Arme : " + weapon.name);
-    LS.debug("Nombres de tirs : " + nbUses);
     LS.debug("Dégats avg : " + weaponDmg.strengthAvg);
     LS.debug("Total avg : " + nbUses * weaponDmg.strengthAvg);
 
@@ -68,7 +76,7 @@ if (!LS.mapIsEmpty(weaponsThatCanKill)) {
     myLeek.changeWeapon(highestDamageWeapon);
 
     if (myLeek.tp() % highestDamageWeapon.cost >= PROTEIN.cost) {
-        PROTEIN.use();
+        LS.useChip(LS.CHIP_PROTEIN);
     }
     
     myLeek.moveAndAttack();
@@ -99,12 +107,12 @@ if (myLeek.lifePercent() < 50) {
 // Liberation if poisoned
 if (Effect.getEffectOfType(myLeek.id, LS.EFFECT_POISON)) {
     const poisonAmount: number = Effect.getEffectsOfTypeAmount(myLeek.id, LS.EFFECT_POISON, 2);
-    if (poisonAmount > 250 && !LS.getCooldown(LS.CHIP_ANTIDOTE)) {
+    if (poisonAmount > 400 && !LS.getCooldown(LS.CHIP_ANTIDOTE)) {
         LS.useChip(LS.CHIP_ANTIDOTE);
     }
 }
 if (distanceTo(enemy.id) > 7) {
-    if (myLeek.tp() > 9 && !LS.getCooldown(LS.CHIP_KNOWLEDGE) && !LS.getCooldown(LS.CHIP_ARMORING) && (myLeek.lifePercent() > 2 / 3 || Effect.getEffectsOfTypeAmount(myLeek.id, LS.EFFECT_ABSOLUTE_SHIELD) > 99)) {
+    if (myLeek.tp() > 9 && !LS.getCooldown(LS.CHIP_KNOWLEDGE) && !LS.getCooldown(LS.CHIP_ARMORING) && (myLeek.lifePercent() > 2 / 3 || Effect.getEffectsOfTypeAmount(myLeek.id, LS.EFFECT_ABSOLUTE_SHIELD) > 150)) {
         LS.useChip(LS.CHIP_KNOWLEDGE);
         LS.useChip(LS.CHIP_ARMORING);
         if (!LS.getCooldown(LS.CHIP_ELEVATION)) {
@@ -128,18 +136,14 @@ if (distanceTo(enemy.id) in [...Array(12).keys()] && myLeek.tp() > 10) {
     LS.useChip(LS.CHIP_STEROID);
 }
 
-if(myLeek.lifePercent() <= 75) {
-    myLeek.changeWeapon(AXE);
-}
-
 if (Effect.getEffectsOfTypeAmount(enemy.id, LS.EFFECT_ABSOLUTE_SHIELD, 2) > 150 || Effect.getEffectsOfTypeAmount(enemy.id, LS.EFFECT_RELATIVE_SHIELD, 2) > 30) {
     LIBERATION.moveAndUse();
 }
 
-const cell: Cell | null = BAZOOKA.canMoveToUse();
+const cell: Cell | null = M_LASER.canMoveToUse();
 
-if (cell && myLeek.tp() > BAZOOKA.cost) {
-    myLeek.changeWeapon(BAZOOKA);
+if (cell && myLeek.tp() > M_LASER.cost) {
+    myLeek.changeWeapon(M_LASER);
     
     LS.moveTowardCell(cell.number);
 

@@ -22,11 +22,10 @@ export class Chip extends Item {
             level, 
             LS.getChipMinRange(id), 
             LS.getChipMaxRange(id), 
-            launchTypeToAoeType(LS.getChipLaunchType(id)), 
+            LS.getChipLaunchType(id), 
             LS.arrayMap(LS.getChipEffects(id), (chipEffect: number[]) => new ItemEffect(chipEffect)), 
             LS.getChipCost(id), 
-            areaToAoeType(LS.getChipArea(id)), 
-            areaToAoeSize(LS.getChipArea(id)), 
+            LS.getChipArea(id),
             LS.chipNeedLos(id), 
             template
         );

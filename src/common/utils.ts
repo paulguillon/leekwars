@@ -12,17 +12,6 @@ export function distanceTo(entityId: number) {
     return LS.getCellDistance(LS.getCell(), LS.getCell(entityId));
 }
 
-export function canUseMultipleChips(source: number, target: number, chips: number[]) {
-    let totalCost = 0;
-    for (let chip of chips) {
-        if (!LS.canUseChip(chip, target) || LS.getCooldown(chip, source)) {
-            return false;
-        }
-        totalCost += LS.getChipCost(chip);
-    }
-    return LS.getTP(source) > totalCost;
-}
-
 export function getRandomColor() {
     return LS.getColor(LS.randInt(0, 255), LS.randInt(0, 255), LS.randInt(0, 255));
 }

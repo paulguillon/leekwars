@@ -93,11 +93,6 @@ export class Cell {
                     cells.push(cell);
                 }
             }
-        } else if (aoeType == AoeType.CROSS) {
-            const cellNumbers: number[] = LS.getCellsToUseWeapon(LS.WEAPON_BAZOOKA, enemy.id);
-            LS.arrayIter(cellNumbers, number => cells.push(field[number]));
-        } else if (aoeType == AoeType.POINT) {
-            cells.push(center);
         }
 
         if (!path) return cells;
