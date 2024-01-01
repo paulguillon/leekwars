@@ -1,18 +1,16 @@
 import { LS } from "./globaux/ls";
-import { enemy, field, myLeek, searchEnemy } from "./common/vars";
+import { enemy, field, myLeek, searchEnemy, turn } from "./common/vars";
 import { Effect } from "./common/class/effect";
-import { Move } from "./common/class/move";
 import { distanceTo, pathDistanceBetween } from "./common/utils";
 import { Damage } from "./common/class/damage";
 import { Cell } from "./common/class/cell";
 import { Weapon } from "./common/class/item/weapon";
 import { AXE, M_LASER, RHINO } from "./common/data/weapons";
-import { ICEBERG, LIBERATION, PROTEIN, ROCKFALL, STALACTITE } from "./common/data/chips";
-import { Chip } from "./common/class/item/chip";
+import { LIBERATION, PROTEIN, ROCKFALL, STALACTITE } from "./common/data/chips";
 
 /*
- * Stat : 400 agility, 400 strength, 5 MP, 18 TP, 200 resistance, 2 cores, 1 ram and 300 wisdom then full HP
- * Chips :  wall, fortress, shield, motiv, adrenaline, solidification/antidote, steroid, protein, liberation, regen, stalactite, iceberg, rockfall, armoring, serum, covetousness, mirror, elevation
+ * Stat : 400 agility, 400 strength, 6 MP, 19 TP, 300 wisdom, 120 science then full HP
+ * Chips :   cure, rage, adrenaline, antidote, steroid, protein, liberation, regen, stalactite, rockfall, armoring, serum, covetousness, mirror, elevation, transmutation, mutation
  * Weapons : unstable destroyer, axe, m laser, rhino
  */
 
@@ -89,14 +87,16 @@ if (!LS.mapIsEmpty(weaponsThatCanKill)) {
 
 LS.useChip(LS.CHIP_WARM_UP);
 
+if (turn % 3 == 1) {
+	LS.useChip(LS.CHIP_RAGE);
+}
 
 if (myLeek.lifePercent() < 30) {
     if (!LS.getCooldown(LS.CHIP_REGENERATION)) {
         LS.useChip(LS.CHIP_REGENERATION);
     } else {
-        LS.useChip(LS.CHIP_WARM_UP);
-        LS.useChip(LS.CHIP_SERUM);
-        Move.hide(false);
+        LS.useChip(LS.CHIP_REMISSION);
+        LS.useChip(LS.CHIP_CURE);
     }
 }
 
@@ -107,7 +107,7 @@ if (myLeek.lifePercent() < 50) {
 // Liberation if poisoned
 if (Effect.getEffectOfType(myLeek.id, LS.EFFECT_POISON)) {
     const poisonAmount: number = Effect.getEffectsOfTypeAmount(myLeek.id, LS.EFFECT_POISON, 2);
-    if (poisonAmount > 400 && !LS.getCooldown(LS.CHIP_ANTIDOTE)) {
+    if (poisonAmount > 500 && !LS.getCooldown(LS.CHIP_ANTIDOTE)) {
         LS.useChip(LS.CHIP_ANTIDOTE);
     }
 }
@@ -120,13 +120,16 @@ if (distanceTo(enemy.id) > 7) {
         }
     }
 }
+if (myLeek.lifePercent() > 75) {
+    if (!LS.getCooldown(LS.CHIP_TRANSMUTATION)) {
+        LS.useChipOnCell(LS.CHIP_TRANSMUTATION, LS.getCell() - 17);
+        LS.useChipOnCell(LS.CHIP_TRANSMUTATION, LS.getCell() - 18);
+        LS.useChipOnCell(LS.CHIP_TRANSMUTATION, LS.getCell() + 17);
+        LS.useChipOnCell(LS.CHIP_TRANSMUTATION, LS.getCell() + 18);
+    }
 
-if (distanceTo(enemy.id) < 20 && enemy.strength() > 249 && !(pathDistanceBetween(myLeek.id, enemy.id) <= myLeek.mp() && myLeek.lifePercent() > 80)) {
-    LS.useChip(LS.CHIP_WALL);
-    LS.useChip(LS.CHIP_SHIELD);
-    if (!Chip.haveChipEquipped(LS.CHIP_LIBERATION) || LS.getCooldown(LS.CHIP_LIBERATION, enemy.id)) {
-        LS.useChip(LS.CHIP_ARMOR);
-        LS.useChip(LS.CHIP_FORTRESS);
+    if (!LS.getCooldown(LS.CHIP_MUTATION)) {
+        LS.useChip(LS.CHIP_MUTATION);
     }
 }
 
@@ -162,7 +165,6 @@ if(pathDistanceBetween(myLeek.id, enemy.id) <= myLeek.mp()) {
     myLeek.attack();
     myLeek.attack();
 } else {
-    ICEBERG.moveAndUse();
     STALACTITE.moveAndUse();
     ROCKFALL.moveAndUse();
     LS.moveToward(enemy.id);
@@ -202,10 +204,8 @@ if (enemy.isDead()) {
     myLeek.attack();
     myLeek.attack();
     myLeek.attack();
-    Move.hideToward();
 } else if (myLeek.tp() > 4) {
     var other = LS.getNearestEnemy();
-    ICEBERG.moveAndUse(myLeek.id, other);
     STALACTITE.moveAndUse(myLeek.id, other);
     ROCKFALL.moveAndUse(myLeek.id, other);
     myLeek.moveAndAttack(other);
@@ -216,6 +216,7 @@ if (enemy.isDead()) {
 
 if (myLeek.lifePercent() < 80) {
     LS.useChip(LS.CHIP_REMISSION);
+    LS.useChip(LS.CHIP_CURE);
 }
 
 if (enemy.strength() > 250) {
@@ -225,4 +226,5 @@ if (enemy.strength() > 250) {
 LS.moveToward(enemy.id);
 
 LS.useChip(LS.CHIP_SERUM);
+LS.useChip(LS.CHIP_CURE);
 LS.useChip(LS.CHIP_COVETOUSNESS, enemy.id);

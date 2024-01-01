@@ -1,4 +1,4 @@
-import { AoeType, Type } from "../../../globaux/enums";
+import { AoeType } from "../../../globaux/enums";
 import { LS } from "../../../globaux/ls";
 import { findFirst } from "../../utils";
 import { enemy, field, myLeek } from "../../vars";
@@ -6,14 +6,12 @@ import { Cell } from "../cell";
 import { chips } from "../../data/chips";
 import { ItemEffect } from "./itemEffect";
 import { Item } from "./item";
-import { areaToAoeSize, areaToAoeType, launchTypeToAoeType } from "../../mapping";
 
 export class Chip extends Item {
     cooldown: number;
     teamCooldown: boolean;
     initialCooldown: number;
-    type: Type;
-
+    type: number;
     
 	constructor(id: number, level: number, teamCooldown: boolean, initialCooldown: number, template: number, type: number) {
 		super(
@@ -122,7 +120,7 @@ export class Chip extends Item {
         LS.useChip(this.id, target);
     }
 
-    hasChipType(searchedType: Type): boolean {
+    hasChipType(searchedType: number): boolean {
         return !!findFirst(this.itemEffects, effect => effect.type == searchedType);
     }
 
@@ -182,7 +180,7 @@ export class Chip extends Item {
      * @param entity target
      * @returns array of Chip
      */
-    static getChipsOfType(type: Type, entity: number = enemy.id): Chip[] {
+    static getChipsOfType(type: number, entity: number = enemy.id): Chip[] {
         return LS.arrayFilter(Chip.getChipsOf(entity), chip => LS.inArray(LS.arrayMap(chip.itemEffects, itemEffect => itemEffect.type), type));
     }
 

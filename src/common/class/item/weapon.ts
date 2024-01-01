@@ -1,4 +1,4 @@
-import { AoeType, Type } from "../../../globaux/enums";
+import { AoeType } from "../../../globaux/enums";
 import { LS } from "../../../globaux/ls";
 import { enemy, field, myLeek } from "../../vars";
 import { Cell } from "../cell";
@@ -94,7 +94,7 @@ export class Weapon extends Item{
 		return !!findFirst(LS.getWeapons(target.id), (id: number) => id == weaponId);
 	}
 
-	hasWeaponEffect(searchedType: Type): boolean {
+	hasWeaponEffect(searchedType: number): boolean {
 		return !!findFirst(this.itemEffects, itemEffect => itemEffect.type == searchedType);
 	}
 
