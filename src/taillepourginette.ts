@@ -120,6 +120,9 @@ if (distanceTo(enemy.id) > 7) {
         }
     }
 }
+
+LS.useChip(LS.CHIP_WALL);
+
 if (myLeek.lifePercent() > 75) {
     if (!LS.getCooldown(LS.CHIP_TRANSMUTATION)) {
         LS.useChipOnCell(LS.CHIP_TRANSMUTATION, LS.getCell() - 17);
@@ -128,9 +131,9 @@ if (myLeek.lifePercent() > 75) {
         LS.useChipOnCell(LS.CHIP_TRANSMUTATION, LS.getCell() + 18);
     }
 
-    if (!LS.getCooldown(LS.CHIP_MUTATION)) {
-        LS.useChip(LS.CHIP_MUTATION);
-    }
+    // if (!LS.getCooldown(LS.CHIP_MUTATION)) {
+    //     LS.useChip(LS.CHIP_MUTATION);
+    // }
 }
 
 if (distanceTo(enemy.id) in [...Array(12).keys()] && myLeek.tp() > 10) {
