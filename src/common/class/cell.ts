@@ -1,6 +1,8 @@
 import { LS } from "../../globaux/ls";
 import { AoeType } from "../../globaux/enums";
 import { enemy, field, myLeek } from "../vars";
+import { Chip } from "./item/chip";
+import { Weapon } from "./item/weapon";
 
 export class Cell {
     number: number;
@@ -61,8 +63,53 @@ export class Cell {
         return field[cell];
     }
 
+    /**
+     * Renvoie la liste des cellules qui seront affectés si la puce chip est utilisée sur la cellule cell depuis une cellule from.
+     * La fonction ne vérifie pas s'il est possible d'utiliser la puce sur la cellule cell ou de se rendre sur la cellule from.
+
+     * Paramètres
+     * @param chip : La puce à tester.
+     * @param cell : La cellule cible.
+     * @param from : La cellule depuis laquelle la puce est utilisée.
+     * Retour
+     * @return cells : Le tableau contenant les ids de toutes les cellules qui seront affectés.
+     */
+    static getChipEffectiveArea(chip: Chip, center: number, from: number = LS.getCell(), path: boolean = false): Cell[] {
+
+        let cells: Cell[] = LS.arrayMap(LS.getChipEffectiveArea(chip.id, center, from), cellId => field[cellId]);
+
+        return cells;
+    }
+
+    /**
+     * Renvoie la liste des cellules qui seront affectés si l'arme weapon est utilisée sur la cellule cell depuis une cellule from.
+     * La fonction ne vérifie pas s'il est possible d'utiliser l'arme sur la cellule cell ou de se rendre sur la cellule from.
+
+     * Paramètres
+     * @param weapon : L'arme à tester.
+     * @param cell : La cellule cible.
+     * @param from : La cellule depuis laquelle l'arme est utilisée.
+     * Retour
+     * @return cells : Le tableau contenant les ids de toutes les cellules qui seront affectés.
+     */
+    static getWeaponEffectiveArea(weapon: Weapon, center: number, from: number = LS.getCell(), path: boolean = false): Cell[] {
+
+        let cells: Cell[] = LS.arrayMap(LS.getWeaponEffectiveArea(weapon.id, center, from), cellId => field[cellId]);
+
+        return cells;
+    }
+
     static getCellsByArea(center: Cell, aoeType: AoeType, min: number, max: number, path: boolean = false): Cell[] {
-        if (min > max) return [];
+        if (min > max) {
+            LS.debug("ERROR : min ne peut pas être supérieur à max");
+            return [];
+        }
+
+        const register = LS.getRegister(aoeType + min + "_" + max);
+        if (register) {
+            return LS.arrayMap(LS.jsonDecode(register), (id: number) => field[id]);
+        }
+
         let cells: Cell[] = [];
         if (aoeType == AoeType.CIRCLE) {
             for (let x = -max; x <= max; x++) {
