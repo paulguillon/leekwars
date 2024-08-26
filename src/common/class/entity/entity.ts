@@ -1,4 +1,4 @@
-import { LS } from "../../../globaux/ls";
+import { getLevel, getName, getType } from "../../../ressources/ls";
 import { Chip } from "../item/chip";
 
 export class Entity {
@@ -10,9 +10,9 @@ export class Entity {
     
     constructor(entityId: number) {
         this.id = entityId;
-        this.name = LS.getName(entityId);
-        this.level = LS.getLevel(entityId);
+        this.name = getName(entityId);
+        this.level = getLevel(entityId);
         this.chips = Chip.getChipsOf(entityId);
-        this.type = LS.getType(entityId);
+        this.type = getType(entityId);
     }
 }

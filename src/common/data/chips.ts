@@ -1,8 +1,8 @@
-import { LS } from "../../globaux/ls";
+import { CHIP_ACCELERATION, CHIP_ADRENALINE, CHIP_ALTERATION, CHIP_ANTIDOTE, CHIP_ARMOR, CHIP_ARMORING, CHIP_ARSENIC, CHIP_BALL_AND_CHAIN, CHIP_BANDAGE, CHIP_BARK, CHIP_BOXING_GLOVE, CHIP_BRAINWASHING, CHIP_BRAMBLE, CHIP_BURNING, CHIP_CARAPACE, CHIP_COLLAR, CHIP_COVETOUSNESS, CHIP_COVID, CHIP_CRUSHING, CHIP_CURE, CHIP_DESINTEGRATION, CHIP_DEVIL_STRIKE, CHIP_DOME, CHIP_DOPING, CHIP_DRIP, CHIP_ELEVATION, CHIP_FEROCITY, CHIP_FERTILIZER, CHIP_FIRE_BULB, CHIP_FLAME, CHIP_FLASH, CHIP_FORTRESS, CHIP_FRACTURE, CHIP_GRAPPLE, CHIP_HEALER_BULB, CHIP_HELMET, CHIP_ICE, CHIP_ICEBERG, CHIP_ICED_BULB, CHIP_INVERSION, CHIP_JUMP, CHIP_KNOWLEDGE, CHIP_LEATHER_BOOTS, CHIP_LIBERATION, CHIP_LIGHTNING, CHIP_LIGHTNING_BULB, CHIP_LOAM, CHIP_MANUMISSION, CHIP_METALLIC_BULB, CHIP_METEORITE, CHIP_MIRROR, CHIP_MOTIVATION, CHIP_MUTATION, CHIP_PEBBLE, CHIP_PLAGUE, CHIP_PLASMA, CHIP_PRECIPITATION, CHIP_PRISM, CHIP_PROTEIN, CHIP_PUNISHMENT, CHIP_PUNY_BULB, CHIP_RAGE, CHIP_RAMPART, CHIP_REFLEXES, CHIP_REGENERATION, CHIP_REMISSION, CHIP_REPOTTING, CHIP_RESURRECTION, CHIP_ROCK, CHIP_ROCKFALL, CHIP_ROCKY_BULB, CHIP_SAVANT_BULB, CHIP_SERUM, CHIP_SEVEN_LEAGUE_BOOTS, CHIP_SHIELD, CHIP_SHOCK, CHIP_SLOW_DOWN, CHIP_SOLIDIFICATION, CHIP_SOPORIFIC, CHIP_SPARK, CHIP_STALACTITE, CHIP_STEROID, CHIP_STRETCHING, CHIP_TACTICIAN_BULB, CHIP_TELEPORTATION, CHIP_THERAPY, CHIP_THORN, CHIP_TOXIN, CHIP_TRANQUILIZER, CHIP_TRANSMUTATION, CHIP_VACCINE, CHIP_VAMPIRIZATION, CHIP_VENOM, CHIP_WALL, CHIP_WARM_UP, CHIP_WHIP, CHIP_WINGED_BOOTS, CHIP_WIZARDRY, CHIP_WIZARD_BULB } from "../../ressources/ls";
 import { Chip } from "../class/item/chip";
 
 export const SHOCK = new Chip(
-	LS.CHIP_SHOCK, // id
+	CHIP_SHOCK, // id
 	2, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -10,7 +10,7 @@ export const SHOCK = new Chip(
 	1 // type
 )
 export const ICE = new Chip(
-	LS.CHIP_ICE, // id
+	CHIP_ICE, // id
 	9, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -18,7 +18,7 @@ export const ICE = new Chip(
 	1 // type
 )
 export const BANDAGE = new Chip(
-	LS.CHIP_BANDAGE, // id
+	CHIP_BANDAGE, // id
 	3, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -26,7 +26,7 @@ export const BANDAGE = new Chip(
 	2 // type
 )
 export const CURE = new Chip(
-	LS.CHIP_CURE, // id
+	CHIP_CURE, // id
 	20, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -34,7 +34,7 @@ export const CURE = new Chip(
 	2 // type
 )
 export const FLAME = new Chip(
-	LS.CHIP_FLAME, // id
+	CHIP_FLAME, // id
 	29, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -42,7 +42,7 @@ export const FLAME = new Chip(
 	1 // type
 )
 export const FLASH = new Chip(
-	LS.CHIP_FLASH, // id
+	CHIP_FLASH, // id
 	24, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -50,7 +50,7 @@ export const FLASH = new Chip(
 	1 // type
 )
 export const ROCK = new Chip(
-	LS.CHIP_ROCK, // id
+	CHIP_ROCK, // id
 	13, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -58,7 +58,7 @@ export const ROCK = new Chip(
 	1 // type
 )
 export const PROTEIN = new Chip(
-	LS.CHIP_PROTEIN, // id
+	CHIP_PROTEIN, // id
 	6, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -66,7 +66,7 @@ export const PROTEIN = new Chip(
 	5 // type
 )
 export const STRETCHING = new Chip(
-	LS.CHIP_STRETCHING, // id
+	CHIP_STRETCHING, // id
 	17, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -74,7 +74,7 @@ export const STRETCHING = new Chip(
 	5 // type
 )
 export const DRIP = new Chip(
-	LS.CHIP_DRIP, // id
+	CHIP_DRIP, // id
 	56, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -82,7 +82,7 @@ export const DRIP = new Chip(
 	2 // type
 )
 export const VACCINE = new Chip(
-	LS.CHIP_VACCINE, // id
+	CHIP_VACCINE, // id
 	80, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -90,7 +90,7 @@ export const VACCINE = new Chip(
 	2 // type
 )
 export const SEVEN_LEAGUE_BOOTS = new Chip(
-	LS.CHIP_SEVEN_LEAGUE_BOOTS, // id
+	CHIP_SEVEN_LEAGUE_BOOTS, // id
 	203, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -98,7 +98,7 @@ export const SEVEN_LEAGUE_BOOTS = new Chip(
 	5 // type
 )
 export const WINGED_BOOTS = new Chip(
-	LS.CHIP_WINGED_BOOTS, // id
+	CHIP_WINGED_BOOTS, // id
 	175, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -106,7 +106,7 @@ export const WINGED_BOOTS = new Chip(
 	5 // type
 )
 export const LEATHER_BOOTS = new Chip(
-	LS.CHIP_LEATHER_BOOTS, // id
+	CHIP_LEATHER_BOOTS, // id
 	22, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -114,7 +114,7 @@ export const LEATHER_BOOTS = new Chip(
 	5 // type
 )
 export const MOTIVATION = new Chip(
-	LS.CHIP_MOTIVATION, // id
+	CHIP_MOTIVATION, // id
 	14, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -122,7 +122,7 @@ export const MOTIVATION = new Chip(
 	5 // type
 )
 export const ADRENALINE = new Chip(
-	LS.CHIP_ADRENALINE, // id
+	CHIP_ADRENALINE, // id
 	156, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -130,7 +130,7 @@ export const ADRENALINE = new Chip(
 	5 // type
 )
 export const RAGE = new Chip(
-	LS.CHIP_RAGE, // id
+	CHIP_RAGE, // id
 	226, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -138,7 +138,7 @@ export const RAGE = new Chip(
 	5 // type
 )
 export const SPARK = new Chip(
-	LS.CHIP_SPARK, // id
+	CHIP_SPARK, // id
 	19, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -146,7 +146,7 @@ export const SPARK = new Chip(
 	1 // type
 )
 export const PEBBLE = new Chip(
-	LS.CHIP_PEBBLE, // id
+	CHIP_PEBBLE, // id
 	4, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -154,7 +154,7 @@ export const PEBBLE = new Chip(
 	1 // type
 )
 export const SHIELD = new Chip(
-	LS.CHIP_SHIELD, // id
+	CHIP_SHIELD, // id
 	35, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -162,7 +162,7 @@ export const SHIELD = new Chip(
 	4 // type
 )
 export const HELMET = new Chip(
-	LS.CHIP_HELMET, // id
+	CHIP_HELMET, // id
 	10, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -170,7 +170,7 @@ export const HELMET = new Chip(
 	4 // type
 )
 export const ARMOR = new Chip(
-	LS.CHIP_ARMOR, // id
+	CHIP_ARMOR, // id
 	74, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -178,7 +178,7 @@ export const ARMOR = new Chip(
 	4 // type
 )
 export const WALL = new Chip(
-	LS.CHIP_WALL, // id
+	CHIP_WALL, // id
 	18, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -186,7 +186,7 @@ export const WALL = new Chip(
 	4 // type
 )
 export const RAMPART = new Chip(
-	LS.CHIP_RAMPART, // id
+	CHIP_RAMPART, // id
 	117, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -194,7 +194,7 @@ export const RAMPART = new Chip(
 	4 // type
 )
 export const STEROID = new Chip(
-	LS.CHIP_STEROID, // id
+	CHIP_STEROID, // id
 	134, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -202,7 +202,7 @@ export const STEROID = new Chip(
 	5 // type
 )
 export const DOPING = new Chip(
-	LS.CHIP_DOPING, // id
+	CHIP_DOPING, // id
 	207, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -210,7 +210,7 @@ export const DOPING = new Chip(
 	5 // type
 )
 export const REFLEXES = new Chip(
-	LS.CHIP_REFLEXES, // id
+	CHIP_REFLEXES, // id
 	197, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -218,7 +218,7 @@ export const REFLEXES = new Chip(
 	5 // type
 )
 export const WARM_UP = new Chip(
-	LS.CHIP_WARM_UP, // id
+	CHIP_WARM_UP, // id
 	127, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -226,7 +226,7 @@ export const WARM_UP = new Chip(
 	5 // type
 )
 export const FORTRESS = new Chip(
-	LS.CHIP_FORTRESS, // id
+	CHIP_FORTRESS, // id
 	194, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -234,7 +234,7 @@ export const FORTRESS = new Chip(
 	4 // type
 )
 export const STALACTITE = new Chip(
-	LS.CHIP_STALACTITE, // id
+	CHIP_STALACTITE, // id
 	50, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -242,7 +242,7 @@ export const STALACTITE = new Chip(
 	1 // type
 )
 export const ICEBERG = new Chip(
-	LS.CHIP_ICEBERG, // id
+	CHIP_ICEBERG, // id
 	100, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -250,7 +250,7 @@ export const ICEBERG = new Chip(
 	1 // type
 )
 export const ROCKFALL = new Chip(
-	LS.CHIP_ROCKFALL, // id
+	CHIP_ROCKFALL, // id
 	77, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -258,7 +258,7 @@ export const ROCKFALL = new Chip(
 	1 // type
 )
 export const LIGHTNING = new Chip(
-	LS.CHIP_LIGHTNING, // id
+	CHIP_LIGHTNING, // id
 	180, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -266,7 +266,7 @@ export const LIGHTNING = new Chip(
 	1 // type
 )
 export const LIBERATION = new Chip(
-	LS.CHIP_LIBERATION, // id
+	CHIP_LIBERATION, // id
 	60, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -274,7 +274,7 @@ export const LIBERATION = new Chip(
 	9 // type
 )
 export const REGENERATION = new Chip(
-	LS.CHIP_REGENERATION, // id
+	CHIP_REGENERATION, // id
 	122, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -282,7 +282,7 @@ export const REGENERATION = new Chip(
 	2 // type
 )
 export const METEORITE = new Chip(
-	LS.CHIP_METEORITE, // id
+	CHIP_METEORITE, // id
 	160, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -290,7 +290,7 @@ export const METEORITE = new Chip(
 	1 // type
 )
 export const TELEPORTATION = new Chip(
-	LS.CHIP_TELEPORTATION, // id
+	CHIP_TELEPORTATION, // id
 	200, // level
 	false, // team cooldown
 	1, // initial cooldown
@@ -298,7 +298,7 @@ export const TELEPORTATION = new Chip(
 	9 // type
 )
 export const ARMORING = new Chip(
-	LS.CHIP_ARMORING, // id
+	CHIP_ARMORING, // id
 	68, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -306,7 +306,7 @@ export const ARMORING = new Chip(
 	2 // type
 )
 export const INVERSION = new Chip(
-	LS.CHIP_INVERSION, // id
+	CHIP_INVERSION, // id
 	150, // level
 	false, // team cooldown
 	1, // initial cooldown
@@ -314,7 +314,7 @@ export const INVERSION = new Chip(
 	9 // type
 )
 export const PUNY_BULB = new Chip(
-	LS.CHIP_PUNY_BULB, // id
+	CHIP_PUNY_BULB, // id
 	48, // level
 	true, // team cooldown
 	0, // initial cooldown
@@ -322,7 +322,7 @@ export const PUNY_BULB = new Chip(
 	8 // type
 )
 export const FIRE_BULB = new Chip(
-	LS.CHIP_FIRE_BULB, // id
+	CHIP_FIRE_BULB, // id
 	190, // level
 	true, // team cooldown
 	0, // initial cooldown
@@ -330,7 +330,7 @@ export const FIRE_BULB = new Chip(
 	8 // type
 )
 export const HEALER_BULB = new Chip(
-	LS.CHIP_HEALER_BULB, // id
+	CHIP_HEALER_BULB, // id
 	174, // level
 	true, // team cooldown
 	0, // initial cooldown
@@ -338,7 +338,7 @@ export const HEALER_BULB = new Chip(
 	8 // type
 )
 export const ROCKY_BULB = new Chip(
-	LS.CHIP_ROCKY_BULB, // id
+	CHIP_ROCKY_BULB, // id
 	105, // level
 	true, // team cooldown
 	0, // initial cooldown
@@ -346,7 +346,7 @@ export const ROCKY_BULB = new Chip(
 	8 // type
 )
 export const ICED_BULB = new Chip(
-	LS.CHIP_ICED_BULB, // id
+	CHIP_ICED_BULB, // id
 	130, // level
 	true, // team cooldown
 	0, // initial cooldown
@@ -354,7 +354,7 @@ export const ICED_BULB = new Chip(
 	8 // type
 )
 export const LIGHTNING_BULB = new Chip(
-	LS.CHIP_LIGHTNING_BULB, // id
+	CHIP_LIGHTNING_BULB, // id
 	280, // level
 	true, // team cooldown
 	0, // initial cooldown
@@ -362,7 +362,7 @@ export const LIGHTNING_BULB = new Chip(
 	8 // type
 )
 export const METALLIC_BULB = new Chip(
-	LS.CHIP_METALLIC_BULB, // id
+	CHIP_METALLIC_BULB, // id
 	230, // level
 	true, // team cooldown
 	0, // initial cooldown
@@ -370,7 +370,7 @@ export const METALLIC_BULB = new Chip(
 	8 // type
 )
 export const REMISSION = new Chip(
-	LS.CHIP_REMISSION, // id
+	CHIP_REMISSION, // id
 	170, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -378,7 +378,7 @@ export const REMISSION = new Chip(
 	2 // type
 )
 export const CARAPACE = new Chip(
-	LS.CHIP_CARAPACE, // id
+	CHIP_CARAPACE, // id
 	141, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -386,7 +386,7 @@ export const CARAPACE = new Chip(
 	4 // type
 )
 export const RESURRECTION = new Chip(
-	LS.CHIP_RESURRECTION, // id
+	CHIP_RESURRECTION, // id
 	301, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -394,7 +394,7 @@ export const RESURRECTION = new Chip(
 	2 // type
 )
 export const DEVIL_STRIKE = new Chip(
-	LS.CHIP_DEVIL_STRIKE, // id
+	CHIP_DEVIL_STRIKE, // id
 	171, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -402,7 +402,7 @@ export const DEVIL_STRIKE = new Chip(
 	1 // type
 )
 export const WHIP = new Chip(
-	LS.CHIP_WHIP, // id
+	CHIP_WHIP, // id
 	119, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -410,7 +410,7 @@ export const WHIP = new Chip(
 	5 // type
 )
 export const LOAM = new Chip(
-	LS.CHIP_LOAM, // id
+	CHIP_LOAM, // id
 	111, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -418,7 +418,7 @@ export const LOAM = new Chip(
 	2 // type
 )
 export const FERTILIZER = new Chip(
-	LS.CHIP_FERTILIZER, // id
+	CHIP_FERTILIZER, // id
 	205, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -426,7 +426,7 @@ export const FERTILIZER = new Chip(
 	2 // type
 )
 export const ACCELERATION = new Chip(
-	LS.CHIP_ACCELERATION, // id
+	CHIP_ACCELERATION, // id
 	143, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -434,7 +434,7 @@ export const ACCELERATION = new Chip(
 	5 // type
 )
 export const SLOW_DOWN = new Chip(
-	LS.CHIP_SLOW_DOWN, // id
+	CHIP_SLOW_DOWN, // id
 	98, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -442,7 +442,7 @@ export const SLOW_DOWN = new Chip(
 	7 // type
 )
 export const BALL_AND_CHAIN = new Chip(
-	LS.CHIP_BALL_AND_CHAIN, // id
+	CHIP_BALL_AND_CHAIN, // id
 	184, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -450,7 +450,7 @@ export const BALL_AND_CHAIN = new Chip(
 	7 // type
 )
 export const TRANQUILIZER = new Chip(
-	LS.CHIP_TRANQUILIZER, // id
+	CHIP_TRANQUILIZER, // id
 	65, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -458,7 +458,7 @@ export const TRANQUILIZER = new Chip(
 	7 // type
 )
 export const SOPORIFIC = new Chip(
-	LS.CHIP_SOPORIFIC, // id
+	CHIP_SOPORIFIC, // id
 	145, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -466,7 +466,7 @@ export const SOPORIFIC = new Chip(
 	7 // type
 )
 export const SOLIDIFICATION = new Chip(
-	LS.CHIP_SOLIDIFICATION, // id
+	CHIP_SOLIDIFICATION, // id
 	40, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -474,7 +474,7 @@ export const SOLIDIFICATION = new Chip(
 	5 // type
 )
 export const VENOM = new Chip(
-	LS.CHIP_VENOM, // id
+	CHIP_VENOM, // id
 	42, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -482,7 +482,7 @@ export const VENOM = new Chip(
 	6 // type
 )
 export const TOXIN = new Chip(
-	LS.CHIP_TOXIN, // id
+	CHIP_TOXIN, // id
 	125, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -490,7 +490,7 @@ export const TOXIN = new Chip(
 	6 // type
 )
 export const PLAGUE = new Chip(
-	LS.CHIP_PLAGUE, // id
+	CHIP_PLAGUE, // id
 	210, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -498,7 +498,7 @@ export const PLAGUE = new Chip(
 	6 // type
 )
 export const THORN = new Chip(
-	LS.CHIP_THORN, // id
+	CHIP_THORN, // id
 	132, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -506,7 +506,7 @@ export const THORN = new Chip(
 	3 // type
 )
 export const MIRROR = new Chip(
-	LS.CHIP_MIRROR, // id
+	CHIP_MIRROR, // id
 	246, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -514,7 +514,7 @@ export const MIRROR = new Chip(
 	3 // type
 )
 export const FEROCITY = new Chip(
-	LS.CHIP_FEROCITY, // id
+	CHIP_FEROCITY, // id
 	107, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -522,7 +522,7 @@ export const FEROCITY = new Chip(
 	5 // type
 )
 export const COLLAR = new Chip(
-	LS.CHIP_COLLAR, // id
+	CHIP_COLLAR, // id
 	182, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -530,7 +530,7 @@ export const COLLAR = new Chip(
 	5 // type
 )
 export const BARK = new Chip(
-	LS.CHIP_BARK, // id
+	CHIP_BARK, // id
 	234, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -538,7 +538,7 @@ export const BARK = new Chip(
 	5 // type
 )
 export const BURNING = new Chip(
-	LS.CHIP_BURNING, // id
+	CHIP_BURNING, // id
 	209, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -546,7 +546,7 @@ export const BURNING = new Chip(
 	1 // type
 )
 export const FRACTURE = new Chip(
-	LS.CHIP_FRACTURE, // id
+	CHIP_FRACTURE, // id
 	240, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -554,7 +554,7 @@ export const FRACTURE = new Chip(
 	7 // type
 )
 export const ANTIDOTE = new Chip(
-	LS.CHIP_ANTIDOTE, // id
+	CHIP_ANTIDOTE, // id
 	114, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -562,7 +562,7 @@ export const ANTIDOTE = new Chip(
 	9 // type
 )
 export const PUNISHMENT = new Chip(
-	LS.CHIP_PUNISHMENT, // id
+	CHIP_PUNISHMENT, // id
 	147, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -570,7 +570,7 @@ export const PUNISHMENT = new Chip(
 	1 // type
 )
 export const COVETOUSNESS = new Chip(
-	LS.CHIP_COVETOUSNESS, // id
+	CHIP_COVETOUSNESS, // id
 	139, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -578,7 +578,7 @@ export const COVETOUSNESS = new Chip(
 	5 // type
 )
 export const VAMPIRIZATION = new Chip(
-	LS.CHIP_VAMPIRIZATION, // id
+	CHIP_VAMPIRIZATION, // id
 	177, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -586,7 +586,7 @@ export const VAMPIRIZATION = new Chip(
 	2 // type
 )
 export const PRECIPITATION = new Chip(
-	LS.CHIP_PRECIPITATION, // id
+	CHIP_PRECIPITATION, // id
 	192, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -594,7 +594,7 @@ export const PRECIPITATION = new Chip(
 	5 // type
 )
 export const ALTERATION = new Chip(
-	LS.CHIP_ALTERATION, // id
+	CHIP_ALTERATION, // id
 	53, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -602,7 +602,7 @@ export const ALTERATION = new Chip(
 	1 // type
 )
 export const WIZARD_BULB = new Chip(
-	LS.CHIP_WIZARD_BULB, // id
+	CHIP_WIZARD_BULB, // id
 	215, // level
 	true, // team cooldown
 	0, // initial cooldown
@@ -610,7 +610,7 @@ export const WIZARD_BULB = new Chip(
 	8 // type
 )
 export const PLASMA = new Chip(
-	LS.CHIP_PLASMA, // id
+	CHIP_PLASMA, // id
 	290, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -618,7 +618,7 @@ export const PLASMA = new Chip(
 	1 // type
 )
 export const JUMP = new Chip(
-	LS.CHIP_JUMP, // id
+	CHIP_JUMP, // id
 	70, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -626,7 +626,7 @@ export const JUMP = new Chip(
 	9 // type
 )
 export const COVID = new Chip(
-	LS.CHIP_COVID, // id
+	CHIP_COVID, // id
 	220, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -634,7 +634,7 @@ export const COVID = new Chip(
 	6 // type
 )
 export const ELEVATION = new Chip(
-	LS.CHIP_ELEVATION, // id
+	CHIP_ELEVATION, // id
 	228, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -642,7 +642,7 @@ export const ELEVATION = new Chip(
 	2 // type
 )
 export const KNOWLEDGE = new Chip(
-	LS.CHIP_KNOWLEDGE, // id
+	CHIP_KNOWLEDGE, // id
 	32, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -650,7 +650,7 @@ export const KNOWLEDGE = new Chip(
 	5 // type
 )
 export const WIZARDRY = new Chip(
-	LS.CHIP_WIZARDRY, // id
+	CHIP_WIZARDRY, // id
 	166, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -658,7 +658,7 @@ export const WIZARDRY = new Chip(
 	5 // type
 )
 export const REPOTTING = new Chip(
-	LS.CHIP_REPOTTING, // id
+	CHIP_REPOTTING, // id
 	163, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -666,7 +666,7 @@ export const REPOTTING = new Chip(
 	9 // type
 )
 export const THERAPY = new Chip(
-	LS.CHIP_THERAPY, // id
+	CHIP_THERAPY, // id
 	260, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -674,7 +674,7 @@ export const THERAPY = new Chip(
 	2 // type
 )
 export const MUTATION = new Chip(
-	LS.CHIP_MUTATION, // id
+	CHIP_MUTATION, // id
 	83, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -682,7 +682,7 @@ export const MUTATION = new Chip(
 	2 // type
 )
 export const DESINTEGRATION = new Chip(
-	LS.CHIP_DESINTEGRATION, // id
+	CHIP_DESINTEGRATION, // id
 	223, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -690,7 +690,7 @@ export const DESINTEGRATION = new Chip(
 	1 // type
 )
 export const TRANSMUTATION = new Chip(
-	LS.CHIP_TRANSMUTATION, // id
+	CHIP_TRANSMUTATION, // id
 	252, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -698,7 +698,7 @@ export const TRANSMUTATION = new Chip(
 	2 // type
 )
 export const GRAPPLE = new Chip(
-	LS.CHIP_GRAPPLE, // id
+	CHIP_GRAPPLE, // id
 	120, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -706,7 +706,7 @@ export const GRAPPLE = new Chip(
 	9 // type
 )
 export const BOXING_GLOVE = new Chip(
-	LS.CHIP_BOXING_GLOVE, // id
+	CHIP_BOXING_GLOVE, // id
 	140, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -714,7 +714,7 @@ export const BOXING_GLOVE = new Chip(
 	9 // type
 )
 export const TACTICIAN_BULB = new Chip(
-	LS.CHIP_TACTICIAN_BULB, // id
+	CHIP_TACTICIAN_BULB, // id
 	270, // level
 	true, // team cooldown
 	0, // initial cooldown
@@ -722,7 +722,7 @@ export const TACTICIAN_BULB = new Chip(
 	8 // type
 )
 export const SAVANT_BULB = new Chip(
-	LS.CHIP_SAVANT_BULB, // id
+	CHIP_SAVANT_BULB, // id
 	250, // level
 	true, // team cooldown
 	0, // initial cooldown
@@ -730,7 +730,7 @@ export const SAVANT_BULB = new Chip(
 	8 // type
 )
 export const SERUM = new Chip(
-	LS.CHIP_SERUM, // id
+	CHIP_SERUM, // id
 	199, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -738,7 +738,7 @@ export const SERUM = new Chip(
 	2 // type
 )
 export const CRUSHING = new Chip(
-	LS.CHIP_CRUSHING, // id
+	CHIP_CRUSHING, // id
 	158, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -746,7 +746,7 @@ export const CRUSHING = new Chip(
 	7 // type
 )
 export const BRAINWASHING = new Chip(
-	LS.CHIP_BRAINWASHING, // id
+	CHIP_BRAINWASHING, // id
 	266, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -754,7 +754,7 @@ export const BRAINWASHING = new Chip(
 	7 // type
 )
 export const ARSENIC = new Chip(
-	LS.CHIP_ARSENIC, // id
+	CHIP_ARSENIC, // id
 	285, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -762,7 +762,7 @@ export const ARSENIC = new Chip(
 	6 // type
 )
 export const BRAMBLE = new Chip(
-	LS.CHIP_BRAMBLE, // id
+	CHIP_BRAMBLE, // id
 	278, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -770,7 +770,7 @@ export const BRAMBLE = new Chip(
 	3 // type
 )
 export const DOME = new Chip(
-	LS.CHIP_DOME, // id
+	CHIP_DOME, // id
 	243, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -778,7 +778,7 @@ export const DOME = new Chip(
 	4 // type
 )
 export const MANUMISSION = new Chip(
-	LS.CHIP_MANUMISSION, // id
+	CHIP_MANUMISSION, // id
 	149, // level
 	false, // team cooldown
 	0, // initial cooldown
@@ -786,7 +786,7 @@ export const MANUMISSION = new Chip(
 	9 // type
 )
 export const PRISM = new Chip(
-	LS.CHIP_PRISM, // id
+	CHIP_PRISM, // id
 	92, // level
 	false, // team cooldown
 	0, // initial cooldown

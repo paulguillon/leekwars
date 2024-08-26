@@ -1,4 +1,4 @@
-import { LS } from "../../globaux/ls";
+import { EFFECT_HEAL, EFFECT_POISON, arrayEvery, arrayFilter, arrayMap, arraySome, debug, getEffects, getLife, sum } from "../../ressources/ls";
 import { findFirst } from "../utils";
 import { Chip } from "./item/chip";
 import { Weapon } from "./item/weapon";
@@ -25,7 +25,7 @@ export class Effect {
 	}
 
 	static getAllEffects(entity: number) {
-		return LS.arrayMap(LS.getEffects(entity), effect => new Effect(effect));
+		return arrayMap(getEffects(entity), effect => new Effect(effect));
 	}
 
 	static getEffectOfType(target: number, searchedEffect: number) {
@@ -33,29 +33,29 @@ export class Effect {
 	}
 
 	static getEffectsOfType(target: number, searchedEffect: number, minTurnValue: number = 1) {
-		return LS.arrayFilter(Effect.getAllEffects(target), effect => effect.type == searchedEffect && effect.turns >= minTurnValue);
+		return arrayFilter(Effect.getAllEffects(target), effect => effect.type == searchedEffect && effect.turns >= minTurnValue);
 	}
 
 	static getEffectsOfTypeAmount(target: number, searchedEffect: number, minTurnValue: number = 1) {
-		LS.debug("Total d'armure fixe à plus d'un tour : " + LS.sum(LS.arrayMap(Effect.getEffectsOfType(target, searchedEffect, minTurnValue), effect => effect.value)))
-		return LS.sum(LS.arrayMap(Effect.getEffectsOfType(target, searchedEffect, minTurnValue), effect => effect.value));
+		debug("Total d'armure fixe à plus d'un tour : " + sum(arrayMap(Effect.getEffectsOfType(target, searchedEffect, minTurnValue), effect => effect.value)))
+		return sum(arrayMap(Effect.getEffectsOfType(target, searchedEffect, minTurnValue), effect => effect.value));
 	}
 
 	static hasEffect(entity: number, searchedEffect: number) {
-		return LS.arraySome(Effect.getAllEffects(entity), effect => effect.type == searchedEffect);
+		return arraySome(Effect.getAllEffects(entity), effect => effect.type == searchedEffect);
 	}
 
 	static hasEffects(entity: number, searchedEffects: number[]) {
 		const entityEffects: Effect[] = Effect.getAllEffects(entity);
-		return searchedEffects.every((searchedEffect: number) => !!findFirst(entityEffects, (effect: Effect) => effect.type === searchedEffect));
+		return arrayEvery(searchedEffects, (searchedEffect: number) => !!findFirst(entityEffects, (effect: Effect) => effect.type === searchedEffect));
 	}
 
 	static isDeadByPoison(target: number) {
-		let targetLife: number = LS.getLife();
+		let targetLife: number = getLife();
 		for (const effect of Effect.getAllEffects(target)) {
-			if (effect.type == LS.EFFECT_POISON) {
+			if (effect.type == EFFECT_POISON) {
 				targetLife -= effect.value;
-			} else if (effect.type == LS.EFFECT_HEAL) {
+			} else if (effect.type == EFFECT_HEAL) {
 				targetLife += effect.value;
 			}
 			if (targetLife <= 0) return true;

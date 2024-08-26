@@ -1,4 +1,4 @@
-import { LS } from "../../globaux/ls";
+import { ENTITY_LEEK, arrayFilter, arrayMap, getAliveEnemies, getType } from "../../ressources/ls";
 import { Leek } from "./entity/leek";
 
 export class State {
@@ -11,8 +11,8 @@ export class State {
 	}
 
 	static aliveLeeks() {
-		return LS.arrayMap(
-			LS.arrayFilter(LS.getAliveEnemies(), e => LS.getType(e) == LS.ENTITY_LEEK), 
+		return arrayMap(
+			arrayFilter(getAliveEnemies(), e => getType(e) == ENTITY_LEEK), 
 			id => new Leek(id)
 		);
 	}

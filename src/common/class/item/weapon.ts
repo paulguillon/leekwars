@@ -1,5 +1,5 @@
 import { AoeType } from "../../../globaux/enums";
-import { LS } from "../../../globaux/ls";
+import { EFFECT_DAMAGE, EFFECT_NOVA_DAMAGE, EFFECT_POISON, arrayFilter, arrayIter, arrayMap, arraySort, canUseChipOnCell, canUseWeapon, count, getCell, getCellDistance, getMP, getWeaponArea, getWeaponCost, getWeaponEffects, getWeaponLaunchType, getWeaponMaxRange, getWeaponMinRange, getWeaponName, getWeaponPassiveEffects, getWeapons, inArray, mapGet, mapKeys, mapPut, min, round, useWeapon, useWeaponOnCell, weaponNeedLos } from "../../../ressources/ls";
 import { enemy, field, myLeek } from "../../vars";
 import { Cell } from "../cell";
 import { findFirst } from "../../utils";
@@ -15,18 +15,18 @@ export class Weapon extends Item{
 	constructor(id: number, level: number, template: number, item: number) {
 		super(
 			id, 
-			LS.getWeaponName(id), 
+			getWeaponName(id), 
 			level, 
-			LS.getWeaponMinRange(id), 
-			LS.getWeaponMaxRange(id), 
-			LS.getWeaponLaunchType(id), 
-			LS.arrayMap(LS.getWeaponEffects(id), (itemEffect: number[]) => new ItemEffect(itemEffect)), 
-			LS.getWeaponCost(id),
-            LS.getWeaponArea(id),
-            LS.weaponNeedLos(id), 
+			getWeaponMinRange(id), 
+			getWeaponMaxRange(id), 
+			getWeaponLaunchType(id), 
+			arrayMap(getWeaponEffects(id), (itemEffect: number[]) => new ItemEffect(itemEffect)), 
+			getWeaponCost(id),
+            getWeaponArea(id),
+            weaponNeedLos(id), 
             template
 		);
-		this.passive = LS.arrayMap(LS.getWeaponPassiveEffects(id), (passive: number[]) => new ItemEffect(passive));
+		this.passive = arrayMap(getWeaponPassiveEffects(id), (passive: number[]) => new ItemEffect(passive));
 		this.item = item;
 	}
 
@@ -35,26 +35,26 @@ export class Weapon extends Item{
 	}
 
 	use(caster: number = myLeek.id, target: number = enemy.id) {
-		if (LS.canUseWeapon(this.id, target)) {
-			LS.useWeapon(target);
+		if (canUseWeapon(this.id, target)) {
+			useWeapon(target);
 		}
 	}
 
 	moveAndUse(caster: number = myLeek.id, target: number = enemy.id) {
 		const cell: Cell | null = this.canMoveToUse(caster, target);
 
-		if (cell && LS.canUseWeapon(this.id, target)) {
-			LS.useWeaponOnCell(cell.number);
+		if (cell && canUseWeapon(this.id, target)) {
+			useWeaponOnCell(cell.number);
 		}
 	}
 
 	canMoveToUse(caster: number = myLeek.id, target: number = enemy.id) {
-		const casterCell: Cell = field[LS.getCell(caster)];
-		const targetCellNumber: number = LS.getCell(target);
+		const casterCell: Cell = field[getCell(caster)];
+		const targetCellNumber: number = getCell(target);
 
-		if (LS.canUseWeapon(this.id, target)) return casterCell;
+		if (canUseWeapon(this.id, target)) return casterCell;
 
-		const cellsToGo: Cell[] = Cell.getCellsByArea(casterCell, AoeType.CIRCLE, 0, LS.getMP(caster), true);
+		const cellsToGo: Cell[] = Cell.getCellsByArea(casterCell, AoeType.CIRCLE, 0, getMP(caster), true);
 
 		let cellsToHitTarget = new Map<number, Cell>();
 
@@ -67,23 +67,23 @@ export class Weapon extends Item{
 			const response = findFirst(visibleLaunchCells, (cell: Cell) => cell.number == targetCellNumber);
 			if (response) return response;
 
-			let cells: Cell[] = LS.arrayFilter(visibleLaunchCells, cell => {
+			let cells: Cell[] = arrayFilter(visibleLaunchCells, cell => {
 				const aoeCells: Cell[] = Cell.getCellsByArea(cell, this.aoeType, 0, this.aoeSize);
-				return LS.inArray(aoeCells, field[targetCellNumber]);
+				return inArray(aoeCells, field[targetCellNumber]);
 			});
 
-			LS.arrayIter(cells, (cell: Cell) => LS.mapPut(cellsToHitTarget, LS.getCellDistance(LS.getCell(caster), LS.getCell(cell.number)), cell));
+			arrayIter(cells, (cell: Cell) => mapPut(cellsToHitTarget, getCellDistance(getCell(caster), getCell(cell.number)), cell));
 		}
 
-		if (!LS.count(LS.mapKeys(cellsToHitTarget))) return null;
+		if (!count(mapKeys(cellsToHitTarget))) return null;
 
-		return LS.mapGet(cellsToHitTarget, LS.arraySort(LS.mapKeys(cellsToHitTarget), (a, b) => a - b)[0]);
+		return mapGet(cellsToHitTarget, arraySort(mapKeys(cellsToHitTarget), (a, b) => a - b)[0]);
 	}
 
 	canMoveToUseOnCell(cell: Cell, caster: number = myLeek.id): Cell | null {
-		if (LS.canUseChipOnCell(this.id, cell.number)) return field[LS.getCell(caster)];
+		if (canUseChipOnCell(this.id, cell.number)) return field[getCell(caster)];
 
-		const cellsToGo: Cell[] = Cell.getCellsByArea(field[LS.getCell(caster)], AoeType.CIRCLE, 0, LS.getMP(caster), true);
+		const cellsToGo: Cell[] = Cell.getCellsByArea(field[getCell(caster)], AoeType.CIRCLE, 0, getMP(caster), true);
 
 		const cells: Cell[] = Cell.visibleCells(cellsToGo, cell.number);
 
@@ -91,7 +91,7 @@ export class Weapon extends Item{
 	}
 
 	static hasWeaponEquipped(target: Leek, weaponId: number): boolean {
-		return !!findFirst(LS.getWeapons(target.id), (id: number) => id == weaponId);
+		return !!findFirst(getWeapons(target.id), (id: number) => id == weaponId);
 	}
 
 	hasWeaponEffect(searchedType: number): boolean {
@@ -107,11 +107,11 @@ export class Weapon extends Item{
 	getWeaponDamage(source: Leek = myLeek, target: Leek = enemy) {
 		
 		for (const effect of this.itemEffects) {
-			if (effect.type === LS.EFFECT_DAMAGE) {
+			if (effect.type === EFFECT_DAMAGE) {
 				const multiplier: number = (source.strength() / 100 + 1) * (source.power() / 100 + 1)
 				const relative: number = (1 - target.relative() / 100);
 				const absolute: number = target.absolute();
-				const calculateDmg: Function = (base) => LS.round(base * multiplier * relative - absolute);
+				const calculateDmg: Function = (base) => round(base * multiplier * relative - absolute);
 				
 				this.damage.strengthMin = calculateDmg(effect.min);
 				this.damage.strengthMax = calculateDmg(effect.max);
@@ -119,18 +119,18 @@ export class Weapon extends Item{
 				this.damage.strengthMinByTP = effect.min / this.cost;
 				this.damage.strengthMaxByTP = effect.max / this.cost;
 				this.damage.strengthAvgByTP = (effect.min + effect.max) / 2 / this.cost;
-			} else if (effect.type === LS.EFFECT_POISON) {
+			} else if (effect.type === EFFECT_POISON) {
 				const formula: number = (source.magic() / 100 + 1) * (source.power() / 100 + 1);
-				this.damage.poisonMin = LS.round(effect.min * formula);
-				this.damage.poisonMax = LS.round(effect.max * formula);
+				this.damage.poisonMin = round(effect.min * formula);
+				this.damage.poisonMax = round(effect.max * formula);
 				this.damage.poisonAvg = (this.damage.poisonMin + this.damage.poisonMax) / 2;
 				this.damage.poisonMinByTP = effect.min / this.cost;
 				this.damage.poisonMaxByTP = effect.max / this.cost;
 				this.damage.poisonAvgByTP = (effect.min + effect.max) / 2 / this.cost;
-			} else if (effect.type === LS.EFFECT_NOVA_DAMAGE) {
-				const formula: Function = (value: number) => LS.min(target.totalLife() - target.life(), value * (source.science() / 100 + 1) * (source.power() / 100 + 1));
-				this.damage.novaMin = LS.round(formula(effect.min));
-				this.damage.novaMax = LS.round(formula(effect.max));
+			} else if (effect.type === EFFECT_NOVA_DAMAGE) {
+				const formula: Function = (value: number) => min(target.totalLife() - target.life(), value * (source.science() / 100 + 1) * (source.power() / 100 + 1));
+				this.damage.novaMin = round(formula(effect.min));
+				this.damage.novaMax = round(formula(effect.max));
 				this.damage.novaAvg = (this.damage.novaMin + this.damage.novaMax) / 2;
 				this.damage.novaMinByTP = effect.min / this.cost;
 				this.damage.novaMaxByTP = effect.max / this.cost;

@@ -1,19 +1,19 @@
-import { LS } from "../globaux/ls";
+import { getCell, getCellDistance, getColor, getPathLength, randInt } from "../ressources/ls";
 
 export function distanceBetween(source: number, target: number) {
-    return LS.getCellDistance(LS.getCell(source), LS.getCell(target));
+    return getCellDistance(getCell(source), getCell(target));
 }
 
 export function pathDistanceBetween(source: number, target: number) {
-    return LS.getPathLength(LS.getCell(source), LS.getCell(target));
+    return getPathLength(getCell(source), getCell(target));
 }
 
 export function distanceTo(entityId: number) {
-    return LS.getCellDistance(LS.getCell(), LS.getCell(entityId));
+    return getCellDistance(getCell(), getCell(entityId));
 }
 
 export function getRandomColor() {
-    return LS.getColor(LS.randInt(0, 255), LS.randInt(0, 255), LS.randInt(0, 255));
+    return getColor(randInt(0, 255), randInt(0, 255), randInt(0, 255));
 }
 
 export function findFirst(array: any[], callback: Function): any {

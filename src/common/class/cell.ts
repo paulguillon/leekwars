@@ -1,4 +1,4 @@
-import { LS } from "../../globaux/ls";
+import { CELL_EMPTY, CELL_OBSTACLE, abs, arrayFilter, arrayMap, count, debug, getCell, getCellContent, getCellDistance, getCellFromXY, getCellX, getCellY, getChipEffectiveArea, getEntityOnCell, getMP, getPathLength, getRegister, getWeaponEffectiveArea, jsonDecode, lineOfSight, push } from "../../ressources/ls";
 import { AoeType } from "../../globaux/enums";
 import { enemy, field, myLeek } from "../vars";
 import { Chip } from "./item/chip";
@@ -28,10 +28,10 @@ export class Cell {
     static init(cells: Cell[]) {
         for (const cellNumber of [...Array(612).keys()]) {
             let cell: Cell = cells[cellNumber];
-            cell.left = cellNumber - 18 < 0 || LS.getCellDistance(cellNumber, cellNumber - 18) > 1 ? null : cells[cellNumber - 18];
-            cell.up = cellNumber - 17 < 0 || LS.getCellDistance(cellNumber, cellNumber - 17) > 1 ? null : cells[cellNumber - 17];
-            cell.right = cellNumber + 18 > 612 || LS.getCellDistance(cellNumber, cellNumber + 18) > 1 ? null : cells[cellNumber + 18];
-            cell.down = cellNumber + 17 > 612 || LS.getCellDistance(cellNumber, cellNumber + 17) > 1 ? null : cells[cellNumber + 17];
+            cell.left = cellNumber - 18 < 0 || getCellDistance(cellNumber, cellNumber - 18) > 1 ? null : cells[cellNumber - 18];
+            cell.up = cellNumber - 17 < 0 || getCellDistance(cellNumber, cellNumber - 17) > 1 ? null : cells[cellNumber - 17];
+            cell.right = cellNumber + 18 > 612 || getCellDistance(cellNumber, cellNumber + 18) > 1 ? null : cells[cellNumber + 18];
+            cell.down = cellNumber + 17 > 612 || getCellDistance(cellNumber, cellNumber + 17) > 1 ? null : cells[cellNumber + 17];
         }
     }
 
@@ -41,11 +41,11 @@ export class Cell {
         for (const cellNumber of [...Array(612).keys()]) {
             const cell: Cell = new Cell(
                 cellNumber,
-                LS.getCellX(cellNumber),
-                LS.getCellY(cellNumber),
-                LS.getCellContent(cellNumber)
+                getCellX(cellNumber),
+                getCellY(cellNumber),
+                getCellContent(cellNumber)
             );
-            LS.push(cells, cell);
+            push(cells, cell);
         }
 
         Cell.init(cells);
@@ -54,11 +54,11 @@ export class Cell {
     }
 
     static getCellOf(entity: number): Cell {
-        return field[LS.getCell(entity)];
+        return field[getCell(entity)];
     }
 
     static getCellFromCoordinates(x: number, y: number): Cell | null {
-        const cell: number = LS.getCellFromXY(x, y);
+        const cell: number = getCellFromXY(x, y);
         if (!cell) return null;
         return field[cell];
     }
@@ -74,9 +74,9 @@ export class Cell {
      * Retour
      * @return cells : Le tableau contenant les ids de toutes les cellules qui seront affectés.
      */
-    static getChipEffectiveArea(chip: Chip, center: number, from: number = LS.getCell(), path: boolean = false): Cell[] {
+    static getChipEffectiveArea(chip: Chip, center: number, from: number = getCell(), path: boolean = false): Cell[] {
 
-        let cells: Cell[] = LS.arrayMap(LS.getChipEffectiveArea(chip.id, center, from), cellId => field[cellId]);
+        let cells: Cell[] = arrayMap(getChipEffectiveArea(chip.id, center, from), cellId => field[cellId]);
 
         return cells;
     }
@@ -92,42 +92,42 @@ export class Cell {
      * Retour
      * @return cells : Le tableau contenant les ids de toutes les cellules qui seront affectés.
      */
-    static getWeaponEffectiveArea(weapon: Weapon, center: number, from: number = LS.getCell(), path: boolean = false): Cell[] {
+    static getWeaponEffectiveArea(weapon: Weapon, center: number, from: number = getCell(), path: boolean = false): Cell[] {
 
-        let cells: Cell[] = LS.arrayMap(LS.getWeaponEffectiveArea(weapon.id, center, from), cellId => field[cellId]);
+        let cells: Cell[] = arrayMap(getWeaponEffectiveArea(weapon.id, center, from), cellId => field[cellId]);
 
         return cells;
     }
 
     static getCellsByArea(center: Cell, aoeType: AoeType, min: number, max: number, path: boolean = false): Cell[] {
         if (min > max) {
-            LS.debug("ERROR : min ne peut pas être supérieur à max");
+            debug("ERROR : min ne peut pas être supérieur à max");
             return [];
         }
 
-        const register = LS.getRegister(aoeType + min + "_" + max);
+        const register = getRegister(aoeType + min + "_" + max);
         if (register) {
-            return LS.arrayMap(LS.jsonDecode(register), (id: number) => field[id]);
+            return arrayMap(jsonDecode(register), (id: number) => field[id]);
         }
 
         let cells: Cell[] = [];
         if (aoeType == AoeType.CIRCLE) {
             for (let x = -max; x <= max; x++) {
-                for (let y = -max + LS.abs(x); y <= max - LS.abs(x); y++) {
-                    if (LS.abs(x) + LS.abs(y) < min) continue;
+                for (let y = -max + abs(x); y <= max - abs(x); y++) {
+                    if (abs(x) + abs(y) < min) continue;
                     let cell: Cell | null = Cell.getCellFromCoordinates(center.x + x, center.y + y);
-                    if (!cell || cell.type == LS.CELL_OBSTACLE) continue;
+                    if (!cell || cell.type == CELL_OBSTACLE) continue;
                     cells.push(cell);
                 }
             }
         } else if (aoeType == AoeType.PLUS) {
             for (let xy = -max; xy <= max; xy++) {
                 const cell1: Cell | null = Cell.getCellFromCoordinates(center.x + xy, center.y);
-                if (cell1 && LS.getCellDistance(center.number, cell1.number) >= min && cell1.type != LS.CELL_OBSTACLE) {
+                if (cell1 && getCellDistance(center.number, cell1.number) >= min && cell1.type != CELL_OBSTACLE) {
                     cells.push(cell1);
                 }
                 const cell2: Cell | null = Cell.getCellFromCoordinates(center.x, center.y + xy);
-                if (cell2 && LS.getCellDistance(center.number, cell2.number) >= min && cell2.type != LS.CELL_OBSTACLE) {
+                if (cell2 && getCellDistance(center.number, cell2.number) >= min && cell2.type != CELL_OBSTACLE) {
                     cells.push(cell2);
                 }
             }
@@ -136,30 +136,30 @@ export class Cell {
             for (let x = -max; x <= max; x++) {
                 for (let y = -max; y <= max; y++) {
                     const cell: Cell | null = Cell.getCellFromCoordinates(center.x + x, center.y + y);
-                    if (!cell || LS.abs(x) < min && LS.abs(y) < min || cell.type == LS.CELL_OBSTACLE) continue;
+                    if (!cell || abs(x) < min && abs(y) < min || cell.type == CELL_OBSTACLE) continue;
                     cells.push(cell);
                 }
             }
         }
 
         if (!path) return cells;
-        const entity: number = LS.getEntityOnCell(center.number);
-        return LS.arrayFilter(cells, (cell: Cell): boolean => LS.getPathLength(LS.getCell(entity), cell.number) <= LS.getMP(entity));
+        const entity: number = getEntityOnCell(center.number);
+        return arrayFilter(cells, (cell: Cell): boolean => getPathLength(getCell(entity), cell.number) <= getMP(entity));
     }
 
-    static getCellsToGo(entity: number = myLeek.id, min: number = 0, mp: number = LS.getMP(entity)): Cell[] {
-        return Cell.getCellsByArea(field[LS.getCell(entity)], AoeType.CIRCLE, min, mp, true);
+    static getCellsToGo(entity: number = myLeek.id, min: number = 0, mp: number = getMP(entity)): Cell[] {
+        return Cell.getCellsByArea(field[getCell(entity)], AoeType.CIRCLE, min, mp, true);
     }
 
     static getFurthestCellDistanceFrom(cells: Cell[], entity: number): Cell | null {
-        if (!LS.count(cells)) return null;
-        const fromCell: number = LS.getCell(entity);
+        if (!count(cells)) return null;
+        const fromCell: number = getCell(entity);
 
         let furthestCell: Cell = cells[0];
-        let furthestCellDistance: number = LS.getCellDistance(fromCell, cells[0].number);
+        let furthestCellDistance: number = getCellDistance(fromCell, cells[0].number);
 
         for (const cell of cells) {
-            const cellDistance: number = LS.getCellDistance(fromCell, cell.number);
+            const cellDistance: number = getCellDistance(fromCell, cell.number);
             if (cellDistance > furthestCellDistance) {
                 furthestCell = cell;
                 furthestCellDistance = cellDistance;
@@ -170,14 +170,14 @@ export class Cell {
     }
 
     static getClosestCellDistanceTo(cells: Cell[], target: number): Cell | null {
-        if (!LS.count(cells)) return null;
+        if (!count(cells)) return null;
         let bestCell: Cell = cells[0];
-        let distance: number = LS.getCellDistance(LS.getCell(target), bestCell.number);
+        let distance: number = getCellDistance(getCell(target), bestCell.number);
 
         for (const cell of cells) {
-            const cellDistance: number = LS.getCellDistance(cell.number, LS.getCell(target));
+            const cellDistance: number = getCellDistance(cell.number, getCell(target));
 
-            if (cellDistance < distance && cell.type == LS.CELL_EMPTY) {
+            if (cellDistance < distance && cell.type == CELL_EMPTY) {
                 bestCell = cell;
                 distance = cellDistance;
             }
@@ -186,14 +186,14 @@ export class Cell {
     }
 
     static getClosestCellPathTo(cells: Cell[], entity: number): Cell | null {
-        if (!LS.count(cells)) return null;
-        const ofCell: number = LS.getCell(entity);
+        if (!count(cells)) return null;
+        const ofCell: number = getCell(entity);
 
         let closestCell: Cell = cells[0];
-        let closestCellPathLength: number = LS.getPathLength(ofCell, cells[0].number);
+        let closestCellPathLength: number = getPathLength(ofCell, cells[0].number);
 
         for (const cell of cells) {
-            const cellPathLength: number = LS.getPathLength(ofCell, cell.number);
+            const cellPathLength: number = getPathLength(ofCell, cell.number);
             if (cellPathLength == null) continue;
             if (cellPathLength < closestCellPathLength || closestCellPathLength == null) {
                 closestCell = cell;
@@ -204,24 +204,24 @@ export class Cell {
         return closestCell;
     }
 
-    static visibleCells(cellsToCheck: Cell[], targetCell: number = LS.getCell(myLeek.id)): Cell[] {
-        if (!LS.count(cellsToCheck)) return [];
+    static visibleCells(cellsToCheck: Cell[], targetCell: number = getCell(myLeek.id)): Cell[] {
+        if (!count(cellsToCheck)) return [];
 
-        return LS.arrayFilter(cellsToCheck, (cell: Cell) => LS.lineOfSight(cell.number, targetCell));
+        return arrayFilter(cellsToCheck, (cell: Cell) => lineOfSight(cell.number, targetCell));
     }
 
     static hiddenCells(cellsToCheck: Cell[], target: number = enemy.id): Cell[] {
-        if (!LS.count(cellsToCheck)) return [];
+        if (!count(cellsToCheck)) return [];
 
-        return LS.arrayFilter(cellsToCheck, (cell: Cell) => !LS.lineOfSight(cell.number, LS.getCell(target)));
+        return arrayFilter(cellsToCheck, (cell: Cell) => !lineOfSight(cell.number, getCell(target)));
     }
 
     static getCellsInRange(cells: Cell[], min: number, max: number, target: number = enemy.id): Cell[] {
-        return LS.arrayFilter(cells, (cell: Cell) => LS.getCellDistance(cell.number, LS.getCell(target)) >= min && max <= LS.getCellDistance(cell.number, LS.getCell(target)));
+        return arrayFilter(cells, (cell: Cell) => getCellDistance(cell.number, getCell(target)) >= min && max <= getCellDistance(cell.number, getCell(target)));
     }
 
     static toCells(cells: Cell[]): number[] {
-        return LS.arrayMap(cells, (cell: Cell) => cell.number);
+        return arrayMap(cells, (cell: Cell) => cell.number);
     }
 
     string(): string {

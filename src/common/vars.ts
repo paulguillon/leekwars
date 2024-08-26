@@ -1,23 +1,23 @@
-import { LS } from "../globaux/ls";
+import { count, getAliveEnemies, getEntity, getFightType, getNearestEnemy, isDead } from "../ressources/ls";
 import { Cell } from "./class/cell";
 import { Effect } from "./class/effect";
 import { Leek } from "./class/entity/leek";
 
-export const mode: number = LS.getFightType();
+export const mode: number = getFightType();
 export const field: Cell[] = Cell.initField();
 export let turn: number = 0;
 turn++;
 
-export const myLeek: Leek = new Leek(LS.getEntity());
-export let enemy: Leek = new Leek(LS.getNearestEnemy());
+export const myLeek: Leek = new Leek(getEntity());
+export let enemy: Leek = new Leek(getNearestEnemy());
 
-if (LS.isDead(enemy.id) || Effect.isDeadByPoison(enemy.id)) {
+if (isDead(enemy.id) || Effect.isDeadByPoison(enemy.id)) {
     searchEnemy();
 }
 
 export function searchEnemy() {
-    if (LS.count(LS.getAliveEnemies()) === 0) {
+    if (count(getAliveEnemies()) === 0) {
         return;
     }
-    enemy = new Leek(LS.getNearestEnemy());
+    enemy = new Leek(getNearestEnemy());
 }
