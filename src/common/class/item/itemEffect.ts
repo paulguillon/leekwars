@@ -1,4 +1,4 @@
-import { inArray } from "../../../ressources/ls";
+import { inArray } from "transpiler-ls";
 
 export class ItemEffect {
     min: number;

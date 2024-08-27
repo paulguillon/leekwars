@@ -1,4 +1,4 @@
-import { floor, getCell, getMP, moveTowardCell, useChipOnCell } from "../../ressources/ls";
+import { floor, getCell, getMP, moveTowardCell, useChipOnCell } from "transpiler-ls";
 import { Cell } from "./cell";
 import { enemy, myLeek } from "../vars";
 

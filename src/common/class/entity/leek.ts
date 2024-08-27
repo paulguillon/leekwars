@@ -1,4 +1,4 @@
-import { arrayMap, canUseWeapon, debug, getAbsoluteShield, getAgility, getCell, getCellsToUseWeapon, getFrequency, getLife, getMP, getMagic, getPathLength, getPower, getRelativeShield, getResistance, getScience, getStrength, getTP, getTotalLife, getWeapons, getWisdom, isAlive, isDead, moveTowardCell, setWeapon, useWeapon, useWeaponOnCell } from "../../../ressources/ls";
+import { arrayMap, canUseWeapon, debug, getAbsoluteShield, getAgility, getCell, getCellsToUseWeapon, getFrequency, getLife, getMP, getMagic, getPathLength, getPower, getRelativeShield, getResistance, getScience, getStrength, getTP, getTotalLife, getWeapons, getWisdom, isAlive, isDead, moveTowardCell, setWeapon, useWeapon, useWeaponOnCell } from "transpiler-ls";
 import { Weapon } from "../item/weapon";
 import { enemy, field } from "../../vars";
 import { Cell } from "../cell";

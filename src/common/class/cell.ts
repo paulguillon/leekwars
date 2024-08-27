@@ -1,4 +1,4 @@
-import { CELL_EMPTY, CELL_OBSTACLE, abs, arrayFilter, arrayMap, count, debug, getCell, getCellContent, getCellDistance, getCellFromXY, getCellX, getCellY, getChipEffectiveArea, getEntityOnCell, getMP, getPathLength, getRegister, getWeaponEffectiveArea, jsonDecode, lineOfSight, push } from "../../ressources/ls";
+import { CELL_EMPTY, CELL_OBSTACLE, abs, arrayFilter, arrayMap, count, debug, getCell, getCellContent, getCellDistance, getCellFromXY, getCellX, getCellY, getChipEffectiveArea, getEntityOnCell, getMP, getPathLength, getRegister, getWeaponEffectiveArea, jsonDecode, lineOfSight, push } from "transpiler-ls";
 import { AoeType } from "../../globaux/enums";
 import { enemy, field, myLeek } from "../vars";
 import { Chip } from "./item/chip";

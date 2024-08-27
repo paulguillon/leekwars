@@ -1,4 +1,4 @@
-import { ENTITY_LEEK, arrayFilter, arrayMap, getAliveEnemies, getType } from "../../ressources/ls";
+import { ENTITY_LEEK, arrayFilter, arrayMap, getAliveEnemies, getType } from "transpiler-ls";
 import { Leek } from "./entity/leek";
 
 export class State {

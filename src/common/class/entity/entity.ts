@@ -1,4 +1,4 @@
-import { getLevel, getName, getType } from "../../../ressources/ls";
+import { getLevel, getName, getType } from "transpiler-ls";
 import { Chip } from "../item/chip";
 
 export class Entity {

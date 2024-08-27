@@ -1,4 +1,4 @@
-import { getCell, getCellDistance, getColor, getPathLength, randInt } from "../ressources/ls";
+import { getCell, getCellDistance, getColor, getPathLength, randInt } from "transpiler-ls";
 
 export function distanceBetween(source: number, target: number) {
     return getCellDistance(getCell(source), getCell(target));

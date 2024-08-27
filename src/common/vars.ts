@@ -1,4 +1,4 @@
-import { count, getAliveEnemies, getEntity, getFightType, getNearestEnemy, isDead } from "../ressources/ls";
+import { count, getAliveEnemies, getEntity, getFightType, getNearestEnemy, isDead } from "transpiler-ls";
 import { Cell } from "./class/cell";
 import { Effect } from "./class/effect";
 import { Leek } from "./class/entity/leek";

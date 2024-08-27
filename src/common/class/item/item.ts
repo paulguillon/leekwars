@@ -1,5 +1,5 @@
 import { AoeType } from "../../../globaux/enums";
-import { replace, toUpper } from "../../../ressources/ls";
+import { replace, toUpper } from "transpiler-ls";
 import { areaToAoeSize, areaToAoeType, launchTypeToAoeType } from "../../mapping";
 import { Damage } from "../damage";
 import { ItemEffect } from "./itemEffect";

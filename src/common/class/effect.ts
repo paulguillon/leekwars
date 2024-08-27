@@ -1,4 +1,4 @@
-import { EFFECT_HEAL, EFFECT_POISON, arrayEvery, arrayFilter, arrayMap, arraySome, debug, getEffects, getLife, sum } from "../../ressources/ls";
+import { EFFECT_HEAL, EFFECT_POISON, arrayEvery, arrayFilter, arrayMap, arraySome, debug, getEffects, getLife, sum } from "transpiler-ls";
 import { findFirst } from "../utils";
 import { Chip } from "./item/chip";
 import { Weapon } from "./item/weapon";
