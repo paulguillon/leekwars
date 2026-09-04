@@ -1,6 +1,4 @@
-const me: Me = Fight.me
-
-function getCellsByArea(center: Cell, area: Item.LaunchType | Item.Area, min: number = 0, max: number = 1, walkableOnly: boolean = false) {
+export function getCellsByArea(center: Cell, area: Item.LaunchType | Item.Area, min: number = 0, max: number = 1, walkableOnly: boolean = false) {
     if (min > max) return [];
     let cells: Cell[] = [];
     switch (area) {
@@ -59,12 +57,4 @@ function getCellsByArea(center: Cell, area: Item.LaunchType | Item.Area, min: nu
     if (!walkableOnly) return cells;
     const entity: Entity = center.entity;
     return cells.filter((cell) => center.pathLength(cell) <= entity.mp);
-}
-
-function turn(): void {
-    const enemy: Entity = Fight.getNearestEnemy()
-
-    const canMoveTo: Cell[] = getCellsByArea(me.cell, Item.LaunchType.DIAGONAL, 0, 2)
-    Debug.log(canMoveTo)
-    Debug.mark(canMoveTo, Color.BLUE)
 }
