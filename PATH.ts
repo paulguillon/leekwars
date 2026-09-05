@@ -9,7 +9,6 @@ import { getCellsByArea } from "AREA.ts"
     const enemyCanWalkTo: Cell[] = getCellsByArea(enemy.cell, Item.LaunchType.CIRCLE, 0, enemy.mp, true)
 
     const targetableCellsToHit: Cell[] = me.weaponCells(enemy, weapon, [me])
-    weapon.area
 
     Debug.log(canWalkTo)
     Debug.log(enemyCanWalkTo)
