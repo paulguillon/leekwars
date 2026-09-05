@@ -1,43 +1,83 @@
-const glagolitic = {
-    "ⰰ": 1,
-    "ⰱ": 2,
-    "ⰲ": 3,
-    "ⰳ": 4,
-    "ⰴ": 5,
-    "ⰵ": 6,
-    "ⰶ": 7,
-    "ⰷ": 8,
-    "ⰸ": 9,
-    "ⰹ": 10,
-    "ⰻ": 20,
-    "ⰼ": 30,
-    "ⰽ": 40,
-    "ⰾ": 50,
-    "ⰿ": 60,
-    "ⱀ": 70,
-    "ⱁ": 80,
-    "ⱂ": 90,
-    "ⱃ": 100,
-    "ⱄ": 200,
-    "ⱅ": 300,
-    "ⱆ": 400,
-    "ⱇ": 500,
-    "ⱈ": 600,
-    "ⱉ": 700,
-    "ⱋ": 800,
-    "ⱌ": 900,
+function listerNombresPremiers(limite: number): number[] {
+  if (limite < 2) return [];
+
+  const estPremier: boolean[] = new Array(limite + 1).fill(true);
+  estPremier[0] = false;
+  estPremier[1] = false;
+
+  const racine: number = Math.floor(Math.sqrt(limite));
+
+  for (let i = 2; i <= racine; i++) {
+    if (estPremier[i]) {
+      for (let j = i * i; j <= limite; j += i) {
+        estPremier[j] = false;
+      }
+    }
+  }
+
+  const premiers: number[] = [];
+  for (let i = 2; i <= limite; i++) {
+    if (estPremier[i]) {
+      premiers.push(i);
+    }
+  }
+
+  return premiers;
 }
 
-const premiers = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167, 173, 179, 181, 191, 193, 197, 199];
+const premiers = listerNombresPremiers(306);
 
-const a = 652
-const b = 543
-const c = 253
+const glagolitic: { [key: string]: number } = {
+  "ⰰ": 1,
+  "ⰱ": 2,
+  "ⰲ": 3,
+  "ⰳ": 4,
+  "ⰴ": 5,
+  "ⰵ": 6,
+  "ⰶ": 7,
+  "ⰷ": 8,
+  "ⰸ": 9,
+  "ⰹ": 10,
+  "ⰻ": 20,
+  "ⰼ": 30,
+  "ⰽ": 40,
+  "ⰾ": 50,
+  "ⰿ": 60,
+  "ⱀ": 70,
+  "ⱁ": 80,
+  "ⱂ": 90,
+  "ⱃ": 100,
+  "ⱄ": 200,
+  "ⱅ": 300,
+  "ⱆ": 400,
+  "ⱇ": 500,
+  "ⱈ": 600,
+  "ⱉ": 700,
+  "ⱋ": 800,
+  "ⱌ": 900,
+}
 
-const facteurs: number[] = []
-
-for(leti)
+function decodeGlagolitic(input: string): number {
+  return input.split('').reduce((acc, char) => acc + (glagolitic[char] || 0), 0);
+}
 
 function turn(): void {
-
+  const listen: any[][] = Fight.listen().filter(([id, message]) => Entity.get(id).side === 1 && !message.includes("!"));
+  let codes: number[] = [];
+  if (listen.length > 2) {
+    console.log(listen);
+    codes = listen.map(([id, message]) => decodeGlagolitic(message));
+    console.log(codes);
+  }
+  const facteurs: number[] = []
+  const sorted = codes.sort((a, b) => a - b)
+  const stringified = sorted.join("")
+  const code = parseInt(stringified)
+  premiers.forEach(premier => {
+    const result = code % premier
+    if (result === 0) {
+      facteurs.push(premier)
+    }
+  })
+  console.log(facteurs)
 }

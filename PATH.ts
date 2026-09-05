@@ -1,4 +1,4 @@
-import { getCellsByArea } from "AREA.ts"
+import { getCellsByArea } from "./AREA.ts"
 
     const enemy: Entity = Fight.getNearestEnemy()
     const me: Me = Fight.me
