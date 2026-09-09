@@ -1,0 +1,2292 @@
+include('blacklist')
+
+function beforeFight() {
+	if (getFightType() == FIGHT_TYPE_SOLO) {
+		var list = jsonDecode(getRegister('blacklist'))
+		var enemyName = getName(getNearestEnemy())
+		if (contains(getRegister('blacklist'), enemyName)) {
+			if (list[enemyName] == EFFECT_DAMAGE) {
+				setLoadout('strengthAgilityBandage', false)
+				debug("Force donc bandage")
+			}
+		}
+	}
+}
+
+// @version:4
+global AoeType_STARINVERTED = 'etoile_inversee';
+global AoeType_STAR = 'etoile';
+global AoeType_SQUARE = 'carre';
+global AoeType_POINT = 'cercle';
+global AoeType_PLUS = 'ligne';
+global AoeType_LASER = 'ligne';
+global AoeType_CROSS = 'diago';
+global AoeType_CIRCLE = 'cercle';
+
+
+class Cell {
+	number;
+	x;
+	y;
+	type;
+	left;
+	up;
+	right;
+	down;
+
+	constructor(number, x, y, type) {
+		this.number = number;
+		this.x = x;
+		this.y = y;
+		this.type = type;
+		this.left = null;
+		this.up = null;
+		this.right = null;
+		this.down = null;
+	}
+
+	static init(cells) {
+		for (var cellNumber in [0..612]) {
+			var cell = cells[cellNumber];
+			cell.left = cellNumber - 18 < 0 || getCellDistance(cellNumber, cellNumber - 18) > 1 ? null : cells[cellNumber - 18];
+			cell.up = cellNumber - 17 < 0 || getCellDistance(cellNumber, cellNumber - 17) > 1 ? null : cells[cellNumber - 17];
+			cell.right = cellNumber + 18 > 612 || getCellDistance(cellNumber, cellNumber + 18) > 1 ? null : cells[cellNumber + 18];
+			cell.down = cellNumber + 17 > 612 || getCellDistance(cellNumber, cellNumber + 17) > 1 ? null : cells[cellNumber + 17];
+		}
+	}
+
+	static initField() {
+		var cells = [];
+
+		for (var cellNumber in [0..612]) {
+			var cell = new Cell(
+				cellNumber,
+				getCellX(cellNumber),
+				getCellY(cellNumber),
+				getCellContent(cellNumber)
+			);
+			push(cells, cell);
+		}
+
+		Cell.init(cells);
+
+		return cells;
+	}
+
+	static getCellOf(entity) {
+		return field[getCell(entity)];
+	}
+
+	static getCellFromCoordinates(x, y) {
+		var cell = getCellFromXY(x, y);
+		if (!cell) return null;
+		return field[cell];
+	}
+
+	static getCellsByArea(center, aoeType, min, max, path = false) {
+		if (min > max) return [];
+		var cells = [];
+		if (aoeType == AoeType_CIRCLE) {
+			for (var x = -max; x <= max; x++) {
+				for (var y = -max + abs(x); y <= max - abs(x); y++) {
+					if (abs(x) + abs(y) < min) continue;
+					var cell = Cell.getCellFromCoordinates(center.x + x, center.y + y);
+					if (!cell || cell.type == CELL_OBSTACLE) continue;
+					push(cells, cell);
+				}
+			}
+		} else if (aoeType == AoeType_PLUS) {
+			for (var xy = -max; xy <= max; xy++) {
+				var cell1 = Cell.getCellFromCoordinates(center.x + xy, center.y);
+				if (cell1 && getCellDistance(center.number, cell1.number) >= min && cell1.type != CELL_OBSTACLE) {
+					push(cells, cell1);
+				}
+				var cell2 = Cell.getCellFromCoordinates(center.x, center.y + xy);
+				if (cell2 && getCellDistance(center.number, cell2.number) >= min && cell2.type != CELL_OBSTACLE) {
+					push(cells, cell2);
+				}
+			}
+
+		} else if (aoeType == AoeType_SQUARE) {
+			for (var x = -max; x <= max; x++) {
+				for (var y = -max; y <= max; y++) {
+					var cell = Cell.getCellFromCoordinates(center.x + x, center.y + y);
+					if (!cell || abs(x) < min && abs(y) < min || cell.type == CELL_OBSTACLE) continue;
+					push(cells, cell);
+				}
+			}
+		}
+
+		if (!path) return cells;
+		var entity = getEntityOnCell(center.number);
+		return arrayFilter(cells, (cell) => getPathLength(getCell(entity), cell.number) <= getMP(entity));
+	}
+
+	static getCellsToGo(entity = myLeek.id, min = 0, mp = getMP(entity)) {
+		return Cell.getCellsByArea(field[getCell(entity)], AoeType_CIRCLE, min, mp, true);
+	}
+
+	static getFurthestCellDistanceFrom(cells, entity) {
+		if (!count(cells)) return null;
+		var fromCell = getCell(entity);
+
+		var furthestCell = cells[0];
+		var furthestCellDistance = getCellDistance(fromCell, cells[0].number);
+
+		for (var cell in cells) {
+			var cellDistance = getCellDistance(fromCell, cell.number);
+			if (cellDistance > furthestCellDistance) {
+				furthestCell = cell;
+				furthestCellDistance = cellDistance;
+			}
+		}
+
+		return furthestCell;
+	}
+
+	static getClosestCellDistanceTo(cells, target) {
+		if (!count(cells)) return null;
+		var bestCell = cells[0];
+		var distance = getCellDistance(getCell(target), bestCell.number);
+
+		for (var cell in cells) {
+			var cellDistance = getCellDistance(cell.number, getCell(target));
+
+			if (cellDistance < distance && cell.type == CELL_EMPTY) {
+				bestCell = cell;
+				distance = cellDistance;
+			}
+		}
+		return bestCell;
+	}
+
+	static getClosestCellPathTo(cells, entity) {
+		if (!count(cells)) return null;
+		var ofCell = getCell(entity);
+
+		var closestCell = cells[0];
+		var closestCellPathLength = getPathLength(ofCell, cells[0].number);
+
+		for (var cell in cells) {
+			var cellPathLength = getPathLength(ofCell, cell.number);
+			if (cellPathLength == null) continue;
+			if (cellPathLength < closestCellPathLength || closestCellPathLength == null) {
+				closestCell = cell;
+				closestCellPathLength = cellPathLength;
+			}
+		}
+
+		return closestCell;
+	}
+
+	static visibleCells(cellsToCheck, targetCell = getCell(myLeek.id)) {
+		if (!count(cellsToCheck)) return [];
+
+		return arrayFilter(cellsToCheck, (cell) => lineOfSight(cell.number, targetCell));
+	}
+
+	static hiddenCells(cellsToCheck, target = enemy.id) {
+		if (!count(cellsToCheck)) return [];
+
+		return arrayFilter(cellsToCheck, (cell) => !lineOfSight(cell.number, getCell(target)));
+	}
+
+	static getCellsInRange(cells, min, max, target = enemy.id) {
+		return arrayFilter(cells, (cell) => getCellDistance(cell.number, getCell(target)) >= min && max <= getCellDistance(cell.number, getCell(target)));
+	}
+
+	static toCells(cells) {
+		return arrayMap(cells, (cell) => cell.number);
+	}
+
+	string() {
+		return "N°" + this.number;
+	}
+}
+
+function distanceBetween(source, target) {
+	return getCellDistance(getCell(source), getCell(target));
+}
+
+function pathDistanceBetween(source, target) {
+	return getPathLength(getCell(source), getCell(target));
+}
+
+function distanceTo(entityId) {
+	return getCellDistance(getCell(), getCell(entityId));
+}
+
+function getRandomColor() {
+	return getColor(randInt(0, 255), randInt(0, 255), randInt(0, 255));
+}
+
+function findFirst(array, callback) {
+	for (var object in array) {
+		if (callback(object)) {
+			return object;
+		}
+	}
+	return null;
+}
+
+
+global SHOCK = new Chip(
+	CHIP_SHOCK, // id
+	2, // level
+	false, // team cooldown
+	0, // initial cooldown
+	6, // template
+	1 // type
+)
+global ICE = new Chip(
+	CHIP_ICE, // id
+	9, // level
+	false, // team cooldown
+	0, // initial cooldown
+	15, // template
+	1 // type
+)
+global BANDAGE = new Chip(
+	CHIP_BANDAGE, // id
+	3, // level
+	false, // team cooldown
+	0, // initial cooldown
+	1, // template
+	2 // type
+)
+global CURE = new Chip(
+	CHIP_CURE, // id
+	20, // level
+	false, // team cooldown
+	0, // initial cooldown
+	2, // template
+	2 // type
+)
+global FLAME = new Chip(
+	CHIP_FLAME, // id
+	29, // level
+	false, // team cooldown
+	0, // initial cooldown
+	10, // template
+	1 // type
+)
+global FLASH = new Chip(
+	CHIP_FLASH, // id
+	24, // level
+	false, // team cooldown
+	0, // initial cooldown
+	7, // template
+	1 // type
+)
+global ROCK = new Chip(
+	CHIP_ROCK, // id
+	13, // level
+	false, // team cooldown
+	0, // initial cooldown
+	13, // template
+	1 // type
+)
+global PROTEIN = new Chip(
+	CHIP_PROTEIN, // id
+	6, // level
+	false, // team cooldown
+	0, // initial cooldown
+	24, // template
+	5 // type
+)
+global STRETCHING = new Chip(
+	CHIP_STRETCHING, // id
+	17, // level
+	false, // team cooldown
+	0, // initial cooldown
+	27, // template
+	5 // type
+)
+global DRIP = new Chip(
+	CHIP_DRIP, // id
+	56, // level
+	false, // team cooldown
+	0, // initial cooldown
+	3, // template
+	2 // type
+)
+global VACCINE = new Chip(
+	CHIP_VACCINE, // id
+	80, // level
+	false, // team cooldown
+	0, // initial cooldown
+	5, // template
+	2 // type
+)
+global SEVEN_LEAGUE_BOOTS = new Chip(
+	CHIP_SEVEN_LEAGUE_BOOTS, // id
+	203, // level
+	false, // team cooldown
+	0, // initial cooldown
+	32, // template
+	5 // type
+)
+global WINGED_BOOTS = new Chip(
+	CHIP_WINGED_BOOTS, // id
+	175, // level
+	false, // team cooldown
+	0, // initial cooldown
+	31, // template
+	5 // type
+)
+global LEATHER_BOOTS = new Chip(
+	CHIP_LEATHER_BOOTS, // id
+	22, // level
+	false, // team cooldown
+	0, // initial cooldown
+	30, // template
+	5 // type
+)
+global MOTIVATION = new Chip(
+	CHIP_MOTIVATION, // id
+	14, // level
+	false, // team cooldown
+	0, // initial cooldown
+	33, // template
+	5 // type
+)
+global ADRENALINE = new Chip(
+	CHIP_ADRENALINE, // id
+	156, // level
+	false, // team cooldown
+	0, // initial cooldown
+	34, // template
+	5 // type
+)
+global RAGE = new Chip(
+	CHIP_RAGE, // id
+	226, // level
+	false, // team cooldown
+	0, // initial cooldown
+	35, // template
+	5 // type
+)
+global SPARK = new Chip(
+	CHIP_SPARK, // id
+	19, // level
+	false, // team cooldown
+	0, // initial cooldown
+	9, // template
+	1 // type
+)
+global PEBBLE = new Chip(
+	CHIP_PEBBLE, // id
+	4, // level
+	false, // team cooldown
+	0, // initial cooldown
+	12, // template
+	1 // type
+)
+global SHIELD = new Chip(
+	CHIP_SHIELD, // id
+	35, // level
+	false, // team cooldown
+	0, // initial cooldown
+	18, // template
+	4 // type
+)
+global HELMET = new Chip(
+	CHIP_HELMET, // id
+	10, // level
+	false, // team cooldown
+	0, // initial cooldown
+	19, // template
+	4 // type
+)
+global ARMOR = new Chip(
+	CHIP_ARMOR, // id
+	74, // level
+	false, // team cooldown
+	0, // initial cooldown
+	20, // template
+	4 // type
+)
+global WALL = new Chip(
+	CHIP_WALL, // id
+	18, // level
+	false, // team cooldown
+	0, // initial cooldown
+	21, // template
+	4 // type
+)
+global RAMPART = new Chip(
+	CHIP_RAMPART, // id
+	117, // level
+	false, // team cooldown
+	0, // initial cooldown
+	22, // template
+	4 // type
+)
+global STEROID = new Chip(
+	CHIP_STEROID, // id
+	134, // level
+	false, // team cooldown
+	0, // initial cooldown
+	25, // template
+	5 // type
+)
+global DOPING = new Chip(
+	CHIP_DOPING, // id
+	207, // level
+	false, // team cooldown
+	0, // initial cooldown
+	26, // template
+	5 // type
+)
+global REFLEXES = new Chip(
+	CHIP_REFLEXES, // id
+	197, // level
+	false, // team cooldown
+	0, // initial cooldown
+	29, // template
+	5 // type
+)
+global WARM_UP = new Chip(
+	CHIP_WARM_UP, // id
+	127, // level
+	false, // team cooldown
+	0, // initial cooldown
+	28, // template
+	5 // type
+)
+global FORTRESS = new Chip(
+	CHIP_FORTRESS, // id
+	194, // level
+	false, // team cooldown
+	0, // initial cooldown
+	23, // template
+	4 // type
+)
+global STALACTITE = new Chip(
+	CHIP_STALACTITE, // id
+	50, // level
+	false, // team cooldown
+	0, // initial cooldown
+	16, // template
+	1 // type
+)
+global ICEBERG = new Chip(
+	CHIP_ICEBERG, // id
+	100, // level
+	false, // team cooldown
+	0, // initial cooldown
+	17, // template
+	1 // type
+)
+global ROCKFALL = new Chip(
+	CHIP_ROCKFALL, // id
+	77, // level
+	false, // team cooldown
+	0, // initial cooldown
+	14, // template
+	1 // type
+)
+global LIGHTNING = new Chip(
+	CHIP_LIGHTNING, // id
+	180, // level
+	false, // team cooldown
+	0, // initial cooldown
+	8, // template
+	1 // type
+)
+global LIBERATION = new Chip(
+	CHIP_LIBERATION, // id
+	60, // level
+	false, // team cooldown
+	0, // initial cooldown
+	36, // template
+	9 // type
+)
+global REGENERATION = new Chip(
+	CHIP_REGENERATION, // id
+	122, // level
+	false, // team cooldown
+	0, // initial cooldown
+	4, // template
+	2 // type
+)
+global METEORITE = new Chip(
+	CHIP_METEORITE, // id
+	160, // level
+	false, // team cooldown
+	0, // initial cooldown
+	11, // template
+	1 // type
+)
+global TELEPORTATION = new Chip(
+	CHIP_TELEPORTATION, // id
+	200, // level
+	false, // team cooldown
+	1, // initial cooldown
+	37, // template
+	9 // type
+)
+global ARMORING = new Chip(
+	CHIP_ARMORING, // id
+	68, // level
+	false, // team cooldown
+	0, // initial cooldown
+	38, // template
+	2 // type
+)
+global INVERSION = new Chip(
+	CHIP_INVERSION, // id
+	150, // level
+	false, // team cooldown
+	1, // initial cooldown
+	39, // template
+	9 // type
+)
+global PUNY_BULB = new Chip(
+	CHIP_PUNY_BULB, // id
+	48, // level
+	true, // team cooldown
+	0, // initial cooldown
+	40, // template
+	8 // type
+)
+global FIRE_BULB = new Chip(
+	CHIP_FIRE_BULB, // id
+	190, // level
+	true, // team cooldown
+	0, // initial cooldown
+	41, // template
+	8 // type
+)
+global HEALER_BULB = new Chip(
+	CHIP_HEALER_BULB, // id
+	174, // level
+	true, // team cooldown
+	0, // initial cooldown
+	42, // template
+	8 // type
+)
+global ROCKY_BULB = new Chip(
+	CHIP_ROCKY_BULB, // id
+	105, // level
+	true, // team cooldown
+	0, // initial cooldown
+	43, // template
+	8 // type
+)
+global ICED_BULB = new Chip(
+	CHIP_ICED_BULB, // id
+	130, // level
+	true, // team cooldown
+	0, // initial cooldown
+	44, // template
+	8 // type
+)
+global LIGHTNING_BULB = new Chip(
+	CHIP_LIGHTNING_BULB, // id
+	280, // level
+	true, // team cooldown
+	0, // initial cooldown
+	45, // template
+	8 // type
+)
+global METALLIC_BULB = new Chip(
+	CHIP_METALLIC_BULB, // id
+	230, // level
+	true, // team cooldown
+	0, // initial cooldown
+	46, // template
+	8 // type
+)
+global REMISSION = new Chip(
+	CHIP_REMISSION, // id
+	170, // level
+	false, // team cooldown
+	0, // initial cooldown
+	47, // template
+	2 // type
+)
+global CARAPACE = new Chip(
+	CHIP_CARAPACE, // id
+	141, // level
+	false, // team cooldown
+	0, // initial cooldown
+	48, // template
+	4 // type
+)
+global RESURRECTION = new Chip(
+	CHIP_RESURRECTION, // id
+	301, // level
+	false, // team cooldown
+	0, // initial cooldown
+	49, // template
+	2 // type
+)
+global DEVIL_STRIKE = new Chip(
+	CHIP_DEVIL_STRIKE, // id
+	171, // level
+	false, // team cooldown
+	0, // initial cooldown
+	50, // template
+	1 // type
+)
+global WHIP = new Chip(
+	CHIP_WHIP, // id
+	119, // level
+	false, // team cooldown
+	0, // initial cooldown
+	51, // template
+	5 // type
+)
+global LOAM = new Chip(
+	CHIP_LOAM, // id
+	111, // level
+	false, // team cooldown
+	0, // initial cooldown
+	52, // template
+	2 // type
+)
+global FERTILIZER = new Chip(
+	CHIP_FERTILIZER, // id
+	205, // level
+	false, // team cooldown
+	0, // initial cooldown
+	53, // template
+	2 // type
+)
+global ACCELERATION = new Chip(
+	CHIP_ACCELERATION, // id
+	143, // level
+	false, // team cooldown
+	0, // initial cooldown
+	54, // template
+	5 // type
+)
+global SLOW_DOWN = new Chip(
+	CHIP_SLOW_DOWN, // id
+	98, // level
+	false, // team cooldown
+	0, // initial cooldown
+	55, // template
+	7 // type
+)
+global BALL_AND_CHAIN = new Chip(
+	CHIP_BALL_AND_CHAIN, // id
+	184, // level
+	false, // team cooldown
+	0, // initial cooldown
+	56, // template
+	7 // type
+)
+global TRANQUILIZER = new Chip(
+	CHIP_TRANQUILIZER, // id
+	65, // level
+	false, // team cooldown
+	0, // initial cooldown
+	57, // template
+	7 // type
+)
+global SOPORIFIC = new Chip(
+	CHIP_SOPORIFIC, // id
+	145, // level
+	false, // team cooldown
+	0, // initial cooldown
+	58, // template
+	7 // type
+)
+global SOLIDIFICATION = new Chip(
+	CHIP_SOLIDIFICATION, // id
+	40, // level
+	false, // team cooldown
+	0, // initial cooldown
+	60, // template
+	5 // type
+)
+global VENOM = new Chip(
+	CHIP_VENOM, // id
+	42, // level
+	false, // team cooldown
+	0, // initial cooldown
+	61, // template
+	6 // type
+)
+global TOXIN = new Chip(
+	CHIP_TOXIN, // id
+	125, // level
+	false, // team cooldown
+	0, // initial cooldown
+	62, // template
+	6 // type
+)
+global PLAGUE = new Chip(
+	CHIP_PLAGUE, // id
+	210, // level
+	false, // team cooldown
+	0, // initial cooldown
+	63, // template
+	6 // type
+)
+global THORN = new Chip(
+	CHIP_THORN, // id
+	132, // level
+	false, // team cooldown
+	0, // initial cooldown
+	64, // template
+	3 // type
+)
+global MIRROR = new Chip(
+	CHIP_MIRROR, // id
+	246, // level
+	false, // team cooldown
+	0, // initial cooldown
+	65, // template
+	3 // type
+)
+global FEROCITY = new Chip(
+	CHIP_FEROCITY, // id
+	107, // level
+	false, // team cooldown
+	0, // initial cooldown
+	66, // template
+	5 // type
+)
+global COLLAR = new Chip(
+	CHIP_COLLAR, // id
+	182, // level
+	false, // team cooldown
+	0, // initial cooldown
+	67, // template
+	5 // type
+)
+global BARK = new Chip(
+	CHIP_BARK, // id
+	234, // level
+	false, // team cooldown
+	0, // initial cooldown
+	68, // template
+	5 // type
+)
+global BURNING = new Chip(
+	CHIP_BURNING, // id
+	209, // level
+	false, // team cooldown
+	0, // initial cooldown
+	69, // template
+	1 // type
+)
+global FRACTURE = new Chip(
+	CHIP_FRACTURE, // id
+	240, // level
+	false, // team cooldown
+	0, // initial cooldown
+	59, // template
+	7 // type
+)
+global ANTIDOTE = new Chip(
+	CHIP_ANTIDOTE, // id
+	114, // level
+	false, // team cooldown
+	0, // initial cooldown
+	70, // template
+	9 // type
+)
+global PUNISHMENT = new Chip(
+	CHIP_PUNISHMENT, // id
+	147, // level
+	false, // team cooldown
+	0, // initial cooldown
+	71, // template
+	1 // type
+)
+global COVETOUSNESS = new Chip(
+	CHIP_COVETOUSNESS, // id
+	139, // level
+	false, // team cooldown
+	0, // initial cooldown
+	72, // template
+	5 // type
+)
+global VAMPIRIZATION = new Chip(
+	CHIP_VAMPIRIZATION, // id
+	177, // level
+	false, // team cooldown
+	0, // initial cooldown
+	73, // template
+	2 // type
+)
+global PRECIPITATION = new Chip(
+	CHIP_PRECIPITATION, // id
+	192, // level
+	false, // team cooldown
+	0, // initial cooldown
+	74, // template
+	5 // type
+)
+global ALTERATION = new Chip(
+	CHIP_ALTERATION, // id
+	53, // level
+	false, // team cooldown
+	0, // initial cooldown
+	75, // template
+	1 // type
+)
+global WIZARD_BULB = new Chip(
+	CHIP_WIZARD_BULB, // id
+	215, // level
+	true, // team cooldown
+	0, // initial cooldown
+	77, // template
+	8 // type
+)
+global PLASMA = new Chip(
+	CHIP_PLASMA, // id
+	290, // level
+	false, // team cooldown
+	0, // initial cooldown
+	76, // template
+	1 // type
+)
+global JUMP = new Chip(
+	CHIP_JUMP, // id
+	70, // level
+	false, // team cooldown
+	0, // initial cooldown
+	78, // template
+	9 // type
+)
+global COVID = new Chip(
+	CHIP_COVID, // id
+	220, // level
+	false, // team cooldown
+	0, // initial cooldown
+	79, // template
+	6 // type
+)
+global ELEVATION = new Chip(
+	CHIP_ELEVATION, // id
+	228, // level
+	false, // team cooldown
+	0, // initial cooldown
+	80, // template
+	2 // type
+)
+global KNOWLEDGE = new Chip(
+	CHIP_KNOWLEDGE, // id
+	32, // level
+	false, // team cooldown
+	0, // initial cooldown
+	81, // template
+	5 // type
+)
+global WIZARDRY = new Chip(
+	CHIP_WIZARDRY, // id
+	166, // level
+	false, // team cooldown
+	0, // initial cooldown
+	82, // template
+	5 // type
+)
+global REPOTTING = new Chip(
+	CHIP_REPOTTING, // id
+	163, // level
+	false, // team cooldown
+	0, // initial cooldown
+	83, // template
+	9 // type
+)
+global THERAPY = new Chip(
+	CHIP_THERAPY, // id
+	260, // level
+	false, // team cooldown
+	0, // initial cooldown
+	84, // template
+	2 // type
+)
+global MUTATION = new Chip(
+	CHIP_MUTATION, // id
+	83, // level
+	false, // team cooldown
+	0, // initial cooldown
+	85, // template
+	2 // type
+)
+global DESINTEGRATION = new Chip(
+	CHIP_DESINTEGRATION, // id
+	223, // level
+	false, // team cooldown
+	0, // initial cooldown
+	86, // template
+	1 // type
+)
+global TRANSMUTATION = new Chip(
+	CHIP_TRANSMUTATION, // id
+	252, // level
+	false, // team cooldown
+	0, // initial cooldown
+	87, // template
+	2 // type
+)
+global GRAPPLE = new Chip(
+	CHIP_GRAPPLE, // id
+	120, // level
+	false, // team cooldown
+	0, // initial cooldown
+	88, // template
+	9 // type
+)
+global BOXING_GLOVE = new Chip(
+	CHIP_BOXING_GLOVE, // id
+	140, // level
+	false, // team cooldown
+	0, // initial cooldown
+	89, // template
+	9 // type
+)
+global TACTICIAN_BULB = new Chip(
+	CHIP_TACTICIAN_BULB, // id
+	270, // level
+	true, // team cooldown
+	0, // initial cooldown
+	92, // template
+	8 // type
+)
+global SAVANT_BULB = new Chip(
+	CHIP_SAVANT_BULB, // id
+	250, // level
+	true, // team cooldown
+	0, // initial cooldown
+	93, // template
+	8 // type
+)
+global SERUM = new Chip(
+	CHIP_SERUM, // id
+	199, // level
+	false, // team cooldown
+	0, // initial cooldown
+	94, // template
+	2 // type
+)
+global CRUSHING = new Chip(
+	CHIP_CRUSHING, // id
+	158, // level
+	false, // team cooldown
+	0, // initial cooldown
+	95, // template
+	7 // type
+)
+global BRAINWASHING = new Chip(
+	CHIP_BRAINWASHING, // id
+	266, // level
+	false, // team cooldown
+	0, // initial cooldown
+	96, // template
+	7 // type
+)
+global ARSENIC = new Chip(
+	CHIP_ARSENIC, // id
+	285, // level
+	false, // team cooldown
+	0, // initial cooldown
+	97, // template
+	6 // type
+)
+global BRAMBLE = new Chip(
+	CHIP_BRAMBLE, // id
+	278, // level
+	false, // team cooldown
+	0, // initial cooldown
+	98, // template
+	3 // type
+)
+global DOME = new Chip(
+	CHIP_DOME, // id
+	243, // level
+	false, // team cooldown
+	0, // initial cooldown
+	99, // template
+	4 // type
+)
+global MANUMISSION = new Chip(
+	CHIP_MANUMISSION, // id
+	149, // level
+	false, // team cooldown
+	0, // initial cooldown
+	100, // template
+	9 // type
+)
+global PRISM = new Chip(
+	CHIP_PRISM, // id
+	92, // level
+	false, // team cooldown
+	0, // initial cooldown
+	104, // template
+	5 // type
+)
+
+global chips = [
+	ACCELERATION,
+	ADRENALINE,
+	ALTERATION,
+	ANTIDOTE,
+	ARMOR,
+	ARMORING,
+	ARSENIC,
+	BALL_AND_CHAIN,
+	BANDAGE,
+	BARK,
+	BOXING_GLOVE,
+	BRAINWASHING,
+	BRAMBLE,
+	BURNING,
+	CARAPACE,
+	COLLAR,
+	COVETOUSNESS,
+	COVID,
+	CRUSHING,
+	CURE,
+	DESINTEGRATION,
+	DEVIL_STRIKE,
+	DOME,
+	DOPING,
+	DRIP,
+	ELEVATION,
+	FEROCITY,
+	FERTILIZER,
+	FIRE_BULB,
+	FLAME,
+	FLASH,
+	FORTRESS,
+	FRACTURE,
+	GRAPPLE,
+	HEALER_BULB,
+	HELMET,
+	ICE,
+	ICEBERG,
+	ICED_BULB,
+	INVERSION,
+	JUMP,
+	KNOWLEDGE,
+	LEATHER_BOOTS,
+	LIBERATION,
+	LIGHTNING_BULB,
+	LIGHTNING,
+	LOAM,
+	MANUMISSION,
+	METALLIC_BULB,
+	METEORITE,
+	MIRROR,
+	MOTIVATION,
+	MUTATION,
+	PEBBLE,
+	PLAGUE,
+	PLASMA,
+	PRECIPITATION,
+	PRISM,
+	PROTEIN,
+	PUNISHMENT,
+	PUNY_BULB,
+	RAGE,
+	RAMPART,
+	REFLEXES,
+	REGENERATION,
+	REMISSION,
+	REPOTTING,
+	RESURRECTION,
+	ROCK,
+	ROCKFALL,
+	ROCKY_BULB,
+	SAVANT_BULB,
+	SERUM,
+	SEVEN_LEAGUE_BOOTS,
+	SHIELD,
+	SHOCK,
+	SLOW_DOWN,
+	SOLIDIFICATION,
+	SOPORIFIC,
+	SPARK,
+	STALACTITE,
+	STEROID,
+	STRETCHING,
+	TACTICIAN_BULB,
+	TELEPORTATION,
+	THERAPY,
+	THORN,
+	TOXIN,
+	TRANQUILIZER,
+	TRANSMUTATION,
+	VACCINE,
+	VAMPIRIZATION,
+	VENOM,
+	WALL,
+	WARM_UP,
+	WHIP,
+	WINGED_BOOTS,
+	WIZARD_BULB,
+	WIZARDRY
+];
+
+class ItemEffect {
+	min;
+	max;
+	turns;
+	onAllies;
+	onEnemies;
+	onCaster;
+	onSummons;
+	onNotSummons;
+	stackable;
+	multipliedByTargets;
+	hitCaster;
+	notReplaceable;
+	irreductible;
+	type;
+
+	constructor(effect) {
+		this.type = effect[0];
+		this.min = effect[1];
+		this.max = effect[2];
+		this.turns = effect[3];
+
+		var targets = effect[4];
+		//1
+		this.onEnemies = targets % 2 == 1;
+		//2
+		this.onAllies = inArray([2, 3, 6, 7, 10, 11, 14, 15, 18, 19, 22, 23, 26, 27, 30, 31], targets);
+		//4 don't forget to check min range == 0
+		this.onCaster = inArray([4, 5, 6, 7, 12, 13, 14, 15, 20, 21, 22, 23, 28, 29, 30, 31], targets);
+		//8
+		this.onNotSummons = inArray([8, 9, 10, 11, 12, 13, 14, 15, 24, 25, 26, 27, 28, 29, 30, 31], targets);
+		//16
+		this.onSummons = targets >= 16;
+
+		var modifiers = effect[5];
+		//1
+		this.stackable = modifiers % 2 == 1;
+		//2
+		this.multipliedByTargets = inArray([2, 3, 6, 7, 10, 11, 14, 15, 18, 19, 22, 23, 26, 27, 30, 31], modifiers);
+		//4
+		this.hitCaster = inArray([4, 5, 6, 7, 12, 13, 14, 15, 20, 21, 22, 23, 28, 29, 30, 31], modifiers);
+		//8
+		this.notReplaceable = inArray([8, 9, 10, 11, 12, 13, 14, 15, 24, 25, 26, 27, 28, 29, 30, 31], modifiers);
+		//16
+		this.irreductible = modifiers >= 16;
+	}
+}
+
+function launchTypeToAoeType(launchType) {
+	if (launchType == LAUNCH_TYPE_LINE) return AoeType_LASER;
+	if (launchType == LAUNCH_TYPE_LINE_INVERTED) return AoeType_LASER;
+	if (launchType == LAUNCH_TYPE_DIAGONAL) return AoeType_CROSS;
+	if (launchType == LAUNCH_TYPE_STAR) return AoeType_STAR;
+	if (launchType == LAUNCH_TYPE_STAR_INVERTED) return AoeType_STARINVERTED;
+	return AoeType_CIRCLE;
+}
+
+function areaToAoeType(area) {
+	if (inArray([AREA_CIRCLE_1, AREA_CIRCLE_2, AREA_CIRCLE_3], area)) return AoeType_CIRCLE;
+	if (inArray([AREA_FIRST_INLINE, AREA_LASER_LINE], area)) return AoeType_LASER;
+	if (inArray([AREA_PLUS_1, AREA_PLUS_2, AREA_PLUS_3], area)) return AoeType_PLUS;
+	if (area == AREA_POINT) return AoeType_POINT;
+	if (inArray([AREA_SQUARE_1, AREA_SQUARE_2], area)) return AoeType_SQUARE;
+	if (inArray([AREA_X_1, AREA_X_2, AREA_X_3], area)) return AoeType_CROSS;
+	return AoeType_POINT;
+}
+
+function areaToAoeSize(area) {
+	if (inArray([AREA_CIRCLE_1, AREA_PLUS_1, AREA_SQUARE_1, AREA_X_1], area)) return 1;
+	if (inArray([AREA_CIRCLE_2, AREA_PLUS_2, AREA_SQUARE_2, AREA_X_2], area)) return 2;
+	if (inArray([AREA_CIRCLE_3, AREA_PLUS_3, AREA_X_3], area)) return 3;
+	return 0;
+}
+class Damage {
+	strengthMin;
+	strengthMax;
+	strengthAvg;
+	strengthMinByTP;
+	strengthMaxByTP;
+	strengthAvgByTP;
+	poisonMin;
+	poisonMax;
+	poisonAvg;
+	poisonMinByTP;
+	poisonMaxByTP;
+	poisonAvgByTP;
+	novaMin;
+	novaMax;
+	novaAvg;
+	novaMinByTP;
+	novaMaxByTP;
+	novaAvgByTP;
+	totalMin;
+	totalMax;
+	totalAvg;
+	totalMinByTP;
+	totalMaxByTP;
+	totalAvgByTP;
+
+	constructor(
+		strengthMin = 0,
+		strengthMax = 0,
+		strengthAvg = 0,
+		strengthMinByTP = 0,
+		strengthMaxByTP = 0,
+		strengthAvgByTP = 0,
+		poisonMin = 0,
+		poisonMax = 0,
+		poisonAvg = 0,
+		poisonMinByTP = 0,
+		poisonMaxByTP = 0,
+		poisonAvgByTP = 0,
+		novaMin = 0,
+		novaMax = 0,
+		novaAvg = 0,
+		novaMinByTP = 0,
+		novaMaxByTP = 0,
+		novaAvgByTP = 0,
+		totalMin = 0,
+		totalMax = 0,
+		totalAvg = 0,
+		totalMinByTP = 0,
+		totalMaxByTP = 0,
+		totalAvgByTP = 0
+	) {
+		this.strengthMin = strengthMin;
+		this.strengthMax = strengthMax;
+		this.strengthAvg = strengthAvg;
+		this.strengthMinByTP = strengthMinByTP;
+		this.strengthMaxByTP = strengthMaxByTP;
+		this.strengthAvgByTP = strengthAvgByTP;
+		this.poisonMin = poisonMin;
+		this.poisonMax = poisonMax;
+		this.poisonAvg = poisonAvg;
+		this.poisonMinByTP = poisonMinByTP;
+		this.poisonMaxByTP = poisonMaxByTP;
+		this.poisonAvgByTP = poisonAvgByTP;
+		this.novaMin = novaMin;
+		this.novaMax = novaMax;
+		this.novaAvg = novaAvg;
+		this.novaMinByTP = novaMinByTP;
+		this.novaMaxByTP = novaMaxByTP;
+		this.novaAvgByTP = novaAvgByTP;
+		this.totalMin = totalMin;
+		this.totalMax = totalMax;
+		this.totalAvg = totalAvg;
+		this.totalMinByTP = totalMinByTP;
+		this.totalMaxByTP = totalMaxByTP;
+		this.totalAvgByTP = totalAvgByTP;
+	}
+}
+
+class Item {
+	id;
+	name;
+	level;
+	minRange;
+	maxRange;
+	launchType;
+	itemEffects;
+	cost;
+	aoeType;
+	aoeSize;
+	los;
+	template;
+	damage;
+
+	constructor(id, name, level, minRange, maxRange, launchType, itemEffects, cost, area, los, template) {
+		this.id = id;
+		this.name = toUpper(replace(name, '_', ' '));
+		this.level = level;
+		this.minRange = minRange;
+		this.maxRange = maxRange;
+		this.launchType = launchTypeToAoeType(launchType);
+		this.itemEffects = itemEffects;
+		this.cost = cost;
+		this.aoeType = areaToAoeType(area);
+		this.aoeSize = areaToAoeSize(area);
+		this.los = los;
+		this.template = template;
+		this.damage = new Damage();
+	}
+}
+
+class Chip extends Item {
+	cooldown;
+	teamCooldown;
+	initialCooldown;
+	type;
+
+	constructor(id, level, teamCooldown, initialCooldown, template, type) {
+		super(
+			id,
+			getChipName(id),
+			level,
+			getChipMinRange(id),
+			getChipMaxRange(id),
+			getChipLaunchType(id),
+			arrayMap(getChipEffects(id), (chipEffect) => new ItemEffect(chipEffect)),
+			getChipCost(id),
+			getChipArea(id),
+			chipNeedLos(id),
+			template
+		);
+		this.cooldown = getChipCooldown(id);
+		this.teamCooldown = teamCooldown;
+		this.initialCooldown = initialCooldown;
+		this.type = type;
+	}
+
+	static getById(chipId) {
+		return findFirst(chips, chip => chip.id == chipId);
+	}
+
+	canMoveToUse(caster = myLeek.id, target = enemy.id) {
+		if (getCooldown(this.id)) return null;
+		if (canUseChip(this.id, target)) return field[getCell(caster)];
+
+		var cellsToGo = Cell.getCellsByArea(field[getCell(caster)], AoeType_CIRCLE, 1, getMP(caster), true);
+
+		var cells = cellsToGo;
+		if (this.los) {
+			cells = Cell.visibleCells(cellsToGo, getCell(target));
+		}
+		var cellsInRange = Cell.getCellsInRange(cells, this.minRange, this.maxRange, target);
+
+		return Cell.getClosestCellPathTo(cellsInRange, myLeek.id);
+	}
+
+	bestCellToUseChipOn(caster, target) {
+		if (getTP() < this.cost) return null;
+		if (getCooldown(this.id)) return null;
+		var targetCell = field[getCell(target)];
+		if (canUseChip(this.id, target)) return targetCell;
+
+		var launchCells = Cell.getCellsByArea(field[getCell(caster)], this.launchType, this.minRange, this.maxRange);
+		if (!count(launchCells)) return null;
+
+		var launchCellsWithLos = Cell.visibleCells(launchCells);
+		if (!count(launchCellsWithLos)) return null;
+
+		// If target is in launch range
+		var response = findFirst(launchCellsWithLos, (cell) => cell.number == getCell(target));
+		if (response) return response;
+
+		var cellsToHitTarget = arrayFilter(launchCellsWithLos, (cell) => {
+			var aoeCells = Cell.getCellsByArea(cell, this.aoeType, 0, this.aoeSize);
+			return inArray(aoeCells, targetCell);
+		});
+		if (!count(cellsToHitTarget)) return null;
+
+		return Cell.getClosestCellDistanceTo(cellsToHitTarget, target);
+	}
+
+	use(caster = myLeek.id, target = enemy.id, cellToUseChipOn = this.bestCellToUseChipOn(caster, target)) {
+		if (getCooldown(this.id)) return USE_INVALID_COOLDOWN;
+		if (getTP() < this.cost) return USE_NOT_ENOUGH_TP;
+
+		if (!cellToUseChipOn) {
+			cellToUseChipOn = field[getCell(target)];
+		}
+
+		if (!canUseChipOnCell(this.id, cellToUseChipOn.number)) return USE_INVALID_POSITION;
+
+		var result = useChipOnCell(this.id, cellToUseChipOn.number);
+
+		debug(this.name + " : " + result);
+
+		return result;
+	}
+
+	moveAndUse(caster = myLeek.id, target = enemy.id) {
+		if (getCooldown(this.id)) return USE_INVALID_COOLDOWN;
+		if (getTP() < this.cost) return USE_NOT_ENOUGH_TP;
+
+		if (canUseChip(this.id, target)) {
+			useChip(this.id, target);
+			return;
+		}
+
+		var cell = this.canMoveToUse(caster, target);
+
+		if (!cell) return;
+
+		moveTowardCell(cell.number);
+
+		if (this.aoeType != AoeType_POINT) {
+			var bestCell = this.bestCellToUseChipOn(caster, target);
+			if (bestCell) {
+				useChipOnCell(this.id, bestCell.number);
+			}
+			return;
+		}
+
+		useChip(this.id, target);
+	}
+
+	hasChipType(searchedType) {
+		return !!findFirst(this.itemEffects, effect => effect.type == searchedType);
+	}
+
+	getChipDamage(source, target) {
+		for (var effect in this.itemEffects) {
+			if (effect.type == EFFECT_DAMAGE) {
+				this.damage.strengthMin += effect.min;
+				this.damage.strengthMax += effect.max;
+			} else if (effect.type == EFFECT_POISON) {
+				var formula = (getMagic(source) / 100 + 1) * (getPower(source) / 100 + 1);
+				this.damage.poisonMin = round(effect.min * formula);
+				this.damage.poisonMax = round(effect.max * formula);
+				this.damage.poisonAvg = (this.damage.poisonMin + this.damage.poisonMax) / 2;
+				this.damage.poisonMinByTP = effect.min / this.cost;
+				this.damage.poisonMaxByTP = effect.max / this.cost;
+				this.damage.poisonAvgByTP = (effect.min + effect.max) / 2 / this.cost;
+			} else if (effect.type == EFFECT_NOVA_DAMAGE) {
+				var formula = (value) => min(getTotalLife(target) - getLife(target), value * (getScience(source) / 100 + 1) * (getPower(source) / 100 + 1));
+				this.damage.novaMin = round(formula(effect.min));
+				this.damage.novaMax = round(formula(effect.max));
+				this.damage.novaAvg = (this.damage.novaMin + this.damage.novaMax) / 2;
+				this.damage.novaMinByTP = effect.min / this.cost;
+				this.damage.novaMaxByTP = effect.max / this.cost;
+				this.damage.novaAvgByTP = (effect.min + effect.max) / 2 / this.cost;
+			}
+		}
+
+		var multiplier = (getStrength(source) / 100 + 1) * (getPower(source) / 100 + 1)
+		var relative = (1 - getRelativeShield(target) / 100);
+		var absolute = getAbsoluteShield(target);
+		var calculateDmg = (base) => round(base * multiplier * relative - absolute);
+
+		this.damage.strengthMinByTP = this.damage.strengthMin / this.cost;
+		this.damage.strengthMaxByTP = this.damage.strengthMax / this.cost;
+		this.damage.strengthAvgByTP = (this.damage.strengthMin + this.damage.strengthMax) / 2 / this.cost;
+		this.damage.strengthMin = calculateDmg(this.damage.strengthMin);
+		this.damage.strengthMax = calculateDmg(this.damage.strengthMax);
+		this.damage.strengthAvg = (this.damage.strengthMin + this.damage.strengthMax) / 2;
+
+		this.damage.totalMin = this.damage.strengthMin + this.damage.poisonMin;
+		this.damage.totalMax = this.damage.strengthMax + this.damage.poisonMax;
+		this.damage.totalAvg = this.damage.strengthAvg + this.damage.poisonAvg;
+		this.damage.totalMinByTP = this.damage.strengthMinByTP + this.damage.poisonMinByTP;
+		this.damage.totalMaxByTP = this.damage.strengthMaxByTP + this.damage.poisonMaxByTP;
+		this.damage.totalAvgByTP = this.damage.strengthAvgByTP + this.damage.poisonAvgByTP;
+
+		return this.damage;
+	}
+
+	static getChipsOf(entity = enemy.id) {
+		return arrayMap(getChips(entity), (chipId) => Chip.getById(chipId));
+	}
+
+	/**
+	 * Get entity chips of type
+	 * @param type searched type of chip
+	 * @param entity target
+	 * @returns array of Chip
+	 */
+	static getChipsOfType(type, entity = enemy.id) {
+		return arrayFilter(Chip.getChipsOf(entity), chip => inArray(arrayMap(chip.itemEffects, itemEffect => itemEffect.type), type));
+	}
+
+	static haveChipEquipped(chipId, entity = enemy.id) {
+		return !!findFirst(getChips(entity), id => id == chipId);
+	}
+
+	string() {
+		return this.name;
+	}
+}
+
+
+global PISTOL = new Weapon(
+	WEAPON_PISTOL, // id
+	1, // level
+	1, // template
+	37 // item
+)
+global MACHINE_GUN = new Weapon(
+	WEAPON_MACHINE_GUN, // id
+	8, // level
+	2, // template
+	38 // item
+)
+global DOUBLE_GUN = new Weapon(
+	WEAPON_DOUBLE_GUN, // id
+	45, // level
+	3, // template
+	39 // item
+)
+global SHOTGUN = new Weapon(
+	WEAPON_SHOTGUN, // id
+	16, // level
+	4, // template
+	41 // item
+)
+global MAGNUM = new Weapon(
+	WEAPON_MAGNUM, // id
+	27, // level
+	5, // template
+	45 // item
+)
+global LASER = new Weapon(
+	WEAPON_LASER, // id
+	38, // level
+	6, // template
+	42 // item
+)
+global GRENADE_LAUNCHER = new Weapon(
+	WEAPON_GRENADE_LAUNCHER, // id
+	135, // level
+	7, // template
+	43 // item
+)
+global FLAME_THROWER = new Weapon(
+	WEAPON_FLAME_THROWER, // id
+	90, // level
+	8, // template
+	46 // item
+)
+global DESTROYER = new Weapon(
+	WEAPON_DESTROYER, // id
+	85, // level
+	9, // template
+	40 // item
+)
+global GAZOR = new Weapon(
+	WEAPON_GAZOR, // id
+	297, // level
+	10, // template
+	48 // item
+)
+global ELECTRISOR = new Weapon(
+	WEAPON_ELECTRISOR, // id
+	211, // level
+	11, // template
+	44 // item
+)
+global M_LASER = new Weapon(
+	WEAPON_M_LASER, // id
+	299, // level
+	12, // template
+	47 // item
+)
+global B_LASER = new Weapon(
+	WEAPON_B_LASER, // id
+	95, // level
+	13, // template
+	60 // item
+)
+global KATANA = new Weapon(
+	WEAPON_KATANA, // id
+	257, // level
+	14, // template
+	107 // item
+)
+global BROADSWORD = new Weapon(
+	WEAPON_BROADSWORD, // id
+	30, // level
+	15, // template
+	108 // item
+)
+global AXE = new Weapon(
+	WEAPON_AXE, // id
+	110, // level
+	16, // template
+	109 // item
+)
+global J_LASER = new Weapon(
+	WEAPON_J_LASER, // id
+	153, // level
+	17, // template
+	115 // item
+)
+global ILLICIT_GRENADE_LAUNCHER = new Weapon(
+	WEAPON_ILLICIT_GRENADE_LAUNCHER, // id
+	136, // level
+	18, // template
+	116 // item
+)
+global MYSTERIOUS_ELECTRISOR = new Weapon(
+	WEAPON_MYSTERIOUS_ELECTRISOR, // id
+	212, // level
+	19, // template
+	117 // item
+)
+global UNBRIDLED_GAZOR = new Weapon(
+	WEAPON_UNBRIDLED_GAZOR, // id
+	298, // level
+	20, // template
+	118 // item
+)
+global REVOKED_M_LASER = new Weapon(
+	WEAPON_REVOKED_M_LASER, // id
+	300, // level
+	21, // template
+	119 // item
+)
+global RIFLE = new Weapon(
+	WEAPON_RIFLE, // id
+	271, // level
+	22, // template
+	151 // item
+)
+global RHINO = new Weapon(
+	WEAPON_RHINO, // id
+	187, // level
+	23, // template
+	153 // item
+)
+global EXPLORER_RIFLE = new Weapon(
+	WEAPON_EXPLORER_RIFLE, // id
+	272, // level
+	24, // template
+	175 // item
+)
+global LIGHTNINGER = new Weapon(
+	WEAPON_LIGHTNINGER, // id
+	237, // level
+	25, // template
+	180 // item
+)
+global NEUTRINO = new Weapon(
+	WEAPON_NEUTRINO, // id
+	12, // level
+	27, // template
+	182 // item
+)
+global BAZOOKA = new Weapon(
+	WEAPON_BAZOOKA, // id
+	169, // level
+	29, // template
+	184 // item
+)
+global DARK_KATANA = new Weapon(
+	WEAPON_DARK_KATANA, // id
+	258, // level
+	32, // template
+	187 // item
+)
+global ENHANCED_LIGHTNINGER = new Weapon(
+	WEAPON_ENHANCED_LIGHTNINGER, // id
+	238, // level
+	33, // template
+	225 // item
+)
+global UNSTABLE_DESTROYER = new Weapon(
+	WEAPON_UNSTABLE_DESTROYER, // id
+	86, // level
+	34, // template
+	226 // item
+)
+global SWORD = new Weapon(
+	WEAPON_SWORD, // id
+	75, // level
+	35, // template
+	277 // item
+)
+global HEAVY_SWORD = new Weapon(
+	WEAPON_HEAVY_SWORD, // id
+	288, // level
+	36, // template
+	278 // item
+)
+
+global weapons = [
+	AXE,
+	B_LASER,
+	BAZOOKA,
+	BROADSWORD,
+	DARK_KATANA,
+	DESTROYER,
+	DOUBLE_GUN,
+	ELECTRISOR,
+	ENHANCED_LIGHTNINGER,
+	EXPLORER_RIFLE,
+	FLAME_THROWER,
+	GAZOR,
+	GRENADE_LAUNCHER,
+	HEAVY_SWORD,
+	ILLICIT_GRENADE_LAUNCHER,
+	J_LASER,
+	KATANA,
+	LASER,
+	LIGHTNINGER,
+	M_LASER,
+	MACHINE_GUN,
+	MAGNUM,
+	MYSTERIOUS_ELECTRISOR,
+	NEUTRINO,
+	PISTOL,
+	REVOKED_M_LASER,
+	RHINO,
+	RIFLE,
+	SHOTGUN,
+	SWORD,
+	UNBRIDLED_GAZOR,
+	UNSTABLE_DESTROYER
+];
+
+class Entity {
+	id;
+	name;
+	level;
+	chips;
+	type;
+
+	constructor(entityId) {
+		this.id = entityId;
+		this.name = getName(entityId);
+		this.level = getLevel(entityId);
+		this.chips = Chip.getChipsOf(entityId);
+		this.type = getType(entityId);
+	}
+}
+
+class Leek extends Entity {
+	weapons;
+	weapon;
+
+	constructor(leekId) {
+		super(leekId);
+		this.weapons = arrayMap(getWeapons(this.id), weaponId => Weapon.getById(weaponId));
+		this.weapon = this.weapons[0];
+	}
+
+	life() {
+		return getLife(this.id);
+	}
+	totalLife() {
+		return getTotalLife(this.id);
+	}
+	lifePercent() {
+		return this.life() * 100 / this.totalLife();
+	}
+	strength() {
+		return getStrength(this.id);
+	}
+	power() {
+		return getPower(this.id);
+	}
+	wisdom() {
+		return getWisdom(this.id);
+	}
+	agility() {
+		return getAgility(this.id);
+	}
+	resistance() {
+		return getResistance(this.id);
+	}
+	absolute() {
+		return getAbsoluteShield(this.id);
+	}
+	relative() {
+		return getRelativeShield(this.id);
+	}
+	science() {
+		return getScience(this.id);
+	}
+	magic() {
+		return getMagic(this.id);
+	}
+	frequency() {
+		return getFrequency(this.id);
+	}
+	cores() {
+		return getCores(this.id);
+	}
+	ram() {
+		return getRAM(this.id);
+	}
+	mp() {
+		return getMP(this.id);
+	}
+	tp() {
+		return getTP(this.id);
+	}
+
+	isDead() {
+		return isDead(this.id);
+	}
+
+	changeWeapon(weapon) {
+		if (this.weapon != weapon) {
+			debug("Changement d'arme pour " + weapon.name);
+			this.weapon = weapon;
+			setWeapon(weapon.id);
+		}
+	}
+
+	attack(target = enemy.id) {
+		if (!isAlive(target)) return;
+
+		if (canUseWeapon(this.weapon.id, target)) {
+			useWeapon(target);
+		}
+	}
+
+	moveAndAttack(target = enemy.id) {
+		if (!isAlive(target)) return;
+
+		var cellsToUse = arrayMap(getCellsToUseWeapon(this.weapon.id, target), c => field[c]);
+		var closest = Cell.getClosestCellPathTo(cellsToUse, this.id);
+
+		var cell = (closest && getPathLength(closest.number, getCell()) < this.mp()) ? closest : null;
+		debug("move and attack : " + cell);
+		if (cell) {
+			moveTowardCell(cell.number);
+			useWeaponOnCell(cell.number);
+		}
+	}
+}
+
+class Weapon extends Item {
+	passive;
+	item;
+
+	constructor(id, level, template, item) {
+		super(
+			id,
+			getWeaponName(id),
+			level,
+			getWeaponMinRange(id),
+			getWeaponMaxRange(id),
+			getWeaponLaunchType(id),
+			arrayMap(getWeaponEffects(id), (itemEffect) => new ItemEffect(itemEffect)),
+			getWeaponCost(id),
+			getWeaponArea(id),
+			weaponNeedLos(id),
+			template
+		);
+		this.passive = arrayMap(getWeaponPassiveEffects(id), (passive) => new ItemEffect(passive));
+		this.item = item;
+	}
+
+	static getById(weaponId) {
+		return findFirst(weapons, weapon => weapon.id == weaponId);
+	}
+
+	use(caster = myLeek.id, target = enemy.id) {
+		if (canUseWeapon(this.id, target)) {
+			useWeapon(target);
+		}
+	}
+
+	moveAndUse(caster = myLeek.id, target = enemy.id) {
+		var cell = this.canMoveToUse(caster, target);
+
+		if (cell && canUseWeapon(this.id, target)) {
+			useWeaponOnCell(cell.number);
+		}
+	}
+
+	canMoveToUse(caster = myLeek.id, target = enemy.id) {
+		var casterCell = field[getCell(caster)];
+		var targetCellNumber = getCell(target);
+
+		if (canUseWeapon(this.id, target)) return casterCell;
+
+		var cellsToGo = Cell.getCellsByArea(casterCell, AoeType_CIRCLE, 0, getMP(caster), true);
+
+		var cellsToHitTarget = [: ];
+
+		for (var cell in cellsToGo) {
+			var launchCells = Cell.getCellsByArea(cell, this.launchType, this.minRange, this.maxRange);
+
+			var visibleLaunchCells = Cell.visibleCells(launchCells, targetCellNumber);
+
+			// If target is in launch range
+			var response = findFirst(visibleLaunchCells, (cell) => cell.number == targetCellNumber);
+			if (response) return response;
+
+			var cells = arrayFilter(visibleLaunchCells, cell => {
+				var aoeCells = Cell.getCellsByArea(cell, this.aoeType, 0, this.aoeSize);
+				return inArray(aoeCells, field[targetCellNumber]);
+			});
+
+			arrayIter(cells, (cell) => mapPut(cellsToHitTarget, getCellDistance(getCell(caster), getCell(cell.number)), cell));
+		}
+
+		if (!count(mapKeys(cellsToHitTarget))) return null;
+
+		return mapGet(cellsToHitTarget, arraySort(mapKeys(cellsToHitTarget), (a, b) => a - b)[0]);
+	}
+
+	canMoveToUseOnCell(cell, caster = myLeek.id) {
+		if (canUseChipOnCell(this.id, cell.number)) return field[getCell(caster)];
+
+		var cellsToGo = Cell.getCellsByArea(field[getCell(caster)], AoeType_CIRCLE, 0, getMP(caster), true);
+
+		var cells = Cell.visibleCells(cellsToGo, cell.number);
+
+		return Cell.getClosestCellPathTo(cells, myLeek.id);
+	}
+
+	static hasWeaponEquipped(target, weaponId) {
+		return !!findFirst(getWeapons(target.id), (id) => id == weaponId);
+	}
+
+	hasWeaponEffect(searchedType) {
+		return !!findFirst(this.itemEffects, itemEffect => itemEffect.type == searchedType);
+	}
+
+	/**
+	 * Calcul les dégats de l'arme
+	 * @param source Tireur
+	 * @param target Cible
+	 * @returns Dégats de l'arme
+	 */
+	getWeaponDamage(source = myLeek, target = enemy) {
+
+		for (var effect in this.itemEffects) {
+			if (effect.type == EFFECT_DAMAGE) {
+				var multiplier = (source.strength() / 100 + 1) * (source.power() / 100 + 1)
+				var relative = (1 - target.relative() / 100);
+				var absolute = target.absolute();
+				var calculateDmg = (base) => round(base * multiplier * relative - absolute);
+
+				this.damage.strengthMin = calculateDmg(effect.min);
+				this.damage.strengthMax = calculateDmg(effect.max);
+				this.damage.strengthAvg = (this.damage.strengthMin + this.damage.strengthMax) / 2;
+				this.damage.strengthMinByTP = effect.min / this.cost;
+				this.damage.strengthMaxByTP = effect.max / this.cost;
+				this.damage.strengthAvgByTP = (effect.min + effect.max) / 2 / this.cost;
+			} else if (effect.type == EFFECT_POISON) {
+				var formula = (source.magic() / 100 + 1) * (source.power() / 100 + 1);
+				this.damage.poisonMin = round(effect.min * formula);
+				this.damage.poisonMax = round(effect.max * formula);
+				this.damage.poisonAvg = (this.damage.poisonMin + this.damage.poisonMax) / 2;
+				this.damage.poisonMinByTP = effect.min / this.cost;
+				this.damage.poisonMaxByTP = effect.max / this.cost;
+				this.damage.poisonAvgByTP = (effect.min + effect.max) / 2 / this.cost;
+			} else if (effect.type == EFFECT_NOVA_DAMAGE) {
+				var formula = (value) => min(target.totalLife() - target.life(), value * (source.science() / 100 + 1) * (source.power() / 100 + 1));
+				this.damage.novaMin = round(formula(effect.min));
+				this.damage.novaMax = round(formula(effect.max));
+				this.damage.novaAvg = (this.damage.novaMin + this.damage.novaMax) / 2;
+				this.damage.novaMinByTP = effect.min / this.cost;
+				this.damage.novaMaxByTP = effect.max / this.cost;
+				this.damage.novaAvgByTP = (effect.min + effect.max) / 2 / this.cost;
+			}
+		}
+
+		this.damage.totalMin = this.damage.strengthMin + this.damage.poisonMin;
+		this.damage.totalMax = this.damage.strengthMax + this.damage.poisonMax;
+		this.damage.totalAvg = this.damage.strengthAvg + this.damage.poisonAvg;
+		this.damage.totalMinByTP = this.damage.strengthMinByTP + this.damage.poisonMinByTP;
+		this.damage.totalMaxByTP = this.damage.strengthMaxByTP + this.damage.poisonMaxByTP;
+		this.damage.totalAvgByTP = this.damage.strengthAvgByTP + this.damage.poisonAvgByTP;
+
+		return this.damage;
+	}
+
+	string() {
+		return this.name;
+	}
+}
+
+class Effect {
+	type;
+	value;
+	caster;
+	turns;
+	critical;
+	item;
+	target;
+	modifiers;
+
+	constructor(effect) {
+		this.type = effect[0];
+		this.value = effect[1];
+		this.caster = effect[2];
+		this.turns = effect[3];
+		this.critical = effect[4];
+		this.item = effect[5];
+		this.target = effect[6];
+		this.modifiers = effect[7];
+	}
+
+	static getAllEffects(entity) {
+		return arrayMap(getEffects(entity), effect => new Effect(effect));
+	}
+
+	static getEffectOfType(target, searchedEffect) {
+		return findFirst(Effect.getAllEffects(target), effect => effect.type == searchedEffect);
+	}
+
+	static getEffectsOfType(target, searchedEffect, minTurnValue = 1) {
+		return arrayFilter(Effect.getAllEffects(target), effect => effect.type == searchedEffect && effect.turns >= minTurnValue);
+	}
+
+	static getEffectsOfTypeAmount(target, searchedEffect, minTurnValue = 1) {
+		return sum(arrayMap(Effect.getEffectsOfType(target, searchedEffect, minTurnValue), effect => effect.value));
+	}
+
+	static hasEffect(entity, searchedEffect) {
+		return arraySome(Effect.getAllEffects(entity), effect => effect.type == searchedEffect);
+	}
+
+	static hasEffects(entity, searchedEffects) {
+		var entityEffects = Effect.getAllEffects(entity);
+		return searchedEffects.every((searchedEffect) => !!findFirst(entityEffects, (effect) => effect.type == searchedEffect));
+	}
+
+	static isDeadByPoison(target) {
+		var targetLife = getLife();
+		for (var effect in Effect.getAllEffects(target)) {
+			if (effect.type == EFFECT_POISON) {
+				targetLife -= effect.value;
+			} else if (effect.type == EFFECT_HEAL) {
+				targetLife += effect.value;
+			}
+			if (targetLife <= 0) return true;
+		}
+		return false;
+	}
+}
+
+global mode = getFightType();
+global field = Cell.initField();
+global turn = 0;
+turn++;
+
+global myLeek = new Leek(getEntity());
+global enemy = new Leek(getNearestEnemy());
+
+if (isDead(enemy.id) || Effect.isDeadByPoison(enemy.id)) {
+	searchEnemy();
+}
+
+function searchEnemy() {
+	if (count(getAliveEnemies()) == 0) {
+		return;
+	}
+	enemy = new Leek(getNearestEnemy());
+}
+
+/*
+ * Stat : 400 agility, 400 strength, 6 MP, 19 TP, 300 wisdom, 120 science then full HP
+ * Chips :   cure, rage, adrenaline, antidote, steroid, protein, liberation, regen, stalactite, rockfall, armoring, serum, covetousness, mirror, elevation, transmutation, mutation
+ * Weapons : unstable destroyer, axe, m laser, rhino
+ */
+
+if (distanceTo(enemy.id) > myLeek.mp() || enemy.life() > 1200) {
+	useChip(CHIP_WARM_UP);
+}
+
+if (!getWeapon()) {
+	myLeek.changeWeapon(M_LASER);
+}
+
+useChip(CHIP_ADRENALINE);
+
+var weaponsThatCanKill = [: ];
+
+// Test if can kill with any weapon
+for (var weapon in myLeek.weapons) {
+	var currentTP = myLeek.tp();
+
+	if (myLeek.weapon != weapon) {
+		currentTP--;
+	}
+
+	var nbUses = min(getWeaponMaxUses(weapon.id), floor(currentTP / weapon.cost));
+	currentTP -= nbUses * weapon.cost;
+
+	// TODO rework canmovetouse
+	var cellsToUse = arrayMap(getCellsToUseWeapon(weapon.id, enemy.id), c => field[c]);
+	var closest = Cell.getClosestCellPathTo(cellsToUse, myLeek.id);
+
+	debug("--------------------------");
+	debug(weapon.name);
+	debug("Nb uses : " + nbUses);
+	debug("PA utilisés : " + (myLeek.tp() - currentTP));
+	debug("PA restants : " + currentTP);
+
+	var canMove = (closest && getPathLength(closest.number, getCell()) < myLeek.mp()) ? closest : null;
+
+	if (!canMove) continue;
+
+	var weaponDmg = weapon.getWeaponDamage();
+
+	debug("Dégats avg : " + weaponDmg.strengthAvg);
+	debug("Total avg : " + nbUses * weaponDmg.strengthAvg);
+
+	var canKill = enemy.life() <= weaponDmg.strengthAvg * nbUses;
+
+	if (canKill) {
+		weaponsThatCanKill[weaponDmg.totalAvg * nbUses] = weapon;
+	}
+}
+
+if (!mapIsEmpty(weaponsThatCanKill)) {
+	debug("Les armes qui peuvent tuer : " + weaponsThatCanKill);
+	var rankedAvgDmgDesc = arraySort(mapKeys(weaponsThatCanKill), (a, b) => b - a);
+	var highestDamageWeapon = weaponsThatCanKill[rankedAvgDmgDesc[0]];
+
+	debug("Best weapon : " + highestDamageWeapon.name);
+	debug("C'est CIAO !");
+
+	myLeek.changeWeapon(highestDamageWeapon);
+
+	if (myLeek.tp() % highestDamageWeapon.cost >= PROTEIN.cost) {
+		useChip(CHIP_PROTEIN);
+	}
+
+	myLeek.moveAndAttack();
+	myLeek.attack();
+	myLeek.attack();
+	myLeek.attack();
+	myLeek.attack();
+	myLeek.attack();
+}
+
+useChip(CHIP_WARM_UP);
+
+if (turn % 3 == 1) {
+	useChip(CHIP_RAGE);
+}
+
+if (myLeek.lifePercent() < 30) {
+	if (!getCooldown(CHIP_REGENERATION)) {
+		useChip(CHIP_REGENERATION);
+	} else {
+		useChip(CHIP_REMISSION);
+		useChip(CHIP_CURE);
+	}
+}
+
+if (myLeek.lifePercent() < 50) {
+	useChip(CHIP_REMISSION);
+}
+
+// Liberation if poisoned
+if (Effect.getEffectOfType(myLeek.id, EFFECT_POISON)) {
+	var poisonAmount = Effect.getEffectsOfTypeAmount(myLeek.id, EFFECT_POISON, 2);
+	if (poisonAmount > 700 && !getCooldown(CHIP_ANTIDOTE)) {
+		useChip(CHIP_ANTIDOTE);
+	}
+}
+if (distanceTo(enemy.id) > 7 || getFightType() == FIGHT_TYPE_BATTLE_ROYALE) {
+	if (myLeek.tp() > 9 && !getCooldown(CHIP_KNOWLEDGE) && !getCooldown(CHIP_ARMORING) && (myLeek.lifePercent() > 2 / 3 || Effect.getEffectsOfTypeAmount(myLeek.id, EFFECT_ABSOLUTE_SHIELD) > 150)) {
+		useChip(CHIP_KNOWLEDGE);
+		useChip(CHIP_ARMORING);
+		if (!getCooldown(CHIP_ELEVATION)) {
+			useChip(CHIP_ELEVATION);
+		}
+	}
+}
+
+useChip(CHIP_FORTRESS);
+useChip(CHIP_WALL);
+
+if (myLeek.lifePercent() > 75) {
+	if (!getCooldown(CHIP_TRANSMUTATION)) {
+		useChipOnCell(CHIP_TRANSMUTATION, getCell() - 17);
+		useChipOnCell(CHIP_TRANSMUTATION, getCell() - 18);
+		useChipOnCell(CHIP_TRANSMUTATION, getCell() + 17);
+		useChipOnCell(CHIP_TRANSMUTATION, getCell() + 18);
+	}
+
+	//if (!getCooldown(CHIP_MUTATION)) {
+	//useChip(CHIP_MUTATION);
+	//}
+}
+
+if (distanceTo(enemy.id) in [0..12] && myLeek.tp() > 10) {
+	useChip(CHIP_MOTIVATION);
+	useChip(CHIP_PROTEIN);
+	useChip(CHIP_STEROID);
+}
+
+if (Effect.getEffectsOfTypeAmount(enemy.id, EFFECT_ABSOLUTE_SHIELD, 2) > 150 || Effect.getEffectsOfTypeAmount(enemy.id, EFFECT_RELATIVE_SHIELD, 2) > 30) {
+	LIBERATION.moveAndUse();
+}
+
+var cell = M_LASER.canMoveToUse();
+
+if (cell && M_LASER == getWeapon() && myLeek.tp() > M_LASER.cost || M_LASER != getWeapon() && myLeek.tp() > M_LASER.cost + 1) {
+	myLeek.changeWeapon(M_LASER);
+
+
+	moveTowardCell(cell.number);
+
+	useWeapon(enemy.id);
+	useWeapon(enemy.id);
+	useWeapon(enemy.id);
+}
+
+if (pathDistanceBetween(myLeek.id, enemy.id) <= myLeek.mp()) {
+	myLeek.changeWeapon(AXE);
+
+	myLeek.moveAndAttack();
+	myLeek.attack();
+	myLeek.attack();
+	myLeek.attack();
+	myLeek.attack();
+	myLeek.attack();
+} else {
+	STALACTITE.moveAndUse();
+	ROCKFALL.moveAndUse();
+	moveToward(enemy.id);
+}
+
+var rhinoCell = RHINO.canMoveToUse();
+
+if (
+	rhinoCell &&
+	(
+		myLeek.weapon != RHINO && myLeek.tp() > RHINO.cost ||
+		myLeek.weapon == RHINO && myLeek.tp() >= RHINO.cost
+	)
+) {
+	var rhinoDamage = RHINO.getWeaponDamage();
+
+	if (rhinoDamage.strengthAvg > 150 || myLeek.lifePercent() > 75) {
+		myLeek.changeWeapon(RHINO);
+		myLeek.moveAndAttack();
+		myLeek.attack();
+		myLeek.attack();
+		myLeek.attack();
+		myLeek.attack();
+		myLeek.attack();
+	}
+}
+
+if (enemy.isDead()) {
+	searchEnemy();
+	if (distanceTo(enemy.id) <= myLeek.mp()) {
+		moveToward(enemy.id);
+	}
+	myLeek.moveAndAttack();
+	myLeek.attack();
+	myLeek.attack();
+	myLeek.attack();
+	myLeek.attack();
+	myLeek.attack();
+} else if (myLeek.tp() > 4) {
+	var other = getNearestEnemy();
+	STALACTITE.moveAndUse(myLeek.id, other);
+	ROCKFALL.moveAndUse(myLeek.id, other);
+	myLeek.moveAndAttack(other);
+	myLeek.attack(other);
+	myLeek.attack(other);
+	myLeek.attack(other);
+}
+
+if (myLeek.lifePercent() < 80) {
+	useChip(CHIP_REMISSION);
+	useChip(CHIP_CURE);
+}
+
+if (enemy.strength() > 250) {
+	useChip(CHIP_MIRROR);
+}
+
+moveToward(enemy.id);
+
+useChip(CHIP_SERUM);
+useChip(CHIP_CURE);
+useChip(CHIP_COVETOUSNESS, enemy.id);
+useChip(CHIP_BANDAGE);
+
+function afterFight() {
+	debug("Fin du fight")
+}

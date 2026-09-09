@@ -1,0 +1,18 @@
+global blacklist = getRegister('blacklist') ? jsonDecode(getRegister('blacklist')) : [: ]
+
+var leeks = arrayFilter(arrayConcat(getEnemies(), getAllies()), (entity) => getType(entity) == ENTITY_LEEK && entity != getEntity() && getLevel(entity) == 301)
+
+arrayIter(leeks, leek => registerOrUpdateLeek(leek))
+
+setRegister('blacklist', jsonEncode(blacklist))
+
+function registerOrUpdateLeek(leek) {
+	var name = getName(leek)
+	blacklist[name] = getLeekEffectType(leek)
+	debug(name + " : " + (blacklist[name] == EFFECT_DAMAGE ? "FORCE" : "POISON"))
+}
+
+function getLeekEffectType(leek) {
+	if (getStrength(leek) >= 400) return EFFECT_DAMAGE
+	if (getMagic(leek) >= 400) return EFFECT_POISON
+}

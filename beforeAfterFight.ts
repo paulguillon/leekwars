@@ -2,7 +2,7 @@
 
 //turn est obligatoire pour beforeFight
 function beforeFight(): void {
-    console.log(Fight.getNearestEnemy().weapons)
+    console.log(Fight.getNearestEnemy().strength)
     if (Fight.getNearestEnemy().chips.includes(Chip.fortress)) {
         Fight.me.setLoadout("anti-poison", false)
     }
