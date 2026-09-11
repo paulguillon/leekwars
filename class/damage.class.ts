@@ -1,4 +1,4 @@
-class Damage {
+export class Damage {
     strengthMin: number = 0;
     strengthMax: number = 0;
     strengthAvg: number = 0;
@@ -41,7 +41,7 @@ class Damage {
                 damage.poisonMaxByTP = feature.maxValue / item.cost;
                 damage.poisonAvgByTP = (feature.minValue + feature.maxValue) / 2 / item.cost;
             } else if (feature.type == Effect.NOVA_DAMAGE) {
-                const formula = (value) => Math.min(target.maxLife - target.life, value * (source.science / 100 + 1) * (source.power / 100 + 1));
+                const formula = (value: number) => Math.min(target.maxLife - target.life, value * (source.science / 100 + 1) * (source.power / 100 + 1));
                 damage.novaMin = Math.round(formula(feature.minValue));
                 damage.novaMax = Math.round(formula(feature.maxValue));
                 damage.novaAvg = (damage.novaMin + damage.novaMax) / 2;
@@ -54,7 +54,7 @@ class Damage {
         const multiplier = (source.strength / 100 + 1) * (source.power / 100 + 1)
         const relative = (1 - target.relativeShield / 100);
         const absolute = target.absoluteShield;
-        const calculateDmg = (base) => Math.round(base * multiplier * relative - absolute);
+        const calculateDmg = (base: number) => Math.round(base * multiplier * relative - absolute);
 
         damage.strengthMinByTP = damage.strengthMin / item.cost;
         damage.strengthMaxByTP = damage.strengthMax / item.cost;
@@ -70,6 +70,35 @@ class Damage {
         damage.totalMaxByTP = damage.strengthMaxByTP + damage.poisonMaxByTP;
         damage.totalAvgByTP = damage.strengthAvgByTP + damage.poisonAvgByTP;
 
+        return damage;
+    }
+
+    static addDamages(damages: Damage[]): Damage {
+        const damage: Damage = new Damage();
+        damage.strengthMin = damages.reduce((sum, d) => sum + d.strengthMin, 0);
+        damage.strengthMax = damages.reduce((sum, d) => sum + d.strengthMax, 0);
+        damage.strengthAvg = (damage.strengthMin + damage.strengthMax) / 2;
+        damage.strengthMinByTP = damages.reduce((sum, d) => sum + d.strengthMinByTP, 0);
+        damage.strengthMaxByTP = damages.reduce((sum, d) => sum + d.strengthMaxByTP, 0);
+        damage.strengthAvgByTP = (damage.strengthMinByTP + damage.strengthMaxByTP) / 2;
+        damage.poisonMin = damages.reduce((sum, d) => sum + d.poisonMin, 0);
+        damage.poisonMax = damages.reduce((sum, d) => sum + d.poisonMax, 0);
+        damage.poisonAvg = (damage.poisonMin + damage.poisonMax) / 2;
+        damage.poisonMinByTP = damages.reduce((sum, d) => sum + d.poisonMinByTP, 0);
+        damage.poisonMaxByTP = damages.reduce((sum, d) => sum + d.poisonMaxByTP, 0);
+        damage.poisonAvgByTP = (damage.poisonMinByTP + damage.poisonMaxByTP) / 2;
+        damage.novaMin = damages.reduce((sum, d) => sum + d.novaMin, 0);
+        damage.novaMax = damages.reduce((sum, d) => sum + d.novaMax, 0);
+        damage.novaAvg = (damage.novaMin + damage.novaMax) / 2;
+        damage.novaMinByTP = damages.reduce((sum, d) => sum + d.novaMinByTP, 0);
+        damage.novaMaxByTP = damages.reduce((sum, d) => sum + d.novaMaxByTP, 0);
+        damage.novaAvgByTP = (damage.novaMinByTP + damage.novaMaxByTP) / 2;
+        damage.totalMin = damages.reduce((sum, d) => sum + d.totalMin, 0);
+        damage.totalMax = damages.reduce((sum, d) => sum + d.totalMax, 0);
+        damage.totalAvg = (damage.totalMin + damage.totalMax) / 2;
+        damage.totalMinByTP = damages.reduce((sum, d) => sum + d.totalMinByTP, 0);
+        damage.totalMaxByTP = damages.reduce((sum, d) => sum + d.totalMaxByTP, 0);
+        damage.totalAvgByTP = (damage.totalMinByTP + damage.totalMaxByTP) / 2;
         return damage;
     }
 }
