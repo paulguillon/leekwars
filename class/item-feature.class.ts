@@ -22,6 +22,7 @@ export class ItemFeature {
 
         const targets: number = feature[4];
         this.onEnemies = targets & Effect.Target.ENEMIES;
+        console.log(`onEnemies: ${this.onEnemies}`);
         this.onAllies = targets & Effect.Target.ALLIES;
         this.onCaster = targets & Effect.Target.CASTER;
         this.onNotSummons = targets & Effect.Target.NON_SUMMONS;
