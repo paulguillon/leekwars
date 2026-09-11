@@ -61,23 +61,21 @@ function decodeGlagolitic(input: string): number {
   return input.split('').reduce((acc, char) => acc + (glagolitic[char] || 0), 0);
 }
 
-function turn(): void {
-  const listen: any[][] = Fight.listen().filter(([id, message]) => Entity.get(id).side === 1 && !message.includes("!"));
-  let codes: number[] = [];
-  if (listen.length > 2) {
-    console.log(listen);
-    codes = listen.map(([id, message]) => decodeGlagolitic(message));
-    console.log(codes);
-  }
-  const facteurs: number[] = []
-  const sorted = codes.sort((a, b) => a - b)
-  const stringified = sorted.join("")
-  const code = parseInt(stringified)
-  premiers.forEach(premier => {
-    const result = code % premier
-    if (result === 0) {
-      facteurs.push(premier)
-    }
-  })
-  console.log(facteurs)
+const listen: any[][] = Fight.listen().filter(([id, message]) => Entity.get(id).side === 1 && !message.includes("!"));
+let codes: number[] = [];
+if (listen.length > 2) {
+  console.log(listen);
+  codes = listen.map(([id, message]) => decodeGlagolitic(message));
+  console.log(codes);
 }
+const facteurs: number[] = []
+const sorted = codes.sort((a, b) => a - b)
+const stringified = sorted.join("")
+const code = parseInt(stringified)
+premiers.forEach(premier => {
+  const result = code % premier
+  if (result === 0) {
+    facteurs.push(premier)
+  }
+})
+console.log(facteurs)

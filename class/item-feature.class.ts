@@ -14,21 +14,20 @@ export class ItemFeature {
     irreductible: number;
     type: Effect.Type;
 
-    constructor(feature: [Effect.Type, number, number, number, number, number]) {
-        this.type = feature[0];
-        this.min = feature[1];
-        this.max = feature[2];
-        this.turns = feature[3];
+    constructor(feature: Feature) {
+        this.type = feature.type;
+        this.min = feature.minValue;
+        this.max = feature.maxValue;
+        this.turns = feature.turns;
 
-        const targets: number = feature[4];
+        const targets: number = feature.targets;
         this.onEnemies = targets & Effect.Target.ENEMIES;
-        console.log(`onEnemies: ${this.onEnemies}`);
         this.onAllies = targets & Effect.Target.ALLIES;
         this.onCaster = targets & Effect.Target.CASTER;
         this.onNotSummons = targets & Effect.Target.NON_SUMMONS;
         this.onSummons = targets & Effect.Target.SUMMONS;
 
-        const modifiers: number = feature[5];
+        const modifiers: number = feature.modifiers;
 
         this.stackable = modifiers & Effect.Modifier.STACKABLE;
         this.multipliedByTargets = modifiers & Effect.Modifier.MULTIPLIED_BY_TARGETS;
