@@ -1,4 +1,4 @@
-class ItemFeature {
+export class ItemFeature {
     min: number;
     max: number;
     turns: number;
