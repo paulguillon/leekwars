@@ -14,7 +14,7 @@ class ItemFeature {
     irreductible: number;
     type: Effect.Type;
 
-    constructor(feature) {
+    constructor(feature: [Effect.Type, number, number, number, number, number]) {
         this.type = feature[0];
         this.min = feature[1];
         this.max = feature[2];
