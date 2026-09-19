@@ -1,15 +1,21 @@
 global blacklist = getRegister('blacklist') ? jsonDecode(getRegister('blacklist')) : [: ]
+global blacklist2 = getRegister('blacklist2') ? jsonDecode(getRegister('blacklist2')) : [: ]
 
 var leeks = arrayFilter(arrayConcat(getEnemies(), getAllies()), (entity) => getType(entity) == ENTITY_LEEK && entity != getEntity() && getLevel(entity) == 301)
 
 arrayIter(leeks, leek => registerOrUpdateLeek(leek))
 
-setRegister('blacklist', jsonEncode(blacklist))
+if (!setRegister('blacklist', jsonEncode(blacklist))) {
+	setRegister('blacklist2', jsonEncode(blacklist2))
+}
 
 function registerOrUpdateLeek(leek) {
 	var name = getName(leek)
 	blacklist[name] = getLeekEffectType(leek)
-	debug(name + " : " + (blacklist[name] == EFFECT_DAMAGE ? "FORCE" : "POISON"))
+	if (length(jsonEncode(blacklist)) > 5000) {
+		blacklist2[name] = getLeekEffectType(leek)
+	}
+	debug(name + " : " + (getLeekEffectType(leek) == EFFECT_DAMAGE ? "FORCE" : "POISON"))
 }
 
 function getLeekEffectType(leek) {

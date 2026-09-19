@@ -3,11 +3,24 @@ include('blacklist')
 function beforeFight() {
 	if (getFightType() == FIGHT_TYPE_SOLO) {
 		var list = jsonDecode(getRegister('blacklist'))
+		var list2 = jsonDecode(getRegister('blacklist2'))
 		var enemyName = getName(getNearestEnemy())
 		if (contains(getRegister('blacklist'), enemyName)) {
 			if (list[enemyName] == EFFECT_DAMAGE) {
-				setLoadout('strengthAgilityBandage', false)
-				debug("Force donc bandage")
+				setLoadout('strengthAgilityVsDamage', false)
+				debug("Blacklist : Loadout vs force équipé")
+			} else if (list[enemyName] == EFFECT_POISON) {
+				setLoadout('strengthAgilityVsPoison', false)
+				debug("Blacklist : Loadout vs poison équipé")
+			}
+		}
+		if (contains(getRegister('blacklist2'), enemyName)) {
+			if (list2[enemyName] == EFFECT_DAMAGE) {
+				setLoadout('strengthAgilityVsDamage', false)
+				debug("Blacklist 2 : Loadout vs force équipé")
+			} else if (list2[enemyName] == EFFECT_POISON) {
+				setLoadout('strengthAgilityVsPoison', false)
+				debug("Blacklist 2 : Loadout vs poison équipé")
 			}
 		}
 	}
@@ -1817,7 +1830,9 @@ class Leek extends Entity {
 	attack(target = enemy.id) {
 		if (!isAlive(target)) return;
 
+		debug("before	canuseweapon")
 		if (canUseWeapon(this.weapon.id, target)) {
+			debug("after->attacking")
 			useWeapon(target);
 		}
 	}
@@ -1829,8 +1844,8 @@ class Leek extends Entity {
 		var closest = Cell.getClosestCellPathTo(cellsToUse, this.id);
 
 		var cell = (closest && getPathLength(closest.number, getCell()) < this.mp()) ? closest : null;
-		debug("move and attack : " + cell);
-		if (cell) {
+		if (cell != null) {
+			debug("move and attack : " + cell);
 			moveTowardCell(cell.number);
 			useWeaponOnCell(cell.number);
 		}
@@ -1906,7 +1921,11 @@ class Weapon extends Item {
 
 		if (!count(mapKeys(cellsToHitTarget))) return null;
 
-		return mapGet(cellsToHitTarget, arraySort(mapKeys(cellsToHitTarget), (a, b) => a - b)[0]);
+		var cell = mapGet(cellsToHitTarget, arraySort(mapKeys(cellsToHitTarget), (a, b) => a - b)[0]);
+
+		debug("canMoveToUse : " + cell);
+
+		return cell;
 	}
 
 	canMoveToUseOnCell(cell, caster = myLeek.id) {
@@ -2064,15 +2083,15 @@ function searchEnemy() {
 /*
  * Stat : 400 agility, 400 strength, 6 MP, 19 TP, 300 wisdom, 120 science then full HP
  * Chips :   cure, rage, adrenaline, antidote, steroid, protein, liberation, regen, stalactite, rockfall, armoring, serum, covetousness, mirror, elevation, transmutation, mutation
- * Weapons : unstable destroyer, axe, m laser, rhino
+ * Weapons : unstable destroyer, katana, m laser, rhino
  */
 
 if (distanceTo(enemy.id) > myLeek.mp() || enemy.life() > 1200) {
-	useChip(CHIP_WARM_UP);
+	useChip(CHIP_REFLEXES);
 }
 
 if (!getWeapon()) {
-	myLeek.changeWeapon(M_LASER);
+	myLeek.changeWeapon(LIGHTNINGER);
 }
 
 useChip(CHIP_ADRENALINE);
@@ -2138,7 +2157,10 @@ if (!mapIsEmpty(weaponsThatCanKill)) {
 	myLeek.attack();
 }
 
-useChip(CHIP_WARM_UP);
+useChip(CHIP_STRETCHING);
+if (turn % 3 == 1) {
+	useChip(CHIP_REFLEXES);
+}
 
 if (turn % 3 == 1) {
 	useChip(CHIP_RAGE);
@@ -2157,25 +2179,28 @@ if (myLeek.lifePercent() < 50) {
 	useChip(CHIP_REMISSION);
 }
 
-// Liberation if poisoned
+// Antidote if poisoned
 if (Effect.getEffectOfType(myLeek.id, EFFECT_POISON)) {
 	var poisonAmount = Effect.getEffectsOfTypeAmount(myLeek.id, EFFECT_POISON, 2);
 	if (poisonAmount > 700 && !getCooldown(CHIP_ANTIDOTE)) {
 		useChip(CHIP_ANTIDOTE);
 	}
 }
-if (distanceTo(enemy.id) > 7 || getFightType() == FIGHT_TYPE_BATTLE_ROYALE) {
-	if (myLeek.tp() > 9 && !getCooldown(CHIP_KNOWLEDGE) && !getCooldown(CHIP_ARMORING) && (myLeek.lifePercent() > 2 / 3 || Effect.getEffectsOfTypeAmount(myLeek.id, EFFECT_ABSOLUTE_SHIELD) > 150)) {
-		useChip(CHIP_KNOWLEDGE);
-		useChip(CHIP_ARMORING);
-		if (!getCooldown(CHIP_ELEVATION)) {
-			useChip(CHIP_ELEVATION);
-		}
+// Remove shackles if equiped
+if (Effect.getEffectOfType(myLeek.id, EFFECT_SHACKLE_TP)) {
+	var shackleTpAmout = Effect.getEffectsOfTypeAmount(myLeek.id, EFFECT_SHACKLE_TP, 2);
+	if (shackleTpAmout > 6 && !getCooldown(CHIP_MANUMISSION)) {
+		useChip(CHIP_MANUMISSION);
 	}
+}
+if (myLeek.tp() > 9 && !getCooldown(CHIP_KNOWLEDGE) && !getCooldown(CHIP_ARMORING) && (myLeek.lifePercent() > 2 / 3 || Effect.getEffectsOfTypeAmount(myLeek.id, EFFECT_RELATIVE_SHIELD) > 20)) {
+	useChip(CHIP_KNOWLEDGE);
+	useChip(CHIP_ARMORING);
+	useChip(CHIP_ELEVATION);
 }
 
 useChip(CHIP_FORTRESS);
-useChip(CHIP_WALL);
+useChip(CHIP_VACCINE);
 
 if (myLeek.lifePercent() > 75) {
 	if (!getCooldown(CHIP_TRANSMUTATION)) {
@@ -2196,25 +2221,24 @@ if (distanceTo(enemy.id) in [0..12] && myLeek.tp() > 10) {
 	useChip(CHIP_STEROID);
 }
 
-if (Effect.getEffectsOfTypeAmount(enemy.id, EFFECT_ABSOLUTE_SHIELD, 2) > 150 || Effect.getEffectsOfTypeAmount(enemy.id, EFFECT_RELATIVE_SHIELD, 2) > 30) {
+if (Effect.getEffectsOfTypeAmount(enemy.id, EFFECT_RAW_ABSOLUTE_SHIELD, -1) +
+	Effect.getEffectsOfTypeAmount(enemy.id, EFFECT_ABSOLUTE_SHIELD, 2) > 110 ||
+	Effect.getEffectsOfTypeAmount(enemy.id, EFFECT_RAW_RELATIVE_SHIELD, 2) +
+	Effect.getEffectsOfTypeAmount(enemy.id, EFFECT_RELATIVE_SHIELD, 2) > 20 ||
+	Effect.getEffectsOfTypeAmount(enemy.id, EFFECT_DAMAGE_RETURN, 1) > 60
+) {
 	LIBERATION.moveAndUse();
 }
 
-var cell = M_LASER.canMoveToUse();
+useChip(CHIP_WALL);
 
-if (cell && M_LASER == getWeapon() && myLeek.tp() > M_LASER.cost || M_LASER != getWeapon() && myLeek.tp() > M_LASER.cost + 1) {
-	myLeek.changeWeapon(M_LASER);
-
-
-	moveTowardCell(cell.number);
-
-	useWeapon(enemy.id);
-	useWeapon(enemy.id);
-	useWeapon(enemy.id);
+var cellsToHit = getCellsToUseWeaponOnCell(LIGHTNINGER.id, getCell(enemy.id))
+if (!arrayFind(cellsToHit, c => getPathLength(c, getCell()))) {
+	cellsToHit = []
 }
 
-if (pathDistanceBetween(myLeek.id, enemy.id) <= myLeek.mp()) {
-	myLeek.changeWeapon(AXE);
+if (pathDistanceBetween(myLeek.id, enemy.id) <= myLeek.mp() && myLeek.tp() >= KATANA.cost + 1) {
+	myLeek.changeWeapon(KATANA);
 
 	myLeek.moveAndAttack();
 	myLeek.attack();
@@ -2249,6 +2273,20 @@ if (
 		myLeek.attack();
 	}
 }
+
+// if (
+// 	count(cellsToHit) > 0 &&
+// 	(
+// 		LIGHTNINGER == getWeapon() && myLeek.tp() > LIGHTNINGER.cost ||
+// 		LIGHTNINGER != getWeapon() && myLeek.tp() > LIGHTNINGER.cost + 1
+// 	)
+// ) {
+// 	myLeek.changeWeapon(LIGHTNINGER);
+
+// 	moveTowardCells(cellsToHit)
+// 	myLeek.attack();
+// 	myLeek.attack();
+// }
 
 if (enemy.isDead()) {
 	searchEnemy();

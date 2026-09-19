@@ -1,3 +1,10 @@
+/**
+ * center
+ * area
+ * min
+ * max
+ * walkableOnly
+ */
 export function getCellsByArea(center: Cell, area: Item.LaunchType | Item.Area, min: number = 0, max: number = 1, walkableOnly: boolean = false) {
     if (min > max) return [];
     let cells: Cell[] = [];
