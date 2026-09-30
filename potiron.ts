@@ -61,21 +61,40 @@ function decodeGlagolitic(input: string): number {
   return input.split('').reduce((acc, char) => acc + (glagolitic[char] || 0), 0);
 }
 
+const examples = [ // résultat attendu 300
+  [900, 408, 819],  // 2,2,3,5,5 => 2 * 2 * 3 * 5 * 5 = 300
+  [900, 829, 599],  // 2,2,3,5,5 => 2 * 2 * 3 * 5 * 5 = 300
+  [169, 428, 900],  // 2,2,3,5,5 => 2 * 2 * 3 * 5 * 5 = 300
+  [900, 549, 501],  // 2,2,3,5,5 => 2 * 2 * 3 * 5 * 5 = 300
+  [804, 900, 804],  // 2,2,3,5,5 => 2 * 2 * 3 * 5 * 5 = 300
+  [557, 367, 900],  // 2,2,3,5,5 => 2 * 2 * 3 * 5 * 5 = 300
+  [163, 900, 497],  // 2,2,3,5,5 => 2 * 2 * 3 * 5 * 5 = 300
+  [834, 225, 900],  // 2,2,3,5,5 => 2 * 2 * 3 * 5 * 5 = 300
+  [700, 442, 472],  // 2,2,3,5,5 => 2 * 2 * 3 * 5 * 5 = 300
+  [165, 614, 700] // 2,2,3,5,5 => 2 * 2 * 3 * 5 * 5 = 300
+]
+
 const listen: any[][] = Fight.listen().filter(([id, message]) => Entity.get(id).side === 1 && !message.includes("!"));
 let codes: number[] = [];
+
 if (listen.length > 2) {
   console.log(listen);
   codes = listen.map(([id, message]) => decodeGlagolitic(message));
   console.log(codes);
-}
-const facteurs: number[] = []
-const sorted = codes.sort((a, b) => a - b)
-const stringified = sorted.join("")
-const code = parseInt(stringified)
-premiers.forEach(premier => {
-  const result = code % premier
-  if (result === 0) {
-    facteurs.push(premier)
+
+  const facteurs: number[] = []
+  const sorted = codes.slice(-3).sort((a, b) => a - b)
+  const stringified = sorted.join("")
+  let code = parseInt(stringified)
+
+  let i = 0
+  while (code > 1 && i < premiers.length) {
+    if (code % premiers[i] === 0) {
+      facteurs.push(premiers[i])
+      code /= premiers[i]
+    } else {
+      i++
+    }
   }
-})
-console.log(facteurs)
+  console.log("facteurs : ", facteurs)
+}
