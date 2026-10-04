@@ -1,7 +1,7 @@
 include('blacklist')
 
-function beforeFight() {
-	if (getFightType() == FIGHT_TYPE_SOLO) {
+function beforeFight() { 
+	if (getName() == "TailléPourGinette" &&  getFightType() == FIGHT_TYPE_SOLO) {
 		var list = jsonDecode(getRegister('blacklist'))
 		var list2 = jsonDecode(getRegister('blacklist2'))
 		var enemyName = getName(getNearestEnemy())
@@ -2069,7 +2069,7 @@ turn++;
 global myLeek = new Leek(getEntity());
 global enemy = new Leek(getNearestEnemy());
 
-if (isDead(enemy.id) || Effect.isDeadByPoison(enemy.id)) {
+if (isDead(enemy.id) || Effect.isDeadByPoison(enemy.id) || getCellDistance(getCell(myLeek.id), getCell(enemy.id)) > 15) {
 	searchEnemy();
 }
 
@@ -2078,16 +2078,6 @@ function searchEnemy() {
 		return;
 	}
 	enemy = new Leek(getNearestEnemy());
-}
-
-/*
- * Stat : 400 agility, 400 strength, 6 MP, 19 TP, 300 wisdom, 120 science then full HP
- * Chips :   cure, rage, adrenaline, antidote, steroid, protein, liberation, regen, stalactite, rockfall, armoring, serum, covetousness, mirror, elevation, transmutation, mutation
- * Weapons : unstable destroyer, katana, m laser, rhino
- */
-
-if (distanceTo(enemy.id) > myLeek.mp() || enemy.life() > 1200) {
-	useChip(CHIP_REFLEXES);
 }
 
 if (!getWeapon()) {
@@ -2230,7 +2220,7 @@ if (Effect.getEffectsOfTypeAmount(enemy.id, EFFECT_RAW_ABSOLUTE_SHIELD, -1) +
 	LIBERATION.moveAndUse();
 }
 
-useChip(CHIP_WALL);
+useChip(CHIP_SHIELD);
 
 var cellsToHit = getCellsToUseWeaponOnCell(LIGHTNINGER.id, getCell(enemy.id))
 if (!arrayFind(cellsToHit, c => getPathLength(c, getCell()))) {
@@ -2248,7 +2238,6 @@ if (pathDistanceBetween(myLeek.id, enemy.id) <= myLeek.mp() && myLeek.tp() >= KA
 	myLeek.attack();
 } else {
 	STALACTITE.moveAndUse();
-	ROCKFALL.moveAndUse();
 	moveToward(enemy.id);
 }
 
@@ -2302,7 +2291,6 @@ if (enemy.isDead()) {
 } else if (myLeek.tp() > 4) {
 	var other = getNearestEnemy();
 	STALACTITE.moveAndUse(myLeek.id, other);
-	ROCKFALL.moveAndUse(myLeek.id, other);
 	myLeek.moveAndAttack(other);
 	myLeek.attack(other);
 	myLeek.attack(other);
@@ -2324,6 +2312,17 @@ useChip(CHIP_SERUM);
 useChip(CHIP_CURE);
 useChip(CHIP_COVETOUSNESS, enemy.id);
 useChip(CHIP_BANDAGE);
+
+if (myLeek.tp() > 5) {
+	searchEnemy()
+	if (myLeek.weapon != RHINO) {
+		myLeek.changeWeapon(RHINO)
+	}
+	myLeek.moveAndAttack()
+	myLeek.attack()
+	myLeek.attack()
+	myLeek.attack()
+}
 
 function afterFight() {
 	debug("Fin du fight")

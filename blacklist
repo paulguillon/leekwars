@@ -19,6 +19,6 @@ function registerOrUpdateLeek(leek) {
 }
 
 function getLeekEffectType(leek) {
-	if (getStrength(leek) >= 400) return EFFECT_DAMAGE
 	if (getMagic(leek) >= 400) return EFFECT_POISON
+	if (getStrength(leek) >= 400) return EFFECT_DAMAGE
 }
