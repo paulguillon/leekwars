@@ -1,21 +1,34 @@
+// git/blacklist
+
 global blacklist = getRegister('blacklist') ? jsonDecode(getRegister('blacklist')) : [: ]
 global blacklist2 = getRegister('blacklist2') ? jsonDecode(getRegister('blacklist2')) : [: ]
 
-var leeks = arrayFilter(arrayConcat(getEnemies(), getAllies()), (entity) => getType(entity) == ENTITY_LEEK && entity != getEntity() && getLevel(entity) == 301)
+// Classification force / poison : une seule fois, au premier tour
+if (getTurn() == 1) {
+	var leeks = arrayFilter(arrayConcat(getEnemies(), getAllies()), (entity) => getType(entity) == ENTITY_LEEK && entity != getEntity() && getLevel(entity) == 301)
 
-arrayIter(leeks, leek => registerOrUpdateLeek(leek))
+	arrayIter(leeks, leek => registerOrUpdateLeek(leek))
 
-if (!setRegister('blacklist', jsonEncode(blacklist))) {
-	setRegister('blacklist2', jsonEncode(blacklist2))
+	if (!setRegister('blacklist', jsonEncode(blacklist))) {
+		setRegister('blacklist2', jsonEncode(blacklist2))
+	}
 }
 
 function registerOrUpdateLeek(leek) {
 	var name = getName(leek)
-	blacklist[name] = getLeekEffectType(leek)
+	var type = getLeekEffectType(leek)
+	blacklist[name] = type
 	if (length(jsonEncode(blacklist)) > 5000) {
-		blacklist2[name] = getLeekEffectType(leek)
+		blacklist2[name] = type
 	}
-	debug(name + " : " + (getLeekEffectType(leek) == EFFECT_DAMAGE ? "FORCE" : "POISON"))
+
+	var label = "inconnu"
+	if (type == EFFECT_DAMAGE) {
+		label = "FORCE"
+	} else if (type == EFFECT_POISON) {
+		label = "POISON"
+	}
+	debug(name + " : " + label)
 }
 
 function getLeekEffectType(leek) {
