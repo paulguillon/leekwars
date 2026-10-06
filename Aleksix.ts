@@ -1,38 +1,60 @@
-function getDamage(item: Item, target: Entity): object {
-    const DAMAGE_FORMULA = (1 + me.strength / 100) * (1 + me.power / 100)
+class Damage {
+    item: Item
+    cost: number
+    min: number
+    max: number
+    avg: number
+    minCritical: number
+    maxCritical: number
+    avgCritical: number
+    minByCost: number
+    maxByCost: number
+    avgByCost: number
+    minCriticalByCost: number
+    maxCriticalByCost: number
+    avgCriticalByCost: number
 
-    const features = item.features.filter((f) => f.type === Effect.DAMAGE);
-    const nbOfDamageLine: number = features.length;
-    const minDamage: number = features.map((f) => f.minValue).reduce((acc, curr) => acc + curr, 0);
-    const maxDamage: number = features.map((f) => f.maxValue).reduce((acc, curr) => acc + curr, 0);
-    const avgDamage: number = (minDamage + maxDamage) / 2;
 
-    // const CRITICAL_MULTIPLIER = Fight.CRITICAL_FACTOR;
+    static getDamage(item: Item, target: Entity): Damage {
+        const dmg: Damage = new Damage();
+        dmg.item = item;
 
-    const switchCost = item instanceof Weapon && me.weapon.id != item.id ? 1 : 0;
+        const DAMAGE_FORMULA = (1 + me.strength / 100) * (1 + me.power / 100);
 
-    const min: number = Math.max(0, minDamage * DAMAGE_FORMULA * (1 - target.relativeShield / 100) - target.absoluteShield * nbOfDamageLine);
-    const max: number = Math.max(0, maxDamage * DAMAGE_FORMULA * (1 - target.relativeShield / 100) - target.absoluteShield * nbOfDamageLine);
-    const avg: number = Math.max(0, (min + max) / 2);
+        const features = item.features.filter((f) => f.type === Effect.DAMAGE);
+        const nbOfDamageLine: number = features.length;
+        const minDamage: number = features.map((f) => f.minValue).reduce((acc, curr) => acc + curr, 0);
+        const maxDamage: number = features.map((f) => f.maxValue).reduce((acc, curr) => acc + curr, 0);
+        const avgDamage: number = (minDamage + maxDamage) / 2;
 
-    const minByCost: number = min / (item.cost + switchCost);
-    const maxByCost: number = max / (item.cost + switchCost);
-    const avgByCost: number = avg / (item.cost + switchCost);
 
-    return {
-        min: Math.round(min),
-        max: Math.round(max),
-        avg: Math.round(avg),
-        // minCritical: Math.max(0, minDamage * DAMAGE_FORMULA * CRITICAL_MULTIPLIER * (1 - target.relativeShield / 100) - target.absoluteShield * nbOfDamageLine),
-        // maxCritical: Math.max(0, maxDamage * DAMAGE_FORMULA * CRITICAL_MULTIPLIER * (1 - target.relativeShield / 100) - target.absoluteShield * nbOfDamageLine),
-        // avgCritical: Math.max(0, avgDamage * DAMAGE_FORMULA * CRITICAL_MULTIPLIER * (1 - target.relativeShield / 100) - target.absoluteShield * nbOfDamageLine),
-        minByCost: minByCost.toFixed(1),
-        maxByCost: maxByCost.toFixed(1),
-        avgByCost: avgByCost.toFixed(1),
-        // minCriticalByCost: Math.max(0, minDamage * CRITICAL_MULTIPLIER / (item.cost + switchCost)),
-        // maxCriticalByCost: Math.max(0, maxDamage * CRITICAL_MULTIPLIER / (item.cost + switchCost)),
-        // avgCriticalByCost: Math.max(0, (minDamage + maxDamage) / 2 * CRITICAL_MULTIPLIER / (item.cost + switchCost)),
-    };
+
+        const RELATIVE_SHIELD_FORMULA = (1 - target.relativeShield / 100);
+        const ABSOLUTE_SHIELD_FORMULA = target.absoluteShield * nbOfDamageLine;
+
+        dmg.min = Math.max(0, minDamage * DAMAGE_FORMULA * RELATIVE_SHIELD_FORMULA - ABSOLUTE_SHIELD_FORMULA);
+        dmg.max = Math.max(0, maxDamage * DAMAGE_FORMULA * RELATIVE_SHIELD_FORMULA - ABSOLUTE_SHIELD_FORMULA);
+        dmg.avg = Math.max(0, avgDamage * DAMAGE_FORMULA * RELATIVE_SHIELD_FORMULA - ABSOLUTE_SHIELD_FORMULA);
+
+        const CRITICAL_MULTIPLIER = Fight.CRITICAL_FACTOR
+        dmg.minCritical = Math.max(0, minDamage * DAMAGE_FORMULA * CRITICAL_MULTIPLIER * RELATIVE_SHIELD_FORMULA - ABSOLUTE_SHIELD_FORMULA);
+        dmg.maxCritical = Math.max(0, maxDamage * DAMAGE_FORMULA * CRITICAL_MULTIPLIER * RELATIVE_SHIELD_FORMULA - ABSOLUTE_SHIELD_FORMULA);
+        dmg.avgCritical = Math.max(0, avgDamage * DAMAGE_FORMULA * CRITICAL_MULTIPLIER * RELATIVE_SHIELD_FORMULA - ABSOLUTE_SHIELD_FORMULA);
+
+        const switchCost = item instanceof Weapon && me.weapon.id != item.id ? 1 : 0;
+        const COST = item.cost + switchCost
+        dmg.cost = COST
+
+        dmg.minByCost = dmg.min / COST;
+        dmg.maxByCost = dmg.max / COST;
+        dmg.avgByCost = dmg.avg / COST;
+
+        dmg.minCriticalByCost = dmg.minCritical / COST;
+        dmg.maxCriticalByCost = dmg.maxCritical / COST;
+        dmg.avgCriticalByCost = dmg.avgCritical / COST;
+
+        return dmg;
+    }
 }
 
 const me = Fight.me;
@@ -65,10 +87,24 @@ if (hasMachineGun && me.weapon !== Weapon.machineGun) {
 }
 
 
-Debug.log(getDamage(Weapon.machineGun, enemy));
-Debug.log(getDamage(Weapon.shotgun, enemy));
-Debug.log(getDamage(Chip.rock, enemy));
-Debug.log(getDamage(Chip.flame, enemy));
+
+const allMyDamagingItems: Item[] = (me.chips as Item[])
+    .concat(me.weapons)
+    .filter(item => item.features
+        .some(f => f.type === Effect.DAMAGE) &&
+        (item instanceof Chip ? !(item as Chip).currentCooldown : true)
+    )
+const itemsDamageSorted = allMyDamagingItems
+    .map(item => Damage.getDamage(item, enemy))
+    .sort((a, b) => b.avgByCost - a.avgByCost)
+
+for (const itemDamage of itemsDamageSorted) {
+    Debug.log(itemDamage.item.name);
+    Debug.log('avg : ' + itemDamage.avg.toFixed(1) + ' cost : ' + itemDamage.item.cost + ' | avgByCost : ' + itemDamage.avgByCost.toFixed(1));
+}
+
+
+
 if (
     hasChip(Chip.leatherBoots) &&
     me.canUseChip(Chip.leatherBoots, me) &&
